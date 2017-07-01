@@ -1,4 +1,4 @@
-package server
+package client
 
 import (
 	"fmt"
@@ -7,25 +7,25 @@ import (
 )
 
 // Initialize comment
-func Initialize(ServerPort int, entryPointRoutine func()) {
-	startServer(ServerPort, entryPointRoutine)
+func Initialize(ServerIP string, ServerPort int, entryPointRoutine func()) {
+	startClient(ServerIP, ServerPort, entryPointRoutine)
 }
 
-// startServer comment
-func startServer(ServerPort int, entryPointRoutine func()) {
-	listener, error := net.Listen("tcp", ":"+fmt.Sprint(ServerPort))
+// startClient comment
+func startClient(ServerIP string, ServerPort int, entryPointRoutine func()) {
+	conn, error := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
 
 	if error != nil {
 		fmt.Println("Error listening:", error.Error())
 		os.Exit(1)
 	}
 
-	defer listener.Close()
-	serverLoop(listener, entryPointRoutine)
+	defer conn.Close()
+	clientLoop(conn, entryPointRoutine)
 }
 
-// serverLoop comment
-func serverLoop(listener net.Listener, entryPointRoutine func()) {
+// clientLoop comment
+func clientLoop(listener net.Conn, entryPointRoutine func()) {
 	for {
 		conn, err := listener.Accept()
 
