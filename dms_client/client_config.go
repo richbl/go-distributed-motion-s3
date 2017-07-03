@@ -18,7 +18,7 @@ const LogFilename = "dms_client.log"
 var LogLocation = libconfig.GetPath()
 
 // CheckInterval is the interval (in seconds) for checking the dms server
-const CheckInterval = 15
+const CheckInterval = 5
 
 // ServerIP is the address on which the dms server is running
 const ServerIP = "localhost"

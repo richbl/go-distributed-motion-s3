@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"go_server/libs"
 	"net"
 	"os"
 )
@@ -42,8 +43,10 @@ func serverLoop(listener net.Listener, entryPointRoutine func()) {
 // processClientRequest comment
 func processClientRequest(conn net.Conn, entryPointRoutine func()) {
 
-	buf := make([]byte, 1024)
-	_, err := conn.Read(buf)
+	libconfig.PrintFunctionName()
+
+	// TODO
+	_, err := conn.Write([]byte("disable"))
 
 	if err != nil {
 		fmt.Println("ERROR processing client request:", err.Error())

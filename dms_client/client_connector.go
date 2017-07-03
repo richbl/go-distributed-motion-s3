@@ -2,55 +2,50 @@ package client
 
 import (
 	"fmt"
+	"go_server/libs"
 	"net"
 	"os"
+	"time"
 )
 
 // Initialize comment
-func Initialize(ServerIP string, ServerPort int, entryPointRoutine func()) {
+func Initialize(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
+	libconfig.PrintFunctionName()
 	startClient(ServerIP, ServerPort, entryPointRoutine)
 }
 
 // startClient comment
-func startClient(ServerIP string, ServerPort int, entryPointRoutine func()) {
-	conn, error := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
+func startClient(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
 
-	if error != nil {
-		fmt.Println("Error listening:", error.Error())
-		os.Exit(1)
-	}
-
-	defer conn.Close()
-	clientLoop(conn, entryPointRoutine)
-}
-
-// clientLoop comment
-func clientLoop(listener net.Conn, entryPointRoutine func()) {
 	for {
-		conn, err := listener.Accept()
+		libconfig.PrintFunctionName()
+		conn, error := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
 
-		if err != nil {
-			fmt.Println("Error accepting connection from: ", conn.RemoteAddr().String(), err.Error())
+		if error != nil {
+			fmt.Println("Error listening:", error.Error())
 			os.Exit(1)
 		}
 
-		fmt.Println("--> OPEN connection from: ", conn.RemoteAddr().String())
+		defer conn.Close()
 		go processClientRequest(conn, entryPointRoutine)
+		time.Sleep(CheckInterval * time.Second)
 	}
+
 }
 
 // processClientRequest comment
-func processClientRequest(conn net.Conn, entryPointRoutine func()) {
+func processClientRequest(conn net.Conn, entryPointRoutine func(string)) {
 
-	buf := make([]byte, 1024)
-	_, err := conn.Read(buf)
+	libconfig.PrintFunctionName()
+
+	buf := make([]byte, 256)
+	n, err := conn.Read(buf)
 
 	if err != nil {
 		fmt.Println("ERROR processing client request:", err.Error())
 	} else {
-		entryPointRoutine()
+		entryPointRoutine(string(buf[:n]))
 	}
 
-	fmt.Println("<-- CLOSE connection from: ", conn.RemoteAddr().String())
 	conn.Close()
 }

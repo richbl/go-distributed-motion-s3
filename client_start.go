@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go_server/dms_server"
+	"go_server/dms_client"
 )
 
 func main() {
-	server.Initialize(server.ServerPort, server.DetermineMotionState)
+	client.Initialize(client.ServerIP, client.ServerPort, client.ProcessMotionState)
 }
