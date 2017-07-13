@@ -2,9 +2,8 @@ package server
 
 import (
 	"fmt"
-	"go_server/libs"
+	"go_server/dms_libs"
 	"net"
-	"os"
 )
 
 // Initialize comment
@@ -17,8 +16,7 @@ func startServer(ServerPort int, entryPointRoutine func()) {
 	listener, error := net.Listen("tcp", ":"+fmt.Sprint(ServerPort))
 
 	if error != nil {
-		fmt.Println("Error listening:", error.Error())
-		os.Exit(1)
+		dmslibs.Error.Fatalln(error.Error())
 	}
 
 	defer listener.Close()
@@ -31,8 +29,7 @@ func serverLoop(listener net.Listener, entryPointRoutine func()) {
 		conn, err := listener.Accept()
 
 		if err != nil {
-			fmt.Println("Error accepting connection from: ", conn.RemoteAddr().String(), err.Error())
-			os.Exit(1)
+			dmslibs.Error.Fatalln(err.Error())
 		}
 
 		fmt.Println("--> OPEN connection from: ", conn.RemoteAddr().String())
@@ -43,13 +40,14 @@ func serverLoop(listener net.Listener, entryPointRoutine func()) {
 // processClientRequest comment
 func processClientRequest(conn net.Conn, entryPointRoutine func()) {
 
-	libconfig.PrintFunctionName()
+	dmslibs.PrintFuncName()
 
 	// TODO
+
 	_, err := conn.Write([]byte("disable"))
 
 	if err != nil {
-		fmt.Println("ERROR processing client request:", err.Error())
+		dmslibs.Info.Println(err.Error())
 	} else {
 		entryPointRoutine()
 	}

@@ -1,33 +1,47 @@
 package client
 
 import (
-	"fmt"
-	"go_server/libs"
+	"go_server/dms_libs"
 )
 
-// confirmMotionInstall comments
+func init() {
+	confirmMotionInstall()
+}
+
+// confirmMotionInstall confirms that the motion program is installed
 func confirmMotionInstall() {
 
 }
 
-// ProcessMotionState comments
+// ProcessMotionState processes state received from server
 func ProcessMotionState(motionState string) {
 
-	libconfig.PrintFunctionName()
+	dmslibs.PrintFuncName()
 
 	switch motionState {
 	case "enable":
-		{
-			fmt.Println("ENABLED")
-		}
+		StartMotionDaemon()
 	case "disable":
-		{
-			fmt.Println("DISABLED")
-		}
+		StopMotionDaemon()
 	default:
-		{
-			fmt.Println("!Unanticipated response")
-		}
+		dmslibs.Info.Println("Unanticipated server response: " + motionState)
 	}
 
+}
+
+// StartMotionDaemon comment
+func StartMotionDaemon() {
+
+	// TODO change string to token/type?
+	if MotionDaemon("start") {
+		dmslibs.Info.Println("Motion started")
+	}
+
+}
+
+// StopMotionDaemon comment
+func StopMotionDaemon() {
+	if MotionDaemon("stop") {
+		dmslibs.Info.Println("Motion stopped")
+	}
 }

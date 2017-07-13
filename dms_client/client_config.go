@@ -1,7 +1,7 @@
 package client
 
 import (
-	"go_server/libs"
+	"go_server/dms_libs"
 )
 
 // Logging enable (1) or disable (0) application logging
@@ -15,7 +15,7 @@ const LogFilename = "dms_client.log"
 // LogLocation is the location of logfile (full path)
 // By default, this is in the local folder (e.g., /etc/distributed_motion_surveillance/dms_client)
 // Ignored if LOGGING == 0
-var LogLocation = libconfig.GetPath()
+var LogLocation = dmslibs.GetPackageDir()
 
 // CheckInterval is the interval (in seconds) for checking the dms server
 const CheckInterval = 5

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"go_server/libs"
+	"go_server/dms_libs"
 	"time"
 )
 
@@ -13,7 +13,7 @@ func init() {
 
 // DetermineMotionState comment
 func DetermineMotionState() {
-	libconfig.PrintFunctionName()
+	dmslibs.PrintFuncName()
 }
 
 // updateMotionState comment

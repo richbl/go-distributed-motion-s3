@@ -2,15 +2,14 @@ package client
 
 import (
 	"fmt"
-	"go_server/libs"
+	"go_server/dms_libs"
 	"net"
-	"os"
 	"time"
 )
 
 // Initialize comment
 func Initialize(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
-	libconfig.PrintFunctionName()
+	dmslibs.PrintFuncName()
 	startClient(ServerIP, ServerPort, entryPointRoutine)
 }
 
@@ -18,16 +17,18 @@ func Initialize(ServerIP string, ServerPort int, entryPointRoutine func(string))
 func startClient(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
 
 	for {
-		libconfig.PrintFunctionName()
-		conn, error := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
+		dmslibs.PrintFuncName()
+		conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
 
-		if error != nil {
-			fmt.Println("Error listening:", error.Error())
-			os.Exit(1)
+		if err != nil {
+			// server not found, sleep and try again
+			dmslibs.Info.Println(err.Error())
+		} else {
+			// server connection established
+			defer conn.Close()
+			go processClientRequest(conn, entryPointRoutine)
 		}
 
-		defer conn.Close()
-		go processClientRequest(conn, entryPointRoutine)
 		time.Sleep(CheckInterval * time.Second)
 	}
 
@@ -36,13 +37,13 @@ func startClient(ServerIP string, ServerPort int, entryPointRoutine func(string)
 // processClientRequest comment
 func processClientRequest(conn net.Conn, entryPointRoutine func(string)) {
 
-	libconfig.PrintFunctionName()
+	dmslibs.PrintFuncName()
 
 	buf := make([]byte, 256)
 	n, err := conn.Read(buf)
 
 	if err != nil {
-		fmt.Println("ERROR processing client request:", err.Error())
+		dmslibs.Info.Println(err.Error())
 	} else {
 		entryPointRoutine(string(buf[:n]))
 	}
