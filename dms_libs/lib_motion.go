@@ -1,21 +1,31 @@
 package dmslibs
 
 import (
-	"fmt"
-	"os/exec"
+	"os"
+	"strconv"
 )
 
 // ConfirmMotionInstall confirm that motion is installed
 func ConfirmMotionInstall() bool {
-	exec.Command("/bin/bash", "-q", "type motion > /dev/null 2>&1")
-	// TODO exec.Command success/fail?
-	return true
+	res, err := RunCommand("command -v motion")
+
+	if err != nil {
+		Info.Println("command failed")
+	}
+
+	return (len(string(res)) > 0)
 }
 
-// RunningMotion determines whether motion is running, returning PID
+// RunningMotion determines whether motion is running, returning PID (0 if no process)
 func RunningMotion() int {
-	// TODO
-	return 0
+	res, err := RunCommand("pgrep -x code | grep -m1 ''")
+
+	if err != nil {
+		return 0
+	}
+
+	i, _ := strconv.Atoi(string(res[:len(res)-1]))
+	return i
 }
 
 // MotionDaemon enable/disables the motion daemon
@@ -27,20 +37,24 @@ func MotionDaemon(command string) bool {
 			if RunningMotion() > 0 {
 				return false
 			}
-			// TODO we need first argument? (MOTION is absolute path)
-			exec.Command("/bin/bash", "-q", SysCommands["MOTION"]+" > /dev/null 2>&1")
+			RunCommand("motion")
 		}
 	case "stop":
 		{
 			motionPID := RunningMotion()
+
 			if !(RunningMotion() > 0) {
 				return false
-			} else {
-				// TODO
-				fmt.Println(motionPID)
-				// Process.kill('KILL', motion_pid)
 			}
 
+			// find motion process and kill it
+			proc, err := os.FindProcess(motionPID)
+
+			if err != nil {
+				Info.Println("command failed")
+			} else {
+				proc.Kill()
+			}
 		}
 	}
 	return true

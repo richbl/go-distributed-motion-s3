@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
 )
@@ -39,4 +40,9 @@ func IsFile(filename string) bool {
 		return false
 	}
 	return true
+}
+
+// RunCommand is a simple wrapper for the exec.Command() call
+func RunCommand(cmd string) (res []byte, err error) {
+	return exec.Command("bash", "-c", cmd).Output()
 }
