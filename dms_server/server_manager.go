@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var motionState = "disable"
+var appState = "disable"
 var checkIntervalTime = time.Now()
 
 func init() {
@@ -21,13 +21,13 @@ func updateMotionState() {
 
 }
 
-// enableMotionDaemon comment
-func enableMotionDaemon() {
+// enableAppDaemon comment
+func enableAppDaemon() {
 
 }
 
-// disableMotionDaemon comment
-func disableMotionDaemon() {
+// disableAppDaemon comment
+func disableAppDaemon() {
 
 }
 

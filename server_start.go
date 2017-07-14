@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"go_server/dms_libs"
+	"go_server/dms_server"
 )
 
 func main() {
-	fmt.Println(dmslibs.RunningMotion())
-	// dmslibs.CreateLogger(server.Logging, server.LogLocation, server.LogFilename)
+	dmslibs.CreateLogger(server.Logging, server.LogLocation, server.LogFilename)
+
+	fmt.Println(dmslibs.GetPID("chrome"))
+
 	// server.Initialize(server.ServerPort, server.DetermineMotionState)
 }

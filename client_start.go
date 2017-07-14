@@ -7,5 +7,5 @@ import (
 
 func main() {
 	dmslibs.CreateLogger(client.Logging, client.LogLocation, client.LogFilename)
-	client.Initialize(client.ServerIP, client.ServerPort, client.ProcessMotionState)
+	client.Initialize(client.ServerIP, client.ServerPort, client.ProcessAppState)
 }

@@ -4,44 +4,32 @@ import (
 	"go_server/dms_libs"
 )
 
-func init() {
-	confirmMotionInstall()
-}
-
-// confirmMotionInstall confirms that the motion program is installed
-func confirmMotionInstall() {
-
-}
-
-// ProcessMotionState processes state received from server
-func ProcessMotionState(motionState string) {
+// ProcessAppState processes the application state received from server
+func ProcessAppState(appState string) {
 
 	dmslibs.PrintFuncName()
 
-	switch motionState {
+	switch appState {
 	case "enable":
-		StartMotionDaemon()
+		StartAppDaemon()
 	case "disable":
-		StopMotionDaemon()
+		StopAppDaemon()
 	default:
-		dmslibs.Info.Println("Unanticipated server response: " + motionState)
+		dmslibs.Info.Println("Unanticipated server response: " + appState)
 	}
 
 }
 
-// StartMotionDaemon comment
-func StartMotionDaemon() {
-
-	// TODO change string to token/type?
-	if MotionDaemon("start") {
-		dmslibs.Info.Println("Motion started")
+// StartAppDaemon comment
+func StartAppDaemon() {
+	if dmslibs.AppDaemon("start", dmslibs.SysCommands["SURVEILLANCE_CMD"]) {
+		dmslibs.Info.Println(dmslibs.SysCommands["SURVEILLANCE_CMD"] + " started")
 	}
-
 }
 
-// StopMotionDaemon comment
-func StopMotionDaemon() {
-	if MotionDaemon("stop") {
-		dmslibs.Info.Println("Motion stopped")
+// StopAppDaemon comment
+func StopAppDaemon() {
+	if dmslibs.AppDaemon("stop", dmslibs.SysCommands["SURVEILLANCE_CMD"]) {
+		dmslibs.Info.Println(dmslibs.SysCommands["SURVEILLANCE_CMD"] + " stopped")
 	}
 }

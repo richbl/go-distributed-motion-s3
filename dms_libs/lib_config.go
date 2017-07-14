@@ -9,5 +9,6 @@ var SysCommands = map[string]string{
 	"GREP":    "/bin/grep",
 	"PGREP":   "/usr/bin/pgrep",
 	"PING":    "/bin/ping",
-	"MOTION":  "/usr/bin/motion",
+	"SURVEILLANCE_APPLICATION": "/usr/bin/motion",
+	"SURVEILLANCE_CMD":         "motion",
 }
