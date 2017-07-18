@@ -4,54 +4,47 @@ import (
 	"fmt"
 	"go_server/dms_libs"
 	"net"
+	"strconv"
 )
 
-// Initialize comment
-func Initialize(ServerPort int, entryPointRoutine func()) {
-	startServer(ServerPort, entryPointRoutine)
-}
-
-// startServer comment
-func startServer(ServerPort int, entryPointRoutine func()) {
+// StartServer starts the TCP server
+func StartServer(ServerPort int) {
 	listener, error := net.Listen("tcp", ":"+fmt.Sprint(ServerPort))
 
 	if error != nil {
-		dmslibs.Error.Fatalln(error.Error())
+		dmslibs.LogFatal(error.Error())
 	}
 
 	defer listener.Close()
-	serverLoop(listener, entryPointRoutine)
+	serverLoop(listener)
 }
 
-// serverLoop comment
-func serverLoop(listener net.Listener, entryPointRoutine func()) {
+// serverLoop starts a loop to listen for clients, spawning a separate processing thread on client connect
+func serverLoop(listener net.Listener) {
 	for {
 		conn, err := listener.Accept()
 
 		if err != nil {
-			dmslibs.Error.Fatalln(err.Error())
+			dmslibs.LogFatal(err.Error())
 		}
 
-		fmt.Println("--> OPEN connection from: ", conn.RemoteAddr().String())
-		go processClientRequest(conn, entryPointRoutine)
+		fmt.Println("OPEN connection from:", conn.RemoteAddr().String())
+		go processClientRequest(conn)
 	}
 }
 
-// processClientRequest comment
-func processClientRequest(conn net.Conn, entryPointRoutine func()) {
-
-	dmslibs.PrintFuncName()
+// processClientRequest passes motion detector application state to client listeners based on logic found in entryPointRoutine()
+func processClientRequest(conn net.Conn) {
+	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	// TODO
-
-	_, err := conn.Write([]byte("disable"))
+	state := DetermineMotionDetectorState()
+	_, err := conn.Write([]byte(strconv.Itoa(int(state))))
 
 	if err != nil {
-		dmslibs.Info.Println(err.Error())
-	} else {
-		entryPointRoutine()
+		dmslibs.LogInfo(err.Error())
 	}
 
-	fmt.Println("<-- CLOSE connection from: ", conn.RemoteAddr().String())
+	fmt.Println("CLOSE connection from:", conn.RemoteAddr().String())
 	conn.Close()
 }

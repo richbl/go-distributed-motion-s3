@@ -10,17 +10,19 @@ func PingHosts(ipBase string, ipRange []int) bool {
 
 	var wg sync.WaitGroup
 	cmdSuccess := true
-	cmd := SysCommands["PING"] + " -q -W 1 -c 1 " + ipBase
+
+	cmd := SysCommand["PING"] + " -q -W 1 -c 1 " + ipBase
+
 	for i := ipRange[0]; i <= ipRange[1]; i++ {
 		wg.Add(1)
 
-		// permit threaded command calls to finish asynchronously
+		// allow threaded command calls to finish asynchronously
 		go func() {
 			defer wg.Done()
 			_, err := RunCommand(cmd + strconv.Itoa(i))
 
 			if err != nil {
-				Info.Println(SysCommands["PING"], "command failed")
+				Info.Println(SysCommand["PING"], "command failed")
 				cmdSuccess = false
 			}
 
@@ -45,10 +47,10 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	res, err := RunCommand(SysCommands["ARP"] + " -n | " + SysCommands["GREP"] + " -E '" + macListRegex + "'")
+	res, err := RunCommand(SysCommand["ARP"] + " -n | " + SysCommand["GREP"] + " -E '" + macListRegex + "'")
 
 	if err != nil {
-		Info.Println(SysCommands["ARP"], "command failed")
+		Info.Println(SysCommand["ARP"], "command failed")
 	}
 
 	return (len(string(res)) > 0)
@@ -67,10 +69,10 @@ func FindMacs2(macsToFind []string, ipBase string, ipRange []int) bool {
 
 	}
 
-	res, err := RunCommand("sudo " + SysCommands["ARPSCAN"] + " -q " + ipBase + strconv.Itoa(ipRange[0]) + "-" + ipBase + strconv.Itoa(ipRange[1]) + " | " + SysCommands["GREP"] + " -E '" + macListRegex + "'")
+	res, err := RunCommand("sudo " + SysCommand["ARPSCAN"] + " -q " + ipBase + strconv.Itoa(ipRange[0]) + "-" + ipBase + strconv.Itoa(ipRange[1]) + " | " + SysCommand["GREP"] + " -E '" + macListRegex + "'")
 
 	if err != nil {
-		Info.Println(SysCommands["ARPSCAN"], "command failed")
+		Info.Println(SysCommand["ARPSCAN"], "command failed")
 	}
 
 	return (len(string(res)) > 0)

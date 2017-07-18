@@ -1,7 +1,6 @@
 package dmslibs
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -9,6 +8,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // GetFunctionName uses reflection (runtime) to return current function name
@@ -16,31 +16,29 @@ func GetFunctionName() string {
 	pc := make([]uintptr, 10)
 
 	// get program counter index (call stack)
-	// set to 3, as this function is wrapped by PrintFuncName()
-	runtime.Callers(3, pc)
+	runtime.Callers(2, pc)
 	fn := runtime.FuncForPC(pc[0])
 	return fn.Name()
-}
-
-// PrintFuncName wraps GetFunctionName()
-func PrintFuncName() {
-	fmt.Println("BEGIN: " + GetFunctionName())
 }
 
 // GetPackageDir returns the absolute path of the calling package
 func GetPackageDir() string {
 	_, filename, _, ok := runtime.Caller(1)
+
 	if !ok {
 		log.Fatal()
 	}
+
 	return path.Dir(filename)
 }
 
 // IsFile returns true/false on existence of file passed in
 func IsFile(filename string) bool {
+
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
 		return false
 	}
+
 	return true
 }
 
@@ -49,8 +47,16 @@ func RunCommand(cmd string) (res []byte, err error) {
 	return exec.Command("bash", "-c", cmd).Output()
 }
 
+// IsRunning checks if application is currently running (has PID > 0)
+func IsRunning(application string) bool {
+	return (GetPID(application) > 0)
+}
+
 // StripRet strips the rightmost byte from the byte array
 func StripRet(value []byte) []byte {
+	if len(value) <= 1 {
+		return value
+	}
 	return value[:len(value)-1]
 }
 
@@ -85,6 +91,7 @@ func GetPIDList(application string) (int, []int) {
 }
 
 // GetPID returns the application PID (0 if no process)
+//
 func GetPID(application string) int {
 	pidCount, pidList := GetPIDList(application)
 
@@ -93,22 +100,17 @@ func GetPID(application string) int {
 		return pidList[0]
 	default: // >1 processes running
 		{
-			Error.Fatalln("multiple instances of " + application + " process running")
+			Fatal.Fatalln("multiple instances of " + application + " process running")
 			return 0
 		}
 	}
 }
 
-// IsRunning checks if application is currently running (has PID > 0)
-func IsRunning(application string) bool {
-	return (GetPID(application) > 0)
-}
-
-// AppDaemon enable/disables the application daemon
-func AppDaemon(command string, application string) bool {
+// StartStopApplication enable/disables the application passed in
+func StartStopApplication(command MotionDetectorState, application string) bool {
 
 	switch command {
-	case "start":
+	case Start:
 		{
 			if IsRunning(application) {
 				return false // already running
@@ -116,7 +118,7 @@ func AppDaemon(command string, application string) bool {
 
 			RunCommand(application)
 		}
-	case "stop":
+	case Stop:
 		{
 			if !IsRunning(application) {
 				return false // already stopped
@@ -135,4 +137,15 @@ func AppDaemon(command string, application string) bool {
 		}
 	}
 	return true
+}
+
+// GetCurTime returns the current time as int (in 24-hour format, e.g., 2313)
+func GetCurTime() int {
+	curTime, _ := strconv.Atoi(To24H(time.Now()))
+	return curTime
+}
+
+// To24H converts 12-hour time to 24-hour time, returning a string (e.g., "2313")
+func To24H(value time.Time) string {
+	return value.Format("1504")
 }

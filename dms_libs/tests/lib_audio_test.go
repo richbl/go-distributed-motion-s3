@@ -20,16 +20,16 @@ func TestPlayAudio(t *testing.T) {
 
 func TestAudioConfig(t *testing.T) {
 
-	if dmslibs.IsFile(server.AudioMotionStart) {
-		dmslibs.PlayAudio(server.AudioMotionStart)
+	if dmslibs.IsFile(server.AudioMotionDetectorStart) {
+		dmslibs.PlayAudio(server.AudioMotionDetectorStart)
 	} else {
-		t.Error("Audio file", server.AudioMotionStart, "not found")
+		t.Error("Audio file", server.AudioMotionDetectorStart, "not found")
 	}
 
-	if dmslibs.IsFile(server.AudioMotionStop) {
-		dmslibs.PlayAudio(server.AudioMotionStop)
+	if dmslibs.IsFile(server.AudioMotionDetectorStop) {
+		dmslibs.PlayAudio(server.AudioMotionDetectorStop)
 	} else {
-		t.Error("Audio file", server.AudioMotionStop, "not found")
+		t.Error("Audio file", server.AudioMotionDetectorStop, "not found")
 	}
 
 }

@@ -5,43 +5,85 @@ import (
 	"time"
 )
 
-var appState = "disable"
-var checkIntervalTime = time.Now()
+var checkIntervalTimestamp = dmslibs.GetCurTime()
 
-func init() {
+// DetermineMotionDetectorState determines whether to start the motion detector application based device presence/time logic
+func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
+
+	if !checkIntervalExpired() {
+		return dmslibs.MotionDetector.State // no change to app state, so return current
+	}
+
+	if timeInRange() || deviceOnLAN() {
+		return setMotionDetectorState(dmslibs.Start)
+	}
+
+	return setMotionDetectorState(dmslibs.Stop)
 }
 
-// DetermineMotionState comment
-func DetermineMotionState() {
-	dmslibs.PrintFuncName()
+// checkIntervalExpired determines if last check interval (in seconds) has expired
+func checkIntervalExpired() bool {
+
+	curTime := dmslibs.GetCurTime()
+
+	if (curTime - checkIntervalTimestamp) >= CheckInterval {
+		checkIntervalTimestamp = curTime
+		return true
+	}
+
+	return false
 }
 
-// updateMotionState comment
-func updateMotionState() {
+// setMotionDetectorState sets the state read by device clients to starts/stop the motion detector applications
+func setMotionDetectorState(value dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
 
+	if dmslibs.MotionDetector.State == value {
+		return dmslibs.MotionDetector.State
+	}
+
+	if PlayAudio == 1 {
+		switch value {
+		case dmslibs.Start:
+			dmslibs.PlayAudio(AudioMotionDetectorStart)
+		case dmslibs.Stop:
+			dmslibs.PlayAudio(AudioMotionDetectorStop)
+		}
+
+	}
+
+	dmslibs.MotionDetector.State = value
+	return dmslibs.MotionDetector.State
 }
 
-// enableAppDaemon comment
-func enableAppDaemon() {
+// timeInRange checks to see if the current time is within the bounds of the 'always on' range (if that ScanForTime option is enabled)
+func timeInRange() bool {
 
+	if ScanForTime == 0 {
+		return false
+	}
+
+	return calcDataRange()
 }
 
-// disableAppDaemon comment
-func disableAppDaemon() {
+// calcDataRange checks to see if the configured time range crosses into the next day, and determines time range accordingly
+func calcDataRange() bool {
 
+	const Start = 0
+	const End = 1
+
+	curTime := dmslibs.To24H(time.Now())
+
+	if AlwaysOnRange[Start] > AlwaysOnRange[End] {
+		return curTime >= AlwaysOnRange[Start] || curTime < AlwaysOnRange[End]
+	}
+
+	return curTime >= AlwaysOnRange[Start] && curTime < AlwaysOnRange[End]
 }
 
-// calcDateRange comment
-func calcDateRange() {
+// deviceOnLAN checks to see if device MACs exist on LAN
+func deviceOnLAN() bool {
 
-}
-
-// timeInRange comment
-func timeInRange() {
-
-}
-
-// deviceOnLAN comment
-func deviceOnLAN() {
-
+	// freshen local arp cache to guarantee good results when searching for devices by MAC address
+	dmslibs.PingHosts(IPBase, IPRange)
+	return dmslibs.FindMacs(MacsToFind)
 }

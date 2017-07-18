@@ -26,7 +26,7 @@ func TestFindMacs(t *testing.T) {
 	var localMAC []string
 
 	// determine local MAC address for testing
-	cmd := dmslibs.SysCommands["CAT"] + " /sys/class/net/" + curInterface + "/address"
+	cmd := dmslibs.SysCommand["CAT"] + " /sys/class/net/" + curInterface + "/address"
 	res, err := exec.Command("bash", "-c", cmd).Output()
 
 	if err != nil {

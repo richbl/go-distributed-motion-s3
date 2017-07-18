@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	dmslibs.CreateLogger(client.Logging, client.LogLocation, client.LogFilename)
-	client.Initialize(client.ServerIP, client.ServerPort, client.ProcessAppState)
+	dmslibs.CreateLogger(client.LogLevel, client.LogDevice, client.LogLocation, client.LogFilename)
+	client.StartClient(client.ServerIP, client.ServerPort)
 }

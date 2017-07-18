@@ -4,29 +4,22 @@ import (
 	"fmt"
 	"go_server/dms_libs"
 	"net"
+	"strconv"
 	"time"
 )
 
-// Initialize comment
-func Initialize(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
-	dmslibs.PrintFuncName()
-	startClient(ServerIP, ServerPort, entryPointRoutine)
-}
-
-// startClient comment
-func startClient(ServerIP string, ServerPort int, entryPointRoutine func(string)) {
+// StartClient periodically attempts to connect to the server (based on CheckInterval)
+func StartClient(ServerIP string, ServerPort int) {
 
 	for {
-		dmslibs.PrintFuncName()
+		dmslibs.LogDebug(dmslibs.GetFunctionName())
 		conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
 
-		if err != nil {
-			// server not found, sleep and try again
-			dmslibs.Info.Println(err.Error())
-		} else {
-			// server connection established
+		if err != nil { // server not found, sleep and try again
+			dmslibs.LogInfo(err.Error())
+		} else { // server connection established
 			defer conn.Close()
-			go processClientRequest(conn, entryPointRoutine)
+			go processClientRequest(conn)
 		}
 
 		time.Sleep(CheckInterval * time.Second)
@@ -34,18 +27,18 @@ func startClient(ServerIP string, ServerPort int, entryPointRoutine func(string)
 
 }
 
-// processClientRequest comment
-func processClientRequest(conn net.Conn, entryPointRoutine func(string)) {
-
-	dmslibs.PrintFuncName()
+// processClientRequest reads from the connection and processes motion detector state
+func processClientRequest(conn net.Conn) {
+	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	buf := make([]byte, 256)
 	n, err := conn.Read(buf)
 
 	if err != nil {
-		dmslibs.Info.Println(err.Error())
+		dmslibs.LogInfo(err.Error())
 	} else {
-		entryPointRoutine(string(buf[:n]))
+		val, _ := strconv.Atoi(string(buf[:n]))
+		ProcessMotionDetectorState(dmslibs.MotionDetectorState(val))
 	}
 
 	conn.Close()

@@ -4,32 +4,29 @@ import (
 	"go_server/dms_libs"
 )
 
-// ProcessAppState processes the application state received from server
-func ProcessAppState(appState string) {
+// ProcessMotionDetectorState processes the application state received from the server
+func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
+	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
-	dmslibs.PrintFuncName()
-
-	switch appState {
-	case "enable":
-		StartAppDaemon()
-	case "disable":
-		StopAppDaemon()
+	switch state {
+	case dmslibs.Start, dmslibs.Stop:
+		startStopMotionDetector(state)
 	default:
-		dmslibs.Info.Println("Unanticipated server response: " + appState)
+		dmslibs.LogInfo("Unanticipated response from server: politely ignored")
 	}
 
 }
 
-// StartAppDaemon comment
-func StartAppDaemon() {
-	if dmslibs.AppDaemon("start", dmslibs.SysCommands["SURVEILLANCE_CMD"]) {
-		dmslibs.Info.Println(dmslibs.SysCommands["SURVEILLANCE_CMD"] + " started")
-	}
-}
+// startStopMotionDetector starts/stops the motion detector application
+func startStopMotionDetector(value dmslibs.MotionDetectorState) {
+	cmdStr := " started"
 
-// StopAppDaemon comment
-func StopAppDaemon() {
-	if dmslibs.AppDaemon("stop", dmslibs.SysCommands["SURVEILLANCE_CMD"]) {
-		dmslibs.Info.Println(dmslibs.SysCommands["SURVEILLANCE_CMD"] + " stopped")
+	if value == dmslibs.Stop {
+		cmdStr = " stopped"
 	}
+
+	if dmslibs.StartStopApplication(value, dmslibs.MotionDetector.Command) {
+		dmslibs.LogInfo(dmslibs.MotionDetector.Command + cmdStr)
+	}
+
 }
