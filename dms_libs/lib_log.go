@@ -27,7 +27,6 @@ func init() {
 
 // CreateLogger creates an application log file (1) or redirects to STDOUT (2) based on logDevice
 func CreateLogger(logLevel int, logDevice int, logLocation string, logFilename string) {
-
 	var (
 		f   *os.File
 		err error

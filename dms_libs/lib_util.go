@@ -54,9 +54,11 @@ func IsRunning(application string) bool {
 
 // StripRet strips the rightmost byte from the byte array
 func StripRet(value []byte) []byte {
+
 	if len(value) <= 1 {
 		return value
 	}
+
 	return value[:len(value)-1]
 }
 
@@ -104,6 +106,7 @@ func GetPID(application string) int {
 			return 0
 		}
 	}
+
 }
 
 // StartStopApplication enable/disables the application passed in

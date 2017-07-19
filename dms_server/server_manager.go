@@ -25,7 +25,6 @@ func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
 // checkIntervalExpired determines if last check interval (in seconds) has expired
 func checkIntervalExpired() bool {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
-
 	curTime := dmslibs.GetCurTime()
 
 	if (curTime - checkIntervalTimestamp) >= CheckInterval {
@@ -72,10 +71,8 @@ func timeInRange() bool {
 // calcDataRange checks to see if the configured time range crosses into the next day, and determines time range accordingly
 func calcDataRange() bool {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
-
 	const Start = 0
 	const End = 1
-
 	curTime := dmslibs.To24H(time.Now())
 
 	if AlwaysOnRange[Start] > AlwaysOnRange[End] {
@@ -88,7 +85,6 @@ func calcDataRange() bool {
 // deviceOnLAN checks to see if device MACs exist on LAN (first freshens local arp cache to guarantee good results)
 func deviceOnLAN() bool {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
-
 	dmslibs.PingHosts(IPBase, IPRange)
 	return dmslibs.FindMacs(MacsToFind)
 }

@@ -21,6 +21,7 @@ func StartServer(ServerPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on client connect
 func serverLoop(listener net.Listener) {
+
 	for {
 		conn, err := listener.Accept()
 
@@ -31,6 +32,7 @@ func serverLoop(listener net.Listener) {
 		dmslibs.LogInfo("open connection from:" + conn.RemoteAddr().String())
 		go processClientRequest(conn)
 	}
+
 }
 
 // processClientRequest passes motion detector application state to client listeners based on logic found in entryPointRoutine()

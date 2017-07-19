@@ -19,6 +19,7 @@ func TestIsFile(t *testing.T) {
 	if !dmslibs.IsFile(testFile) {
 		t.Error(testFile + " file not found, but should have been")
 	}
+
 }
 
 func TestRunCommand(t *testing.T) {
@@ -33,6 +34,7 @@ func TestRunCommand(t *testing.T) {
 	if len(res) == 0 {
 		t.Error("output from command " + testCommand + " failed")
 	}
+
 }
 
 func TestIsRunning(t *testing.T) {
@@ -42,6 +44,7 @@ func TestIsRunning(t *testing.T) {
 	if !dmslibs.IsRunning(testApplication) {
 		t.Error(testApplication + " command not running")
 	}
+
 }
 
 func TestStripRet(t *testing.T) {
@@ -52,6 +55,7 @@ func TestStripRet(t *testing.T) {
 	if len(res) != len(testArray)-1 {
 		t.Error("command failed")
 	}
+
 }
 
 func TestGetPIDCount(t *testing.T) {
@@ -61,6 +65,7 @@ func TestGetPIDCount(t *testing.T) {
 	if dmslibs.GetPIDCount(testApplication) < 1 {
 		t.Error("command failed")
 	}
+
 }
 
 func TestGetPID(t *testing.T) {
@@ -70,4 +75,5 @@ func TestGetPID(t *testing.T) {
 	if dmslibs.GetPID(testApplication) == 0 {
 		t.Error("command failed")
 	}
+
 }

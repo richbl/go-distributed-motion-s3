@@ -7,7 +7,6 @@ import (
 )
 
 func TestPlayAudio(t *testing.T) {
-
 	testFile := "lib_audio_test.wav"
 
 	if dmslibs.IsFile(testFile) {

@@ -7,7 +7,6 @@ import (
 )
 
 func TestPingHosts(t *testing.T) {
-
 	// ACTION: set active IP net address details
 	testIPBase := "10.10.10."
 	testIPRange := []int{100, 150}
@@ -16,7 +15,6 @@ func TestPingHosts(t *testing.T) {
 }
 
 func TestFindMacs(t *testing.T) {
-
 	// ACTION: set active network interface (e.g., eth0)
 	curInterface := "wlp2s0"
 

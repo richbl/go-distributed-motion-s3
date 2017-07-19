@@ -18,17 +18,21 @@ func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
 }
 
 // startStopMotionDetector starts/stops the motion detector application
-func startStopMotionDetector(value dmslibs.MotionDetectorState) {
+func startStopMotionDetector(state dmslibs.MotionDetectorState) {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
+	var cmdStr string
 
-	cmdStr := " started"
-
-	if value == dmslibs.Stop {
-		cmdStr = " stopped"
+	switch state {
+	case dmslibs.Start:
+		cmdStr = "started"
+	case dmslibs.Stop:
+		cmdStr = "stopped"
+	default:
+		dmslibs.LogInfo("Unanticipated state: politely ignored")
 	}
 
-	if dmslibs.StartStopApplication(value, dmslibs.MotionDetector.Command) {
-		dmslibs.LogInfo(dmslibs.MotionDetector.Command + cmdStr)
+	if dmslibs.StartStopApplication(state, dmslibs.MotionDetector.Command) {
+		dmslibs.LogInfo(dmslibs.MotionDetector.Command + " " + cmdStr)
 	}
 
 }
