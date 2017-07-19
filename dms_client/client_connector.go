@@ -12,12 +12,12 @@ import (
 func StartClient(ServerIP string, ServerPort int) {
 
 	for {
-		dmslibs.LogDebug(dmslibs.GetFunctionName())
 		conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
 
-		if err != nil { // server not found, sleep and try again
+		if err != nil {
 			dmslibs.LogInfo(err.Error())
-		} else { // server connection established
+		} else {
+			// server connection established
 			defer conn.Close()
 			go processClientRequest(conn)
 		}
@@ -31,14 +31,14 @@ func StartClient(ServerIP string, ServerPort int) {
 func processClientRequest(conn net.Conn) {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
-	buf := make([]byte, 256)
+	buf := make([]byte, 8)
 	n, err := conn.Read(buf)
 
 	if err != nil {
 		dmslibs.LogInfo(err.Error())
 	} else {
-		val, _ := strconv.Atoi(string(buf[:n]))
-		ProcessMotionDetectorState(dmslibs.MotionDetectorState(val))
+		state, _ := strconv.Atoi(string(buf[:n]))
+		ProcessMotionDetectorState(dmslibs.MotionDetectorState(state))
 	}
 
 	conn.Close()

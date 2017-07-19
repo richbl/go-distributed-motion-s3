@@ -9,13 +9,10 @@ import (
 func TestPingHosts(t *testing.T) {
 
 	// ACTION: set active IP net address details
-	testIPBase := "192.168.1."
+	testIPBase := "10.10.10."
 	testIPRange := []int{100, 150}
 
-	if !dmslibs.PingHosts(testIPBase, testIPRange) {
-		t.Error("Ping command failure: assess network configuration")
-	}
-
+	dmslibs.PingHosts(testIPBase, testIPRange)
 }
 
 func TestFindMacs(t *testing.T) {

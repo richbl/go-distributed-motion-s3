@@ -130,22 +130,26 @@ func StartStopApplication(command MotionDetectorState, application string) bool 
 			proc, err := os.FindProcess(appPID)
 
 			if err != nil {
-				Info.Println("command failed")
+				LogInfo("unable to find PID")
 			} else {
 				proc.Kill()
 			}
+		}
+	default:
+		{
+			LogInfo("command failed")
 		}
 	}
 	return true
 }
 
-// GetCurTime returns the current time as int (in 24-hour format, e.g., 2313)
+// GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
 func GetCurTime() int {
 	curTime, _ := strconv.Atoi(To24H(time.Now()))
 	return curTime
 }
 
-// To24H converts 12-hour time to 24-hour time, returning a string (e.g., "2313")
+// To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
 func To24H(value time.Time) string {
-	return value.Format("1504")
+	return value.Format("150405")
 }

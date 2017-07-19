@@ -19,6 +19,8 @@ func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
 
 // startStopMotionDetector starts/stops the motion detector application
 func startStopMotionDetector(value dmslibs.MotionDetectorState) {
+	dmslibs.LogDebug(dmslibs.GetFunctionName())
+
 	cmdStr := " started"
 
 	if value == dmslibs.Stop {

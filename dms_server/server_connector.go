@@ -28,7 +28,7 @@ func serverLoop(listener net.Listener) {
 			dmslibs.LogFatal(err.Error())
 		}
 
-		fmt.Println("OPEN connection from:", conn.RemoteAddr().String())
+		dmslibs.LogInfo("open connection from:" + conn.RemoteAddr().String())
 		go processClientRequest(conn)
 	}
 }
@@ -37,7 +37,6 @@ func serverLoop(listener net.Listener) {
 func processClientRequest(conn net.Conn) {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
-	// TODO
 	state := DetermineMotionDetectorState()
 	_, err := conn.Write([]byte(strconv.Itoa(int(state))))
 
@@ -45,6 +44,6 @@ func processClientRequest(conn net.Conn) {
 		dmslibs.LogInfo(err.Error())
 	}
 
-	fmt.Println("CLOSE connection from:", conn.RemoteAddr().String())
+	dmslibs.LogInfo("close connection from:" + conn.RemoteAddr().String())
 	conn.Close()
 }

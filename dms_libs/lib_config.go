@@ -20,6 +20,12 @@ var MotionDetector = structMotionDetector{
 	},
 }
 
+// possible states for the motion detector application
+const (
+	Start MotionDetectorState = iota
+	Stop
+)
+
 type structMotionDetector struct {
 	Location string
 	Command  string
@@ -32,9 +38,3 @@ type structMotionDetectorState struct {
 
 // MotionDetectorState is the type used to define the state (Start or Stop) of the motion detector application
 type MotionDetectorState int
-
-// possible states for motion detector application
-const (
-	Start MotionDetectorState = iota
-	Stop
-)
