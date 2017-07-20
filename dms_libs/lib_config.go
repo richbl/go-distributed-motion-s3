@@ -36,5 +36,6 @@ type structMotionDetectorState struct {
 	State MotionDetectorState
 }
 
-// MotionDetectorState is the type used to define the state (Start or Stop) of the motion detector application
+// MotionDetectorState is the type used to define the state (Start or Stop) of the motion
+// detector application
 type MotionDetectorState int

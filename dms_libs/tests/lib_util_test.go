@@ -25,13 +25,9 @@ func TestIsFile(t *testing.T) {
 func TestRunCommand(t *testing.T) {
 	testCommand := "ls"
 
-	res, err := dmslibs.RunCommand(testCommand)
-
-	if err != nil {
+	if res, err := dmslibs.RunCommand(testCommand); err != nil {
 		t.Error("command " + testCommand + " failed")
-	}
-
-	if len(res) == 0 {
+	} else if len(res) == 0 {
 		t.Error("output from command " + testCommand + " failed")
 	}
 

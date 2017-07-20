@@ -12,7 +12,7 @@ func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
 	case dmslibs.Start, dmslibs.Stop:
 		startStopMotionDetector(state)
 	default:
-		dmslibs.LogInfo("Unanticipated response from server: politely ignored")
+		dmslibs.LogInfo("Unanticipated motion detector state: ignored")
 	}
 
 }
@@ -28,7 +28,7 @@ func startStopMotionDetector(state dmslibs.MotionDetectorState) {
 	case dmslibs.Stop:
 		cmdStr = "stopped"
 	default:
-		dmslibs.LogInfo("Unanticipated state: politely ignored")
+		dmslibs.LogInfo("Unanticipated motion detector state: ignored")
 	}
 
 	if dmslibs.StartStopApplication(state, dmslibs.MotionDetector.Command) {

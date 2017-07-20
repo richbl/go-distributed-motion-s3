@@ -33,7 +33,8 @@ const LogFilename = "dms_server.log"
 //
 var LogLocation = dmslibs.GetPackageDir()
 
-// PlayAudio enables (1) or disables (0) the play-back of audio on motion detector application start/stop
+// PlayAudio enables (1) or disables (0) the play-back of audio on motion detector application
+// start/stop
 //
 const PlayAudio = 1
 
@@ -41,14 +42,14 @@ const PlayAudio = 1
 //
 const ServerPort = 1965
 
-// AudioMotionDetectorStart is the audio file played when the motion detector application is activated
-// By default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
+// AudioMotionDetectorStart is the audio file played when the motion detector application is
+// activated... by default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
 // Ignored if PlayAudio == 0
 //
 var AudioMotionDetectorStart = dmslibs.GetPackageDir() + "/media/motion_start.wav"
 
-// AudioMotionDetectorStop is the audio file played when the motion detector application is deactivated
-// By default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
+// AudioMotionDetectorStop is the audio file played when the motion detector application is
+// deactivated... by default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
 // Ignored if PlayAudio == 0
 //
 var AudioMotionDetectorStop = dmslibs.GetPackageDir() + "/media/motion_stop.wav"

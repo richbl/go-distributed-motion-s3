@@ -7,12 +7,13 @@ import (
 
 var checkIntervalTimestamp = dmslibs.GetCurTime()
 
-// DetermineMotionDetectorState determines whether to start the motion detector application based device presence/time logic
+// DetermineMotionDetectorState determines whether to start the motion detector application based
+// device presence/time logic
 func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	if !checkIntervalExpired() {
-		return dmslibs.MotionDetector.State // no change to app state, so return current
+		return dmslibs.MotionDetector.State
 	}
 
 	if timeInRange() || !deviceOnLAN() {
@@ -36,15 +37,18 @@ func checkIntervalExpired() bool {
 }
 
 // setMotionDetectorState sets the state read by device clients to starts/stop the motion detector applications
-func setMotionDetectorState(value dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
+func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
-	if dmslibs.MotionDetector.State == value {
-		return dmslibs.MotionDetector.State
+	if dmslibs.MotionDetector.State == state {
+		return state
 	}
 
+	dmslibs.MotionDetector.State = state
+
 	if PlayAudio == 1 {
-		switch value {
+
+		switch state {
 		case dmslibs.Start:
 			dmslibs.PlayAudio(AudioMotionDetectorStart)
 		case dmslibs.Stop:
@@ -53,8 +57,7 @@ func setMotionDetectorState(value dmslibs.MotionDetectorState) dmslibs.MotionDet
 
 	}
 
-	dmslibs.MotionDetector.State = value
-	return dmslibs.MotionDetector.State
+	return state
 }
 
 // timeInRange checks to see if the current time is within the bounds of the 'always on' range (if that ScanForTime option is enabled)

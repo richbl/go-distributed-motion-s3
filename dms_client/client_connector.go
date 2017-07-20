@@ -12,9 +12,7 @@ import (
 func StartClient(ServerIP string, ServerPort int) {
 
 	for {
-		conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort))
-
-		if err != nil {
+		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
 			dmslibs.LogInfo(err.Error())
 		} else {
 			// server connection established
@@ -30,15 +28,14 @@ func StartClient(ServerIP string, ServerPort int) {
 // processClientRequest reads from the connection and processes motion detector state
 func processClientRequest(conn net.Conn) {
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
-
 	buf := make([]byte, 8)
-	n, err := conn.Read(buf)
 
-	if err != nil {
+	if n, err := conn.Read(buf); err != nil {
 		dmslibs.LogInfo(err.Error())
 	} else {
 		state, _ := strconv.Atoi(string(buf[:n]))
-		ProcessMotionDetectorState(dmslibs.MotionDetectorState(state))
+		dmslibs.MotionDetector.State = dmslibs.MotionDetectorState(state)
+		ProcessMotionDetectorState(dmslibs.MotionDetector.State)
 	}
 
 	conn.Close()

@@ -43,6 +43,8 @@ func IsFile(filename string) bool {
 }
 
 // RunCommand is a simple wrapper for the exec.Command() call
+// Note that this call is blocking, and will return only after the command completes
+// (non-threaded)
 func RunCommand(cmd string) (res []byte, err error) {
 	return exec.Command("bash", "-c", cmd).Output()
 }
@@ -64,7 +66,7 @@ func StripRet(value []byte) []byte {
 
 // GetPIDCount returns the count of application PIDs
 func GetPIDCount(application string) int {
-	res, _ := RunCommand("pgrep -x -c " + application)
+	res, _ := RunCommand(SysCommand["PGREP"] + " -x -c " + application)
 	count, _ := strconv.Atoi(string(StripRet(res)))
 	return count
 }
@@ -78,7 +80,7 @@ func GetPIDList(application string) (int, []int) {
 		return 0, []int{0}
 	default: // one or more processes running
 		{
-			res, _ := RunCommand("pgrep -x " + application)
+			res, _ := RunCommand(SysCommand["PGREP"] + " -x " + application)
 			strPIDs := strings.Split(string(StripRet(res)), "\n")
 
 			PIDs := []int{}
@@ -110,9 +112,9 @@ func GetPID(application string) int {
 }
 
 // StartStopApplication enable/disables the application passed in
-func StartStopApplication(command MotionDetectorState, application string) bool {
+func StartStopApplication(state MotionDetectorState, application string) bool {
 
-	switch command {
+	switch state {
 	case Start:
 		{
 			if IsRunning(application) {
@@ -120,6 +122,7 @@ func StartStopApplication(command MotionDetectorState, application string) bool 
 			}
 
 			RunCommand(application)
+			return true
 		}
 	case Stop:
 		{
@@ -127,23 +130,25 @@ func StartStopApplication(command MotionDetectorState, application string) bool 
 				return false // already stopped
 			}
 
-			appPID := GetPID(application)
-
 			// find application process and kill it
+			appPID := GetPID(application)
 			proc, err := os.FindProcess(appPID)
 
 			if err != nil {
 				LogInfo("unable to find PID")
-			} else {
-				proc.Kill()
+				return false
 			}
+
+			proc.Kill()
+			return true
 		}
 	default:
 		{
-			LogInfo("command failed")
+			LogInfo("Unanticipated motion detector state: ignored")
+			return false
 		}
 	}
-	return true
+
 }
 
 // GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
