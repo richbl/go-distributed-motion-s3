@@ -11,7 +11,7 @@ import (
 //		2 - INFO, report informational events
 //    4 - DEBUG, report debugging events
 //
-const LogLevel = 4
+const LogLevel = 1
 
 // LogDevice determines to what device logging should be set using the following table:
 //
@@ -34,13 +34,10 @@ const LogFilename = "dms_client.log"
 var LogLocation = dmslibs.GetPackageDir()
 
 // CheckInterval is the interval (in seconds) for checking the dms server
-//
 const CheckInterval = 5
 
 // ServerIP is the address on which the dms server is running
-//
 const ServerIP = "localhost"
 
 // ServerPort is the port on which the dms server is running
-//
 const ServerPort = 1965

@@ -27,6 +27,7 @@ func StartClient(ServerIP string, ServerPort int) {
 
 // processClientRequest reads from the connection and processes motion detector state
 func processClientRequest(conn net.Conn) {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	buf := make([]byte, 8)
 
@@ -39,4 +40,5 @@ func processClientRequest(conn net.Conn) {
 	}
 
 	conn.Close()
+
 }

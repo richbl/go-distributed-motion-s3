@@ -4,7 +4,7 @@ package dmslibs
 func PlayAudio(audioFile string) {
 
 	if _, err := RunCommand(SysCommand["APLAY"] + " -q " + audioFile); err != nil {
-		Info.Println(err.Error())
+		LogInfo(err.Error())
 	}
 
 }

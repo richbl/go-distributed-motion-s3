@@ -6,6 +6,7 @@ import (
 
 // ProcessMotionDetectorState processes the application state received from the server
 func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	switch state {
@@ -19,6 +20,7 @@ func ProcessMotionDetectorState(state dmslibs.MotionDetectorState) {
 
 // startStopMotionDetector starts/stops the motion detector application
 func startStopMotionDetector(state dmslibs.MotionDetectorState) {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	var cmdStr string
 

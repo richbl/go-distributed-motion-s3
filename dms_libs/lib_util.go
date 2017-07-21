@@ -13,16 +13,19 @@ import (
 
 // GetFunctionName uses reflection (runtime) to return current function name
 func GetFunctionName() string {
+
 	pc := make([]uintptr, 10)
 
 	// get program counter index (call stack)
 	runtime.Callers(2, pc)
 	fn := runtime.FuncForPC(pc[0])
 	return fn.Name()
+
 }
 
 // GetPackageDir returns the absolute path of the calling package
 func GetPackageDir() string {
+
 	_, filename, _, ok := runtime.Caller(1)
 
 	if !ok {
@@ -30,6 +33,7 @@ func GetPackageDir() string {
 	}
 
 	return path.Dir(filename)
+
 }
 
 // IsFile returns true/false on existence of file passed in
@@ -40,18 +44,24 @@ func IsFile(filename string) bool {
 	}
 
 	return true
+
 }
 
 // RunCommand is a simple wrapper for the exec.Command() call
-// Note that this call is blocking, and will return only after the command completes
-// (non-threaded)
+// NOTE: this call is blocking (non-threaded), and will return only after the command
+// completes
+//
 func RunCommand(cmd string) (res []byte, err error) {
+
 	return exec.Command("bash", "-c", cmd).Output()
+
 }
 
 // IsRunning checks if application is currently running (has PID > 0)
 func IsRunning(application string) bool {
+
 	return (GetPID(application) > 0)
+
 }
 
 // StripRet strips the rightmost byte from the byte array
@@ -62,17 +72,21 @@ func StripRet(value []byte) []byte {
 	}
 
 	return value[:len(value)-1]
+
 }
 
 // GetPIDCount returns the count of application PIDs
 func GetPIDCount(application string) int {
+
 	res, _ := RunCommand(SysCommand["PGREP"] + " -x -c " + application)
 	count, _ := strconv.Atoi(string(StripRet(res)))
 	return count
+
 }
 
 // GetPIDList returns application PIDs (0 if no process)
 func GetPIDList(application string) (int, []int) {
+
 	pidCount := GetPIDCount(application)
 
 	switch pidCount {
@@ -95,8 +109,8 @@ func GetPIDList(application string) (int, []int) {
 }
 
 // GetPID returns the application PID (0 if no process)
-//
 func GetPID(application string) int {
+
 	pidCount, pidList := GetPIDList(application)
 
 	switch pidCount {
@@ -153,11 +167,15 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 
 // GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
 func GetCurTime() int {
+
 	curTime, _ := strconv.Atoi(To24H(time.Now()))
 	return curTime
+
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
 func To24H(value time.Time) string {
+
 	return value.Format("150405")
+
 }

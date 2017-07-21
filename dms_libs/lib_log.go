@@ -19,14 +19,17 @@ var (
 )
 
 func init() {
+
 	var f *os.File
 	Fatal = log.New(f, "FATAL: ", log.Lshortfile|log.LstdFlags)
 	Info = log.New(f, "INFO: ", log.Lshortfile|log.LstdFlags)
 	Debug = log.New(f, "DEBUG: ", log.Lshortfile|log.LstdFlags)
+
 }
 
 // CreateLogger creates an application log file (1) or redirects to STDOUT (2) based on logDevice
 func CreateLogger(logLevel int, logDevice int, logLocation string, logFilename string) {
+
 	var (
 		f   *os.File
 		err error
@@ -51,6 +54,7 @@ func CreateLogger(logLevel int, logDevice int, logLocation string, logFilename s
 	Fatal.SetOutput(f)
 	Info.SetOutput(f)
 	Debug.SetOutput(f)
+
 }
 
 // LogFatal generates a fatal log message based on loggingLevel
@@ -60,7 +64,6 @@ func LogFatal(msg string) {
 		Fatal.Fatalln(msg)
 	}
 
-	os.Exit(1)
 }
 
 // LogInfo generates an informational log message based on loggingLevel

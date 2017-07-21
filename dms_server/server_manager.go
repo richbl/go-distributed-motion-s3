@@ -9,7 +9,9 @@ var checkIntervalTimestamp = dmslibs.GetCurTime()
 
 // DetermineMotionDetectorState determines whether to start the motion detector application based
 // device presence/time logic
+//
 func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	if !checkIntervalExpired() {
@@ -21,10 +23,12 @@ func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
 	}
 
 	return setMotionDetectorState(dmslibs.Stop)
+
 }
 
 // checkIntervalExpired determines if last check interval (in seconds) has expired
 func checkIntervalExpired() bool {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	curTime := dmslibs.GetCurTime()
 
@@ -34,10 +38,14 @@ func checkIntervalExpired() bool {
 	}
 
 	return false
+
 }
 
-// setMotionDetectorState sets the state read by device clients to starts/stop the motion detector applications
+// setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
+// applications
+//
 func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	if dmslibs.MotionDetector.State == state {
@@ -58,10 +66,14 @@ func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDet
 	}
 
 	return state
+
 }
 
-// timeInRange checks to see if the current time is within the bounds of the 'always on' range (if that ScanForTime option is enabled)
+// timeInRange checks to see if the current time is within the bounds of the 'always on' range
+// (if that ScanForTime option is enabled)
+//
 func timeInRange() bool {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
 	if ScanForTime == 0 {
@@ -69,13 +81,18 @@ func timeInRange() bool {
 	}
 
 	return calcDataRange()
+
 }
 
-// calcDataRange checks to see if the configured time range crosses into the next day, and determines time range accordingly
+// calcDataRange checks to see if the configured time range crosses into the next day, and
+// determines time range accordingly
+//
 func calcDataRange() bool {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	const Start = 0
 	const End = 1
+
 	curTime := dmslibs.To24H(time.Now())
 
 	if AlwaysOnRange[Start] > AlwaysOnRange[End] {
@@ -83,11 +100,16 @@ func calcDataRange() bool {
 	}
 
 	return curTime >= AlwaysOnRange[Start] && curTime < AlwaysOnRange[End]
+
 }
 
-// deviceOnLAN checks to see if device MACs exist on LAN (first freshens local arp cache to guarantee good results)
+// deviceOnLAN checks to see if device MACs exist on LAN (first freshens local arp cache to
+// guarantee good results)
+//
 func deviceOnLAN() bool {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	dmslibs.PingHosts(IPBase, IPRange)
 	return dmslibs.FindMacs(MacsToFind)
+
 }

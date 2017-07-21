@@ -17,4 +17,5 @@ func TestConfiguration(t *testing.T) {
 		}
 
 	}
+
 }

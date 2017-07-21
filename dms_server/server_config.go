@@ -11,7 +11,7 @@ import (
 //		2 - INFO, report informational events
 //    4 - DEBUG, report debugging events
 //
-const LogLevel = 4
+const LogLevel = 2
 
 // LogDevice determines to what device logging should be set using the following table:
 //
@@ -39,7 +39,6 @@ var LogLocation = dmslibs.GetPackageDir()
 const PlayAudio = 1
 
 // ServerPort is the port on which to run the motion server
-//
 const ServerPort = 1965
 
 // AudioMotionDetectorStart is the audio file played when the motion detector application is
@@ -55,11 +54,9 @@ var AudioMotionDetectorStart = dmslibs.GetPackageDir() + "/media/motion_start.wa
 var AudioMotionDetectorStop = dmslibs.GetPackageDir() + "/media/motion_stop.wav"
 
 // ScanForTime enables (1) or disables (0) motion detector application based on time-of-day
-//
 const ScanForTime = 0
 
 // CheckInterval is the interval (in seconds) between checks for change to motion_state
-//
 const CheckInterval = 15
 
 // AlwaysOnRange is the start and end times (24-hour format) for motion to always be enabled,
@@ -68,15 +65,13 @@ const CheckInterval = 15
 //
 var AlwaysOnRange = []string{"2300", "0400"}
 
-// IPBase is the first three address octets defining the LAN (e.g., 10.10.10.) where devices will be
-// scanned for to determine when motion should be run
+// IPBase is the first three address octets defining the LAN (e.g., 10.10.10.) where devices will
+// be scanned for to determine when motion should be run
 //
 const IPBase = "10.10.10."
 
 // IPRange is the fourth address octet defined as a range (e.g., 100..254)
-//
 var IPRange = []int{100, 254}
 
 // MacsToFind are the MAC addresses of IoT device(s) to search for on the LAN
-//
 var MacsToFind = []string{"24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"}

@@ -6,14 +6,19 @@ import (
 )
 
 func TestPrintFuncName(t *testing.T) {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
+
 }
 
 func TestGetPackageDir(t *testing.T) {
+
 	dmslibs.GetPackageDir()
+
 }
 
 func TestIsFile(t *testing.T) {
+
 	testFile := "lib_util_test.go"
 
 	if !dmslibs.IsFile(testFile) {
@@ -23,6 +28,7 @@ func TestIsFile(t *testing.T) {
 }
 
 func TestRunCommand(t *testing.T) {
+
 	testCommand := "ls"
 
 	if res, err := dmslibs.RunCommand(testCommand); err != nil {
@@ -34,6 +40,7 @@ func TestRunCommand(t *testing.T) {
 }
 
 func TestIsRunning(t *testing.T) {
+
 	// ACTION: set to known active process
 	testApplication := "gocode"
 
@@ -44,6 +51,7 @@ func TestIsRunning(t *testing.T) {
 }
 
 func TestStripRet(t *testing.T) {
+
 	testArray := []byte{50, 40, 30, 20, 10}
 
 	res := dmslibs.StripRet(testArray)
@@ -55,6 +63,7 @@ func TestStripRet(t *testing.T) {
 }
 
 func TestGetPIDCount(t *testing.T) {
+
 	// ACTION: set to known active process
 	testApplication := "gocode"
 
@@ -65,6 +74,7 @@ func TestGetPIDCount(t *testing.T) {
 }
 
 func TestGetPID(t *testing.T) {
+
 	// ACTION: set to known active process
 	testApplication := "gocode"
 

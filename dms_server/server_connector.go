@@ -21,6 +21,7 @@ func StartServer(ServerPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on
 // client connect
+//
 func serverLoop(listener net.Listener) {
 
 	for {
@@ -28,7 +29,7 @@ func serverLoop(listener net.Listener) {
 		if conn, err := listener.Accept(); err != nil {
 			dmslibs.LogFatal(err.Error())
 		} else {
-			dmslibs.LogInfo("open connection from:" + conn.RemoteAddr().String())
+			dmslibs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
 			go processClientRequest(conn)
 		}
 
@@ -36,9 +37,9 @@ func serverLoop(listener net.Listener) {
 
 }
 
-// processClientRequest passes motion detector application state to client listeners based on logic
-// found in entryPointRoutine()
+// processClientRequest passes motion detector application state to all client listeners
 func processClientRequest(conn net.Conn) {
+
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 	state := DetermineMotionDetectorState()
 
@@ -46,6 +47,7 @@ func processClientRequest(conn net.Conn) {
 		dmslibs.LogInfo(err.Error())
 	}
 
-	dmslibs.LogInfo("close connection from:" + conn.RemoteAddr().String())
+	dmslibs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
 	conn.Close()
+
 }

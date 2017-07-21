@@ -7,7 +7,9 @@ import (
 
 // PingHosts uses native ping command to ping the address range passed in to freshen the local
 // arp cache
+//
 func PingHosts(ipBase string, ipRange []int) {
+
 	var wg sync.WaitGroup
 	cmd := SysCommand["PING"] + " -q -W 1 -c 1 " + ipBase
 
@@ -22,10 +24,12 @@ func PingHosts(ipBase string, ipRange []int) {
 	}
 
 	wg.Wait()
+
 }
 
 // FindMacs uses arp to find mac addressed passed in, returning true if any mac passed in is found
 // (e.g., mac1 | mac2 | mac3)
+//
 func FindMacs(macsToFind []string) bool {
 	macListRegex := ""
 
@@ -41,8 +45,9 @@ func FindMacs(macsToFind []string) bool {
 	res, err := RunCommand(SysCommand["ARP"] + " -n | " + SysCommand["GREP"] + " -E '" + macListRegex + "'")
 
 	if err != nil {
-		Info.Println(SysCommand["ARP"], "command code:", err)
+		LogInfo(SysCommand["ARP"] + " command code: " + err.Error())
 	}
 
 	return (len(string(res)) > 0)
+
 }
