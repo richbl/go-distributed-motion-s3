@@ -2,24 +2,35 @@ package dmslibs
 
 // MotionDetector is the motion detector application run on the clients
 var MotionDetector = structMotionDetector{
-	Location: "/usr/bin/motion",
-	Command:  "motion",
-	State:    Stop,
+	command: "motion",
+	state:   Stop,
 }
 
-// possible states for the motion detector application
+// Command returns the motion detector application command
+func (s structMotionDetector) Command() string {
+	return s.command
+}
+
+// State returns the motion detector application state
+func (s structMotionDetector) State() MotionDetectorState {
+	return s.state
+}
+
+// SetState sets the motion detector application state
+func (s *structMotionDetector) SetState(state MotionDetectorState) {
+	s.state = state
+}
+
+// states of the motion detector application
 const (
 	Start MotionDetectorState = iota
 	Stop
 )
 
 type structMotionDetector struct {
-	Location string
-	Command  string
-	State    MotionDetectorState
+	command string
+	state   MotionDetectorState
 }
 
-// MotionDetectorState is the type used to define the state (Start or Stop) of the motion
-// detector application
-//
+// MotionDetectorState defines the motion detector application state type
 type MotionDetectorState int

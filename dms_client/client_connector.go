@@ -17,6 +17,7 @@ func StartClient(ServerIP string, ServerPort int) {
 		} else {
 			// server connection established
 			defer conn.Close()
+			dmslibs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
 			go processClientRequest(conn)
 		}
 
@@ -35,10 +36,11 @@ func processClientRequest(conn net.Conn) {
 		dmslibs.LogInfo(err.Error())
 	} else {
 		state, _ := strconv.Atoi(string(buf[:n]))
-		dmslibs.MotionDetector.State = dmslibs.MotionDetectorState(state)
-		ProcessMotionDetectorState(dmslibs.MotionDetector.State)
+		dmslibs.MotionDetector.SetState(dmslibs.MotionDetectorState(state))
+		ProcessMotionDetectorState(dmslibs.MotionDetector.State())
 	}
 
+	dmslibs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
 	conn.Close()
 
 }

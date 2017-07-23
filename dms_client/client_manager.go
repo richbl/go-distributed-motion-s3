@@ -33,8 +33,10 @@ func startStopMotionDetector(state dmslibs.MotionDetectorState) {
 		dmslibs.LogInfo("Unanticipated motion detector state: ignored")
 	}
 
-	if dmslibs.StartStopApplication(state, dmslibs.MotionDetector.Command) {
-		dmslibs.LogInfo(dmslibs.MotionDetector.Command + " " + cmdStr)
+	motionCommand := dmslibs.MotionDetector.Command()
+
+	if dmslibs.StartStopApplication(state, motionCommand) {
+		dmslibs.LogInfo(motionCommand + " " + cmdStr)
 	}
 
 }

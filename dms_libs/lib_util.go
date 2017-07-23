@@ -52,16 +52,12 @@ func IsFile(filename string) bool {
 // completes
 //
 func RunCommand(cmd string) (res []byte, err error) {
-
 	return exec.Command("bash", "-c", cmd).Output()
-
 }
 
 // IsRunning checks if application is currently running (has PID > 0)
 func IsRunning(application string) bool {
-
 	return (GetPID(application) > 0)
-
 }
 
 // StripRet strips the rightmost byte from the byte array
@@ -175,7 +171,5 @@ func GetCurTime() int {
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
 func To24H(value time.Time) string {
-
 	return value.Format("150405")
-
 }

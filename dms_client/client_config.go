@@ -11,7 +11,7 @@ import (
 //		2 - INFO, report informational events
 //    4 - DEBUG, report debugging events
 //
-const LogLevel = 1
+const LogLevel = 2
 
 // LogDevice determines to what device logging should be set using the following table:
 //

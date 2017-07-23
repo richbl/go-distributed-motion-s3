@@ -14,15 +14,42 @@ func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
 
 	dmslibs.LogDebug(dmslibs.GetFunctionName())
 
-	if !checkIntervalExpired() {
-		return dmslibs.MotionDetector.State
+	if checkIntervalExpired() {
+
+		if timeInRange() || !deviceOnLAN() {
+			return setMotionDetectorState(dmslibs.Start)
+		}
+
+		return setMotionDetectorState(dmslibs.Stop)
 	}
 
-	if timeInRange() || !deviceOnLAN() {
-		return setMotionDetectorState(dmslibs.Start)
+	return dmslibs.MotionDetector.State()
+
+}
+
+// setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
+// applications
+//
+func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
+
+	dmslibs.LogDebug(dmslibs.GetFunctionName())
+
+	if dmslibs.MotionDetector.State() != state {
+		dmslibs.MotionDetector.SetState(state)
+
+		if PlayAudio == 1 {
+
+			switch state {
+			case dmslibs.Start:
+				dmslibs.PlayAudio(AudioMotionDetectorStart)
+			case dmslibs.Stop:
+				dmslibs.PlayAudio(AudioMotionDetectorStop)
+			}
+
+		}
 	}
 
-	return setMotionDetectorState(dmslibs.Stop)
+	return state
 
 }
 
@@ -38,34 +65,6 @@ func checkIntervalExpired() bool {
 	}
 
 	return false
-
-}
-
-// setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
-// applications
-//
-func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
-
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
-
-	if dmslibs.MotionDetector.State == state {
-		return state
-	}
-
-	dmslibs.MotionDetector.State = state
-
-	if PlayAudio == 1 {
-
-		switch state {
-		case dmslibs.Start:
-			dmslibs.PlayAudio(AudioMotionDetectorStart)
-		case dmslibs.Stop:
-			dmslibs.PlayAudio(AudioMotionDetectorStop)
-		}
-
-	}
-
-	return state
 
 }
 
