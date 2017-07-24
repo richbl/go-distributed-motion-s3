@@ -1,2 +1,2 @@
 # go-dms
-![topology_diagram](https://user-images.githubusercontent.com/10182110/28535662-0b3ccdbe-705a-11e7-86ed-8c27b358a470.png)
+![topology_diagram](https://user-images.githubusercontent.com/10182110/28536022-3cf244b4-705b-11e7-9f2d-fc57468b6f1a.png)
