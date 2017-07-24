@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Go Distributed-Motion-Surveillance (GO-DMS)
 
 **Go Distributed-Motion-Surveillance (GO-DMS)** is a [Go](https://golang.org/ "Go")-based video surveillance system that uses third-party motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/) "OpenCV") to identify and respond to significant image changes in video streams.
@@ -170,7 +169,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-=======
-# go-dms
-<img src="https://user-images.githubusercontent.com/10182110/28536022-3cf244b4-705b-11e7-9f2d-fc57468b6f1a.png" width="1332">
->>>>>>> 7f4bb9e991be73c7103e2762204aa2557484776f
