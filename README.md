@@ -4,7 +4,7 @@
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/28589668-f04733e8-7133-11e7-9c30-aeb0369cb1a1.png)
 
-**Distributed Motion Surveillance Sense System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
+**Distributed Motion Surveillance Sense System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detection applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not home" and automatically enables or disables the surveillance system
 - Distributes video stream processing, reporting, and user notification to capable "smart" device clients (*e.g.*, the Raspberry Pi) which:
@@ -45,7 +45,7 @@ While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and 
 	- [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") support is highly anticipated, but still experimental, though the codebase cleanly abstracts away any specific motion detection application dependencies
 
  ### DMS<sup>3</sup>Client & DMS<sup>3</sup>Server Features
-- Automated enabling/disabling of a motion detector application (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detector software package) based on the presence/absence of user proxy devices (*e.g.*, a smartphone) across a network (*e.g.*, [LAN](http://en.wikipedia.org/wiki/Local_area_network "Local Area Network")).
+- Automated enabling/disabling of a motion detection application (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detector software package) based on the presence/absence of user proxy devices (*e.g.*, a smartphone) across a network (*e.g.*, [LAN](http://en.wikipedia.org/wiki/Local_area_network "Local Area Network")).
 
 	- [MAC](http://en.wikipedia.org/wiki/MAC_address "MAC address") (Layer 2) address sensing
 		- Multiple user proxy device support (can sense when some or all smartphones are "at home")
@@ -69,8 +69,8 @@ While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and 
 
 **DMS<sup>3</sup>** is organized into the following application components:
 
-   - **DMS<sup>3</sup>Server**: integrated server-side system services that determine when to start/stop the motion detector application (e.g., [Motion](https://motion-project.github.io/ "Motion")), and regularly notify participating **DMS<sup>3</sup>** device clients of that surveillance state
-   - **DMS<sup>3</sup>Client**: client-side endpoint services that start/stop the motion detector application (*e.g.*, [Motion](https://motion-project.github.io/ "Motion")), and manage related video stream processing based on notifications from **DMS<sup>3</sup>Server**
+   - **DMS<sup>3</sup>Server**: integrated server-side system services that determine when to start/stop the motion detection application (e.g., [Motion](https://motion-project.github.io/ "Motion")), and regularly notify participating **DMS<sup>3</sup>** device clients of that surveillance state
+   - **DMS<sup>3</sup>Client**: client-side endpoint services that start/stop the motion detection application (*e.g.*, [Motion](https://motion-project.github.io/ "Motion")), and manage related video stream processing based on notifications from **DMS<sup>3</sup>Server**
    - **DMS<sup>3</sup>Libs**: a set of related shared libraries used for managing **DMS<sup>3</sup>** client-server services including low-level system and networking commands, logging, and unit testing
 
 Optional for device clients configured to use the [Motion](https://motion-project.github.io/ "Motion") motion detection application:
@@ -81,7 +81,7 @@ Optional for device clients configured to use the [Motion](https://motion-projec
 
 **DMS<sup>3</sup>** is patterned after a [client server model](https://en.wikipedia.org/wiki/Client%E2%80%93server_model "client server model"), where **DMS<sup>3</sup>Server** is centrally responsible for the logic of enabling/disabling the video surveillance system, while each participating device client either performs real-time video monitoring and processing of video stream data (smart device clients), or for less smart clients, passes raw video stream data over the wire to the server for processing and eventual system response and/or user notification.
 
-In the example presented at the start of this document, one IP camera device, one IoT SBC device (a Raspberry Pi), and one webcam device are managed through **DMS<sup>3</sup>Server** (using the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol "TCP protocol")), which synchronizes the installed motion detector application (in this case, [Motion](https://motion-project.github.io/ "Motion")) motion capture state across all clients. **Importantly, actual video stream processing for motion is done locally, on the Raspberry Pi device client**.
+In the example presented at the start of this document, one IP camera device, one IoT SBC device (a Raspberry Pi), and one webcam device are managed through **DMS<sup>3</sup>Server** (using the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol "TCP protocol")), which synchronizes the installed motion detection application (in this case, [Motion](https://motion-project.github.io/ "Motion")) motion capture state across all clients. **Importantly, actual video stream processing for motion is done locally, on the Raspberry Pi device client**.
 
 The webcam device and the IP camera device--both less smart device clients, and incapable of on-board processing--stream to **DMS<sup>3</sup>Server**, where **DMS<sup>3</sup>** processes the incoming video streams.
 
@@ -90,11 +90,11 @@ The webcam device and the IP camera device--both less smart device clients, and 
 ### **DMS<sup>3</sup>Server** Operation
 **DMS<sup>3</sup>Server** is responsible for signaling the logic of enabling/disabling the video surveillance system to all device client endpoints. That is, **DMS<sup>3</sup>Server** sends--at a predetermined interval--either a `Start` or a `Stop` message to all **DMS<sup>3</sup>** device clients listening on the network.
 
-**DMS<sup>3</sup>Server** does this by periodically scanning the network for the existence of a registered user proxy device(s). This device can be anything that exposes its MAC address on the network (*e.g.*, a mobile phone on a home LAN). If that device is found on the network, it's assumed that "someone is home" and so, the motion detector application is not started (or is stopped if currently running). If that user proxy device MAC "leaves" and is no longer found on the network, it's assumed that "nobody is home" and the motion detector application is started (if not already running). Similar logic is used in the reverse case: when a user proxy device is once again "back home," the motion detector application is stopped.
+**DMS<sup>3</sup>Server** does this by periodically scanning the network for the existence of a registered user proxy device(s). This device can be anything that exposes its MAC address on the network (*e.g.*, a mobile phone on a home LAN). If that device is found on the network, it's assumed that "someone is home" and so, the motion detection application is not started (or is stopped if currently running). If that user proxy device MAC "leaves" and is no longer found on the network, it's assumed that "nobody is home" and the motion detection application is started (if not already running). Similar logic is used in the reverse case: when a user proxy device is once again "back home," the motion detection application is stopped.
 
-Alternatively, the *Always On* feature uses time-of-day to start/stop the motion detector application. **DMS<sup>3</sup>Server** will look at the time range specified, and if the current time falls between the time range, the motion detector application will be enabled. Once the current time falls outside of the specified time range, the motion detector application is then disabled. The *Always On* feature works in conjunction with the default user proxy device detection.
+Alternatively, the *Always On* feature uses time-of-day to start/stop the motion detection application. **DMS<sup>3</sup>Server** will look at the time range specified, and if the current time falls between the time range, the motion detection application will be enabled. Once the current time falls outside of the specified time range, the motion detection application is then disabled. The *Always On* feature works in conjunction with the default user proxy device detection.
 
-Note that **DMS<sup>3</sup>Server** *only signals to participating DMS<sup>3</sup> device clients* the current state of the video surveillance system. Each device client is actually responsible for starting/stopping its locally installed motion detector application.
+Note that **DMS<sup>3</sup>Server** *only signals to participating DMS<sup>3</sup> device clients* the current state of the video surveillance system. Each device client is actually responsible for starting/stopping its locally installed motion detection application.
 
 ### **DMS<sup>3</sup>Client** Operation
 
@@ -113,9 +113,9 @@ Note that **DMS<sup>3</sup>Server** *only signals to participating DMS<sup>3</su
 >
 
 #### Running on Smart Device Clients
-**DMS<sup>3</sup>Client** runs on each configured smart device client endpoint, and is responsible for starting/stopping its locally installed motion detector application.
+**DMS<sup>3</sup>Client** runs on each configured smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application.
 
-**DMS<sup>3</sup>Client** does this by periodically listening to **DMS<sup>3</sup>Server** at the pre-configured [IP address](https://en.wikipedia.org/wiki/IP_address "IP address") and [port](https://en.wikipedia.org/wiki/Computer_port_%28hardware%29 "port") (network [socket address](https://en.wikipedia.org/wiki/Network_socket "socket address")). **DMS<sup>3</sup>Server** passes to all connected device clients its motion detector application state, that is, whether to ask device clients to enable/disable their locally installed motion detector application.
+**DMS<sup>3</sup>Client** does this by periodically listening to **DMS<sup>3</sup>Server** at the pre-configured [IP address](https://en.wikipedia.org/wiki/IP_address "IP address") and [port](https://en.wikipedia.org/wiki/Computer_port_%28hardware%29 "port") (network [socket address](https://en.wikipedia.org/wiki/Network_socket "socket address")). **DMS<sup>3</sup>Server** passes to all connected device clients its motion detection application state, that is, whether to ask device clients to enable/disable their locally installed motion detection application.
 
 #### Running with Less Smart Device Clients
 In instances where the device client is "less smart" and unable to process video streams for motion locally, instead passing motion detection processing to **DMS<sup>3</sup>Server**, a **DMS<sup>3</sup>Client** can be installed on a host (or even as `localhost` on **DMS<sup>3</sup>Server**), which can then serve as a proxy for video stream processing for motion.
@@ -124,7 +124,7 @@ In instances where the device client is "less smart" and unable to process video
 Operationally, **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** device clients work in concert to establish a synchronized video surveillance state across all endpoints:
 
 - **DMS<sup>3</sup>Server**: a daemon that runs on a central server, and walks a logic tree whenever a client connects (or re-connects) to the server. **DMS<sup>3</sup>Server** is responsible for answering the question *"should the surveillance system be enabled or disabled?"*
-- **DMS<sup>3</sup>Client**: a daemon that runs on each of the participating smart device clients. A **DMS<sup>3</sup>Client** regularly polls (at a configurable interval) **DMS<sup>3</sup>Server**, and receives from **DMS<sup>3</sup>Server** the current motion detector application state (called *MotionDetectorState*), that is, whether the locally installed motion detector application should be started or stopped
+- **DMS<sup>3</sup>Client**: a daemon that runs on each of the participating smart device clients. A **DMS<sup>3</sup>Client** regularly polls (at a configurable interval) **DMS<sup>3</sup>Server**, and receives from **DMS<sup>3</sup>Server** the current motion detection application state (called *MotionDetectorState*), that is, whether the locally installed motion detection application should be started or stopped
 
 The activity diagram below shows the work flow of these two components:
 
@@ -137,7 +137,7 @@ When using [Motion](https://motion-project.github.io/ "Motion"), **DMS<sup>3</su
 
 **DMS<sup>3</sup> Motion Mail** is very tightly integrated into [Motion](https://motion-project.github.io/ "Motion"), where image and video capture events are identified, analyzed, and processed. **DMS<sup>3</sup> Motion Mail** is triggered by the  [`on_picture_save`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_picture_save "on_picture_save command") and the [`on_movie_end`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_movie_end "on_movie_end command") commands in [Motion](https://motion-project.github.io/ "Motion").
 
-> **Note:** the optional **DMS<sup>3</sup> Motion Mail** feature is used by neither  **DMS<sup>3</sup>Client** nor **DMS<sup>3</sup>Server**. Instead, **DMS<sup>3</sup> Motion Mail** is called directly via the command-line by the [Motion](https://motion-project.github.io/ "Motion") motion detector application
+> **Note:** the optional **DMS<sup>3</sup> Motion Mail** feature is used by neither  **DMS<sup>3</sup>Client** nor **DMS<sup>3</sup>Server**. Instead, **DMS<sup>3</sup> Motion Mail** is called directly via the command-line by the [Motion](https://motion-project.github.io/ "Motion") motion detection application
 
 The syntax for these [Motion](https://motion-project.github.io/ "Motion") commands are:
 
@@ -160,7 +160,7 @@ Once configured, **DMS<sup>3</sup> Motion Mail** will respond to these [Motion](
 	 - [pgrep](http://en.wikipedia.org/wiki/Pgrep "pgrep"): globally search a regular expression and print
 	 - [ping](http://en.wikipedia.org/wiki/Ping_(networking_utility) "ping"): ICMP network packet echo/response tool
 	 - [aplay](http://en.wikipedia.org/wiki/Aplay "aplay"): ALSA audio player (optional)
- - A motion detector application, such as [Motion](https://motion-project.github.io/ "Motion"), correctly installed and configured with appropriate video devices configured on each device client enpoint
+ - A motion detection application, such as [Motion](https://motion-project.github.io/ "Motion"), correctly installed and configured with appropriate video devices configured on each device client enpoint
 
  For specific details on system commands and tools used by **DMS<sup>3</sup>**, see the file `lib_config.go`.
 
