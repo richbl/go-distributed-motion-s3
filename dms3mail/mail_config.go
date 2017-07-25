@@ -1,7 +1,7 @@
-package mail
+package dms3mail
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 )
 
 // LogLevel sets the log levels for application logging using the following table:
@@ -28,10 +28,10 @@ const LogDevice = 0
 const LogFilename = "dms_mail.log"
 
 // LogLocation is the location of logfile (full path)
-// By default, this is in the local folder (e.g., /etc/distributed_motion_surveillance/dms_server)
+// By default, this is in the local folder (e.g., /etc/dms3/dms3server)
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
-var LogLocation = dmslibs.GetPackageDir()
+var LogLocation = dms3libs.GetPackageDir()
 
 // EmailFrom is the email sender
 const EmailFrom = "motion@businesslearninginc.com"

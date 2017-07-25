@@ -1,8 +1,8 @@
-package mail
+package dms3mail
 
 import (
 	"flag"
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 	"path"
 	"strconv"
 	"strings"
@@ -47,11 +47,11 @@ func parseEvent(eventDetails *structEventDetails) {
 	flag.Parse()
 
 	if flag.NFlag() != 3 {
-		dmslibs.LogFatal("missing arguments passed... exiting")
+		dms3libs.LogFatal("missing arguments passed... exiting")
 	}
 
-	if !dmslibs.IsFile(*filename) {
-		dmslibs.LogFatal("filename not found... exiting")
+	if !dms3libs.IsFile(*filename) {
+		dms3libs.LogFatal("filename not found... exiting")
 	}
 
 	eventDetails.cameraNumber = *camera
@@ -79,7 +79,7 @@ func getEventDetails(filename string) (eventNumber string, eventDate string) {
 	sepCount := strings.Count(file, "-")
 
 	if sepCount != 1 && sepCount != 2 {
-		dmslibs.LogFatal("bad file-naming convention... exiting")
+		dms3libs.LogFatal("bad file-naming convention... exiting")
 	}
 
 	res := strings.Split(file, "-")
@@ -128,9 +128,9 @@ func generateSMTPEmail(eventDetails *structEventDetails) {
 	dialer := gomail.NewDialer(SMTPAddress, SMTPPort, SMTPUsername, SMTPPassword)
 
 	if err := dialer.DialAndSend(mail); err != nil {
-		dmslibs.LogFatal(err.Error())
+		dms3libs.LogFatal(err.Error())
 	} else {
-		dmslibs.LogInfo("successfully processed and sent email")
+		dms3libs.LogInfo("successfully processed and sent email")
 	}
 
 }

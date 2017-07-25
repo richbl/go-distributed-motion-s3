@@ -1,7 +1,7 @@
-package dmslibs_test
+package dms3libs_test
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 	"os"
 	"testing"
 )
@@ -10,8 +10,8 @@ func TestCreateLogger(t *testing.T) {
 
 	testLog := "lib_log_test.log"
 
-	dmslibs.CreateLogger(4, 1, dmslibs.GetPackageDir(), testLog)
-	if !dmslibs.IsFile(testLog) {
+	dms3libs.CreateLogger(4, 1, dms3libs.GetPackageDir(), testLog)
+	if !dms3libs.IsFile(testLog) {
 		t.Error("Log file", testLog, "not created")
 	} else {
 		os.Remove(testLog)

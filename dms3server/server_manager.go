@@ -1,49 +1,49 @@
-package server
+package dms3server
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 	"time"
 )
 
-var checkIntervalTimestamp = dmslibs.GetCurTime()
+var checkIntervalTimestamp = dms3libs.GetCurTime()
 
 // DetermineMotionDetectorState determines whether to start the motion detector application based
 // device presence/time logic
 //
-func DetermineMotionDetectorState() dmslibs.MotionDetectorState {
+func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
 	if checkIntervalExpired() {
 
 		if timeInRange() || !deviceOnLAN() {
-			return setMotionDetectorState(dmslibs.Start)
+			return setMotionDetectorState(dms3libs.Start)
 		}
 
-		return setMotionDetectorState(dmslibs.Stop)
+		return setMotionDetectorState(dms3libs.Stop)
 	}
 
-	return dmslibs.MotionDetector.State()
+	return dms3libs.MotionDetector.State()
 
 }
 
 // setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
 // applications
 //
-func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDetectorState {
+func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionDetectorState {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if dmslibs.MotionDetector.State() != state {
-		dmslibs.MotionDetector.SetState(state)
+	if dms3libs.MotionDetector.State() != state {
+		dms3libs.MotionDetector.SetState(state)
 
 		if PlayAudio == 1 {
 
 			switch state {
-			case dmslibs.Start:
-				dmslibs.PlayAudio(AudioMotionDetectorStart)
-			case dmslibs.Stop:
-				dmslibs.PlayAudio(AudioMotionDetectorStop)
+			case dms3libs.Start:
+				dms3libs.PlayAudio(AudioMotionDetectorStart)
+			case dms3libs.Stop:
+				dms3libs.PlayAudio(AudioMotionDetectorStop)
 			}
 
 		}
@@ -56,8 +56,8 @@ func setMotionDetectorState(state dmslibs.MotionDetectorState) dmslibs.MotionDet
 // checkIntervalExpired determines if last check interval (in seconds) has expired
 func checkIntervalExpired() bool {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
-	curTime := dmslibs.GetCurTime()
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	curTime := dms3libs.GetCurTime()
 
 	if (curTime - checkIntervalTimestamp) >= CheckInterval {
 		checkIntervalTimestamp = curTime
@@ -73,7 +73,7 @@ func checkIntervalExpired() bool {
 //
 func timeInRange() bool {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
 	if ScanForTime == 0 {
 		return false
@@ -88,11 +88,11 @@ func timeInRange() bool {
 //
 func calcDataRange() bool {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
 	const Start = 0
 	const End = 1
 
-	curTime := dmslibs.To24H(time.Now())
+	curTime := dms3libs.To24H(time.Now())
 
 	if AlwaysOnRange[Start] > AlwaysOnRange[End] {
 		return curTime >= AlwaysOnRange[Start] || curTime < AlwaysOnRange[End]
@@ -107,8 +107,8 @@ func calcDataRange() bool {
 //
 func deviceOnLAN() bool {
 
-	dmslibs.LogDebug(dmslibs.GetFunctionName())
-	dmslibs.PingHosts(IPBase, IPRange)
-	return dmslibs.FindMacs(MacsToFind)
+	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.PingHosts(IPBase, IPRange)
+	return dms3libs.FindMacs(MacsToFind)
 
 }

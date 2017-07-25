@@ -1,4 +1,4 @@
-package dmslibs
+package dms3libs
 
 // SysCommand provides a location mapping of required system commands
 var SysCommand = map[string]string{

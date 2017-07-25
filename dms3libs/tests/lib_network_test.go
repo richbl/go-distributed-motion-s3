@@ -1,7 +1,7 @@
-package dmslibs_test
+package dms3libs_test
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 	"os/exec"
 	"testing"
 )
@@ -12,7 +12,7 @@ func TestPingHosts(t *testing.T) {
 	testIPBase := "10.10.10."
 	testIPRange := []int{100, 150}
 
-	dmslibs.PingHosts(testIPBase, testIPRange)
+	dms3libs.PingHosts(testIPBase, testIPRange)
 
 }
 
@@ -24,14 +24,14 @@ func TestFindMacs(t *testing.T) {
 	var localMAC []string
 
 	// determine local MAC address for testing
-	cmd := dmslibs.SysCommand["CAT"] + " /sys/class/net/" + curInterface + "/address"
+	cmd := dms3libs.SysCommand["CAT"] + " /sys/class/net/" + curInterface + "/address"
 	if res, err := exec.Command("bash", "-c", cmd).Output(); err != nil {
 		t.Error("Unable to determine local MAC address for testing")
 	} else {
 		localMAC = append(localMAC, string(res))
 	}
 
-	if !dmslibs.FindMacs(localMAC) {
+	if !dms3libs.FindMacs(localMAC) {
 		t.Error("FindMacs failed to find local MAC address")
 	}
 

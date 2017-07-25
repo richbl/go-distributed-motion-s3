@@ -1,7 +1,7 @@
-package server
+package dms3server
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 )
 
 // LogLevel sets the log levels for application logging using the following table:
@@ -25,13 +25,13 @@ const LogDevice = 0
 // LogFilename is the logging filename
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
-const LogFilename = "dms_server.log"
+const LogFilename = "dms3server.log"
 
 // LogLocation is the location of logfile (full path)
-// By default, this is in the local folder (e.g., /etc/distributed_motion_surveillance/dms_server)
+// By default, this is in the local folder (e.g., /etc/dms3/dms3server)
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
-var LogLocation = dmslibs.GetPackageDir()
+var LogLocation = dms3libs.GetPackageDir()
 
 // PlayAudio enables (1) or disables (0) the play-back of audio on motion detector application
 // start/stop
@@ -45,13 +45,13 @@ const ServerPort = 1965
 // activated... by default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
 // Ignored if PlayAudio == 0
 //
-var AudioMotionDetectorStart = dmslibs.GetPackageDir() + "/media/motion_start.wav"
+var AudioMotionDetectorStart = dms3libs.GetPackageDir() + "/media/motion_start.wav"
 
 // AudioMotionDetectorStop is the audio file played when the motion detector application is
 // deactivated... by default, this is in the local folder (e.g., /etc/motion_surveillance/motion_monitor)
 // Ignored if PlayAudio == 0
 //
-var AudioMotionDetectorStop = dmslibs.GetPackageDir() + "/media/motion_stop.wav"
+var AudioMotionDetectorStop = dms3libs.GetPackageDir() + "/media/motion_stop.wav"
 
 // ScanForTime enables (1) or disables (0) motion detector application based on time-of-day
 const ScanForTime = 0

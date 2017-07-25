@@ -1,4 +1,4 @@
-package dmslibs
+package dms3libs
 
 import (
 	"log"

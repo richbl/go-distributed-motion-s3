@@ -1,7 +1,7 @@
-package client
+package dms3client
 
 import (
-	"go_server/dms_libs"
+	"go_server/dms3libs"
 )
 
 // LogLevel sets the log levels for application logging using the following table:
@@ -25,13 +25,13 @@ const LogDevice = 0
 // LogFilename is the logging filename
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
-const LogFilename = "dms_client.log"
+const LogFilename = "dms3client.log"
 
 // LogLocation is the location of logfile (full path)
-// By default, this is in the local folder (e.g., /etc/distributed_motion_surveillance/dms_client)
+// By default, this is in the local folder (e.g., /etc/dms3/dms3client)
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
-var LogLocation = dmslibs.GetPackageDir()
+var LogLocation = dms3libs.GetPackageDir()
 
 // CheckInterval is the interval (in seconds) for checking the dms server
 const CheckInterval = 5

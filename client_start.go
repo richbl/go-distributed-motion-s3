@@ -1,11 +1,11 @@
 package main
 
 import (
-	"go_server/dms_client"
-	"go_server/dms_libs"
+	"go_server/dms3client"
+	"go_server/dms3libs"
 )
 
 func main() {
-	dmslibs.CreateLogger(client.LogLevel, client.LogDevice, client.LogLocation, client.LogFilename)
-	client.StartClient(client.ServerIP, client.ServerPort)
+	dms3libs.CreateLogger(dms3client.LogLevel, dms3client.LogDevice, dms3client.LogLocation, dms3client.LogFilename)
+	dms3client.StartClient(dms3client.ServerIP, dms3client.ServerPort)
 }
