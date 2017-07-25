@@ -25,7 +25,7 @@ The installation of **DMS<sup>3</sup>** includes:
 
 1. Review **DMS<sup>3</sup>** requirements section in the [`README.md`](https://github.com/richbl/go-DMS3/blob/master/README.md)
 
-To summarize these requirements: the operating system is Unix-like (*e.g.*, Linux); a motion detection application should be installed on all device clients; and the Go language should be installed and fully operational
+   To summarize these requirements: the operating system is Unix-like (*e.g.*, Linux); a motion detection application should be installed on all device clients; and the Go language should be installed and fully operational
   
 ### 2. Confirm the Installation and Configuration of a Motion Detection Application
 
