@@ -34,6 +34,8 @@ This feature is particularly useful for nighttime surveillance, when users may b
 
 ### Motion Detection Application Support
 
+While **DM3S** is primarily responsible for sensing user proxies and determining when to enable and disable the surveillance system, it does not do any processing of video stream data. That complex task is left to the motion detection application which works in conjunction with **DM3S**.
+
  - Support for the [Motion](https://motion-project.github.io/ "Motion") motion detector software package
 
 	- Movement detection support of video cameras. See [this list](http://www.lavrsen.dk/foswiki/bin/view/Motion/WorkingDevices "Device Compatibility") for video device compatibility. Note that **DM3S** was developed and tested using smart devices running [Motion](https://motion-project.github.io/ "Motion") with native camera support (*e.g.*, a Raspberry Pi with an on-board camera module installed and configured)
