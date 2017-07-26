@@ -2,7 +2,7 @@ package dms3libs_test
 
 import (
 	"fmt"
-	"go_server/dms3libs"
+	"go-distributed-motion-s3/dms3libs"
 	"testing"
 )
 

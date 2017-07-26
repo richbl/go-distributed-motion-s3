@@ -2,7 +2,7 @@ package dms3server
 
 import (
 	"fmt"
-	"go_server/dms3libs"
+	"go-distributed-motion-s3/dms3libs"
 	"net"
 	"strconv"
 )

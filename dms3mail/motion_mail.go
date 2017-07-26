@@ -2,7 +2,7 @@ package dms3mail
 
 import (
 	"flag"
-	"go_server/dms3libs"
+	"go-distributed-motion-s3/dms3libs"
 	"path"
 	"strconv"
 	"strings"

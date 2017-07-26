@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go_server/dms3libs"
-	"go_server/dms3server"
+	"go-distributed-motion-s3/dms3libs"
+	"go-distributed-motion-s3/dms3server"
 )
 
 func main() {

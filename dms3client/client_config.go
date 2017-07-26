@@ -1,7 +1,7 @@
 package dms3client
 
 import (
-	"go_server/dms3libs"
+	"go-distributed-motion-s3/dms3libs"
 )
 
 // LogLevel sets the log levels for application logging using the following table:
