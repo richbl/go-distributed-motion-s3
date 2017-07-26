@@ -147,7 +147,7 @@ These commands are managed through the [Motion](https://motion-project.github.io
 
 Once configured, **DMS<sup>3</sup>MotionMail** will respond to these [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an optional image file or video clip capturing the surveillance event of interest.
 
-> **Note:** additional information about **DMS<sup>3</sup>MotionMail** can be found in the **DMS<sup>3</sup>** installation file ([`INSTALL.md`](https://github.com/richbl/Distributed-Motion-Surveillance/blob/master/INSTALL.md "INSTALL.md")).
+> **Note:** additional information about **DMS<sup>3</sup>MotionMail** can be found in the **DMS<sup>3</sup>** installation file ([`INSTALL.md`](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md "INSTALL.md")).
 
 ## 7. DMS<sup>3</sup> Requirements
 
@@ -165,7 +165,7 @@ Once configured, **DMS<sup>3</sup>MotionMail** will respond to these [Motion](ht
  For specific details on system commands and tools used by **DMS<sup>3</sup>**, see the file `lib_config.go`.
 
 ## 8. DMS<sup>3</sup> Installation
-For complete details on **DMS<sup>3</sup>** installation, see the installation file ([`INSTALL.md`](https://github.com/richbl/Distributed-Motion-Surveillance/blob/master/INSTALL.md "INSTALL.md")).
+For complete details on **DMS<sup>3</sup>** installation, see the installation file ([`INSTALL.md`](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md "INSTALL.md")).
 
 ## 9. License
 
