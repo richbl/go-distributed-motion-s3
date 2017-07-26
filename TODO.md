@@ -1,0 +1,12 @@
+### TODOs
+- INSTALL.md
+   - proof for grammar
+   - proof for logic
+   - walk procedures
+   - add section on client localhost for less smart device clients
+   - test daemons (fail recovery)
+   - confirm project references are up-to-date
+- README.md
+   - confirm project references are up-to-date
+- TODO.md
+   - rm this file
