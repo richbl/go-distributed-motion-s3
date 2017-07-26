@@ -53,11 +53,11 @@ While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and 
 		- IPv6 protocol support [planned]
 	- *Always On* feature starts/stops the motion detection application based on time-of-day (*e.g*., enable video surveillance during nighttime or specific holiday hours)
 	- Optionally play audio file(s) on system enable/disable
-	- Configurable event logging (INFO,ERROR, FATAL, DEBUG)
+	- Configurable event logging (INFO, ERROR, FATAL, DEBUG)
 	- Bluetooth user proxy device sensing (using RSSI, L2CAP, or similar) [planned]
 - Device clients can be custom-configured to process and respond to surveillance event data uniquely and independently (*e.g.*, an outdoor IR camera device only sends email during nighttime hours)
 
-### DMS<sup>3</sup> Motion Mail Features
+### DMS<sup>3</sup>MotionMail Features
 - Developed specifically for [Motion](https://motion-project.github.io/ "Motion"), an automated, real-time email notification service triggered by [Motion](https://motion-project.github.io/ "Motion") detection events
 
 	- Configurable message body
@@ -131,13 +131,13 @@ The activity diagram below shows the work flow of these two components:
 ![dms3_activity_diagram](https://user-images.githubusercontent.com/10182110/28589767-4d57f63a-7134-11e7-9834-1aa51dee38a2.png)
 
 
-### **DMS<sup>3</sup> Motion Mail** Operation
+### **DMS<sup>3</sup>MotionMail** Operation
 
-When using [Motion](https://motion-project.github.io/ "Motion"), **DMS<sup>3</sup> Motion Mail** is a **DMS<sup>3</sup>Client** feature written for **DMS<sup>3</sup>**. **DMS<sup>3</sup> Motion Mail** allows for the creation and sending an email whenever a valid capture event is triggered in [Motion](https://motion-project.github.io/ "Motion").
+When using [Motion](https://motion-project.github.io/ "Motion"), **DMS<sup>3</sup>MotionMail** is a **DMS<sup>3</sup>Client** feature written for **DMS<sup>3</sup>**. **DMS<sup>3</sup>MotionMail** allows for the creation and sending an email whenever a valid capture event is triggered in [Motion](https://motion-project.github.io/ "Motion").
 
-**DMS<sup>3</sup> Motion Mail** is very tightly integrated into [Motion](https://motion-project.github.io/ "Motion"), where image and video capture events are identified, analyzed, and processed. **DMS<sup>3</sup> Motion Mail** is triggered by the  [`on_picture_save`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_picture_save "on_picture_save command") and the [`on_movie_end`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_movie_end "on_movie_end command") commands in [Motion](https://motion-project.github.io/ "Motion").
+**DMS<sup>3</sup>MotionMail** is very tightly integrated into [Motion](https://motion-project.github.io/ "Motion"), where image and video capture events are identified, analyzed, and processed. **DMS<sup>3</sup>MotionMail** is triggered by the  [`on_picture_save`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_picture_save "on_picture_save command") and the [`on_movie_end`](https://htmlpreview.github.io/?https://github.com/Motion-Project/motion/blob/master/motion_guide.html#on_movie_end "on_movie_end command") commands in [Motion](https://motion-project.github.io/ "Motion").
 
-> **Note:** the optional **DMS<sup>3</sup> Motion Mail** feature is used by neither  **DMS<sup>3</sup>Client** nor **DMS<sup>3</sup>Server**. Instead, **DMS<sup>3</sup> Motion Mail** is called directly via the command-line by the [Motion](https://motion-project.github.io/ "Motion") motion detection application
+> **Note:** the optional **DMS<sup>3</sup>MotionMail** feature is used by neither  **DMS<sup>3</sup>Client** nor **DMS<sup>3</sup>Server**. Instead, **DMS<sup>3</sup>MotionMail** is called directly via the command-line by the [Motion](https://motion-project.github.io/ "Motion") motion detection application
 
 The syntax for these [Motion](https://motion-project.github.io/ "Motion") commands are:
 
@@ -145,9 +145,9 @@ The syntax for these [Motion](https://motion-project.github.io/ "Motion") comman
 
 These commands are managed through the [Motion](https://motion-project.github.io/ "Motion") configuration file called `motion.conf`.
 
-Once configured, **DMS<sup>3</sup> Motion Mail** will respond to these [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an optional image file or video clip capturing the surveillance event of interest.
+Once configured, **DMS<sup>3</sup>MotionMail** will respond to these [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an optional image file or video clip capturing the surveillance event of interest.
 
-> **Note:** additional information about **DMS<sup>3</sup> Motion Mail** can be found in the **DMS<sup>3</sup>** installation file ([`INSTALL.md`](https://github.com/richbl/Distributed-Motion-Surveillance/blob/master/INSTALL.md "INSTALL.md")).
+> **Note:** additional information about **DMS<sup>3</sup>MotionMail** can be found in the **DMS<sup>3</sup>** installation file ([`INSTALL.md`](https://github.com/richbl/Distributed-Motion-Surveillance/blob/master/INSTALL.md "INSTALL.md")).
 
 ## 7. DMS<sup>3</sup> Requirements
 

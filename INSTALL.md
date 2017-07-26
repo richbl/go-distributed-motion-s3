@@ -25,11 +25,11 @@ The installation of **DMS<sup>3</sup>** includes:
 
 1. Review **DMS<sup>3</sup>** requirements section in the [`README.md`](https://github.com/richbl/go-DMS3/blob/master/README.md)
 
-   To summarize these requirements: the operating system is Unix-like (*e.g.*, Linux); a motion detection application should be installed on all device clients; and the Go language should be installed and fully operational
+   To summarize these requirements: the operating system is Unix-like (*e.g.*, Linux); a motion detection application should be installed on all smart device clients; and the Go language should be installed and fully operational
   
-### 2. Confirm the Installation and Configuration of a Motion Detection Application
+### 2. Confirm the Installation of a Motion Detection Application
 
-1. Confirm the installation of a motion detection application **on all smart device clients** (*e.g.*, a computer, Raspberry Pi or similar single board computer (SBC))
+1. Confirm the installation of a motion detection application on **all smart device clients** (*e.g.*, desktop computer, Raspberry Pi or similar single board computer (SBC), all with an operational video camera device)
 
 2. If using the [Motion](https://motion-project.github.io/ "Motion") motion detection application, configure [Motion](https://motion-project.github.io/) to run as a daemon
 
@@ -45,172 +45,170 @@ The installation of **DMS<sup>3</sup>** includes:
 	    daemon on
 
 ### 3. Download and Install the **DMS<sup>3</sup>** Package
-#### Server Installation
-The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, is centrally responsible for the logic of enabling/disabling the video surveillance system (determining when to start/stop the [Motion](https://motion-project.github.io/)  software package on each client endpoint). Note, however, that **DMS<sup>3</sup>Server** does not have any direct dependencies on the [Motion](https://motion-project.github.io/) sofware program.
+#### **DMS<sup>3</sup>Server** Installation
+The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis responsible for signaling the logic of enabling/disabling the video surveillance system to all device client endpoints. That is, **DMS<sup>3</sup>Server** sends--at a predetermined interval--either a `Start` or a `Stop` message to all **DMS<sup>3</sup>** device clients listening on the network.
 
-1. Download the repository zip file from the [DMS release repository](https://github.com/richbl/distributed-motion-surveillance/releases) and unzip into a temporary folder
+1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-DMS3/releases) and unzip into a temporary folder
 
-2. Optionally, delete non-essential top-level files, as well as the `dms_client`, and `dms_mail` components (as these components are unused on the server), but preserve these component folders: `lib` and `dms_server`
+2. Optionally, delete non-essential top-level files, as well as the `dms3client`, and `dms3mail` components folders (as these components are unused on the server), but preserve the `dms3libs` and `dms3server` component folders
 
-	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**. They may be safely deleted.
+	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**: they may be safely deleted
 
-	The organization of the server components is represented in the remaining structure of the parent `distributed-motion-surveillance` folder.
+	The organization of the server components is represented in the remaining structure of the parent `dms3` folder.
 
 	> 	**Note:** the location of this folder structure is not important, but the relative folder structure and names must be preserved
 
-3. Copy the remaining `distributed-motion-surveillance` folder structure into an appropriate local folder
-
-   As an example, since the [Motion](https://motion-project.github.io/) software program installs into the `/etc` folder (as `/etc/motion`) on a Debian-based system, **DMS<sup>3</sup>** can also be installed into the `/etc` folder.
+3. Copy the remaining `dms3` folder structure into an appropriate local folder
 
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
 	```
-	distributed-motion-surveillance/
-	├── lib
-	│   ├── lib_audio.rb
-	│   ├── lib_config.rb
-	│   ├── lib_log.rb
-	│   ├── lib_mail.rb
-	│   ├── lib_motion.rb
-	│   ├── lib_network.rb
-	│   └── tests
-	│       ├── lib_audio_test.rb
-	│       ├── lib_config_test.rb
-	│       ├── lib_log_test.rb
-	│       ├── lib_motion_test.rb
-	│       ├── lib_network_test.rb
-	│       └── libs_test.rb
-	└── dms_server
-	    ├── daemons
-	    │   ├── systemd
-	    │   │   └── dms-server.service
-	    │   └── terminal
-	    │       └── server_daemon.rb
-	    ├── media
-	    │   ├── motion_start.wav
-	    │   └── motion_stop.wav
-	    ├── server_config.rb
-	    ├── server_connector.rb
-	    ├── server_logging.rb
-	    ├── server_manager.rb
-	    └── server_start.rb
+		dms3/
+		├── dms3libs
+		│   ├── lib_audio.go
+		│   ├── lib_config.go
+		│   ├── lib_log.go
+		│   ├── lib_motion_detector.go
+		│   ├── lib_network.go
+		│   ├── lib_util.go
+		│   └── tests
+		│       ├── lib_audio_test.go
+		│       ├── lib_audio_test.wav
+		│       ├── lib_config_test.go
+		│       ├── lib_log_test.go
+		│       ├── lib_network_test.go
+		│       └── lib_util_test.go
+		├── dms3server
+		│   ├── media
+		│   │   ├── motion_start.wav
+		│   │   └── motion_stop.wav
+		│   ├── server_config.go
+		│   ├── server_connector.go
+		│   └── server_manager.go
+		├── INSTALL.md
+		├── LICENSE
+		├── README.md
+		└── server_start.go
 	```
 
-#### Client Installation
-The distributed client component of **DMS<sup>3</sup>**, DMSClient, runs on each client endpoint, and is responsible physically starting/stopping its native video camera capture (starting/stopping its locally-installed instance of the [Motion](https://motion-project.github.io/) software package).
+#### **DMS<sup>3</sup>Client** Installation
+The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**, runs on each smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application.
 
- 1. Download the repository zip file from the [DMS repository](https://github.com/richbl/distributed-motion-surveillance) and unzip into a temporary folder
+ 1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-DMS3/releases) and unzip into a temporary folder
 
- 2. Optionally, delete non-essential top-level files, as well as the `dms_server` component (as this component is unused on the client), but preserve these component folders: `lib`, `dms_mail`, and `dms_client`.
+ 2. Optionally, delete non-essential top-level files, as well as the `dms3server` component (as this component is unused on the client), but preserve these component folders: `dms3libs`, `dms3mail`, and `dms3client`.
 
-	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**. They may be safely deleted.
+	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**: they may be safely deleted
 
-	The organization of the client components is represented in the remaining structure of the parent `distributed-motion-surveillance` folder.
+	The organization of the client components is represented in the remaining structure of the parent `dms3` folder.
 
 	> 	**Note:** the location of this folder structure is not important, but the relative folder structure and names must be preserved
 
- 3. Copy the remaining `distributed-motion-surveillance` folder structure into an appropriate local folder
-
-	As an example, since the [Motion](https://motion-project.github.io/) software program installs into the `/etc` folder (as `/etc/motion`) on a Debian-based system, **DMS<sup>3</sup>** can also be installed into the `/etc` folder.
+ 3. Copy the remaining `dms3` folder structure into an appropriate local folder
 
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
 	```
-	distributed-motion-surveillance/
-	├── lib
-	│   ├── lib_audio.rb
-	│   ├── lib_config.rb
-	│   ├── lib_log.rb
-	│   ├── lib_mail.rb
-	│   ├── lib_motion.rb
-	│   ├── lib_network.rb
-	│   └── tests
-	│       ├── lib_audio_test.rb
-	│       ├── lib_config_test.rb
-	│       ├── lib_log_test.rb
-	│       ├── lib_motion_test.rb
-	│       ├── lib_network_test.rb
-	│       └── libs_test.rb
-	├── dms_client
-	│   ├── client_config.rb
-	│   ├── client_connector.rb
-	│   ├── client_logging.rb
-	│   ├── client_manager.rb
-	│   ├── client_start.rb
-	│   └── daemons
-	│       ├── systemd
-	│       │   └── dms-client.service
-	│       └── terminal
-	│           └── client_daemon.rb
-	└── dms_mail
-	    ├── mail_config.rb
-	    ├── mail_logging.rb
-	    └── mail.rb
+		dms3/
+		├── client_start.go
+		├── dms3client
+		│   ├── client_config.go
+		│   ├── client_connector.go
+		│   └── client_manager.go
+		├── dms3libs
+		│   ├── lib_audio.go
+		│   ├── lib_config.go
+		│   ├── lib_log.go
+		│   ├── lib_motion_detector.go
+		│   ├── lib_network.go
+		│   ├── lib_util.go
+		│   └── tests
+		│       ├── lib_audio_test.go
+		│       ├── lib_audio_test.wav
+		│       ├── lib_config_test.go
+		│       ├── lib_log_test.go
+		│       ├── lib_network_test.go
+		│       └── lib_util_test.go
+		├── dms3mail
+		│   ├── mail_config.go
+		│   └── motion_mail.go
+		├── INSTALL.md
+		├── LICENSE
+		└── README.md
 	```
 
-### 4. Configure DMS Package Components
-#### Server Configuration
+### 4. Configure **DMS<sup>3</sup>** Package Components
+#### **DMS<sup>3</sup>Server** Configuration
 
-1. Edit **DMS<sup>3</sup>** `*_config.rb` configuration files
+1. Edit **DMS<sup>3</sup>** `*_config.go` configuration files
 
-	All server-side package components--**DMS<sup>3</sup>Server** and Lib--should be configured for proper operation. Each component includes a separate `*_config.rb` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
+	All server-side package components, **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Libs**, must be configured for proper operation. Each component includes a separate `*_config.go` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-	- 	`server_config.rb`, found in the `distributed_motion_surveillance/dms_server` folder, is used for:
+	- 	`server_config.go`, found in the `dms3/dms3server` folder, is used for:
 		- setting the server port
 		- determining what devices to monitor (MAC addresses)
-		- determining when to run the Always On feature (set time range)
+		- determining if and when to run the *Always On* feature (set time range)
 		- identifying audio files used when enabling/disabling the surveillance system
 		- configuring component logging options
-	- `lib_config.rb`, found in the `distributed_motion_surveillance/lib` folder, is used to configure the location of system-level commands (*e.g.*, /bin/ping). In general, these settings are OS-specific, and should not need to be changed when running on a Debian-based system
+	- `lib_config.go`, found in the `dms3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
-2. Optional: configure server to run the **DMS<sup>3</sup>Server** daemon at startup
+2. Optional: configure the server to run **DMS<sup>3</sup>Server** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon") on machine startup
 
-	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, this project does include two sample daemon files used for running **DMS<sup>3</sup>Server** as a daemon, depending on the use case:
-	- Running from terminal: the file to run is `server_daemon.rb`, located in  the `distributed_motion_surveillance/dms_server/daemons/terminal` folder
-	- Running with [`systemd`](https://en.wikipedia.org/wiki/Systemd): the file to use for configuration is `dms-server.service`, located in  the `distributed_motion_surveillance/dms_server/daemons/systemd` folder
+	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Server** configuration is `dms3server.service`, located in  the `dms3/dms3server/daemons/systemd` folder
 
-#### Client Configuration
+#### **DMS<sup>3</sup>Client** Configuration
 
-1. Edit **DMS<sup>3</sup>** `*_config.rb` configuration files
+1. Edit **DMS<sup>3</sup>** `*_config.go` configuration files
 
-	All client-side package components--DMSClient, DMSMail, and Lib--should be configured for proper operation. Each component includes a separate `*_config.rb` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
+	All client-side package components--**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>MotionMail**, and **DMS<sup>3</sup>Libs**--should be configured for proper operation. Each component includes a separate `*_config.go` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-- 	`client_config.rb`, found in the `distributed_motion_surveillance/dms_client` folder, is used for:
+- 	`client_config.go`, found in the `dms3/dms3client` folder, is used for:
 		- setting the server IP address and port
-		- setting the frequency to check to server for changes to motion state
+		- setting the frequency to check **DMS<sup>3</sup>Server** for motion state changes
 		- configuring component logging options
-- 	`mail_config.rb`, found in the `distributed_motion_surveillance/dms_mail` folder, is used for:
+- 	`mail_config.go`, found in the `dms3/dms3mail` folder, is used for:
 		- setting email configuration options
 		- configuring component logging options
-- `lib_config.rb`, found in the `distributed_motion_surveillance/lib` folder, is used to configure the location of system-level commands (*e.g.*, /bin/ping). In general, these settings are OS-specific, and should not need to be changed when running on a Debian-based system
+- `lib_config.go`, found in the `dms3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
-2. Optional: configure device client to run the DMSClient daemon at startup
+2. Optional: configure the device client to run **DMS<sup>3</sup>Client** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon") on machine startup
 
-	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, this project does include two sample daemon files used for running DMSClient as a daemon, depending on the use case:
-	- Running from terminal: the file to run is `client_daemon.rb`, located in  the `distributed_motion_surveillance/dms_client/daemons/terminal` folder
-	- Running with [`systemd`](https://en.wikipedia.org/wiki/Systemd): the file to use for configuration is `dms-client.service`, located in  the `distributed_motion_surveillance/dms_client/daemons/systemd` folder
+	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Client** configuration is `dms3client.service`, located in  the `dms3/dms3client/daemons/systemd` folder
+	
+##### **DMS<sup>3</sup>Client** Motion Detection Application Configuration
 
-### 5. Optional: Integrate DMSMail with [Motion](https://motion-project.github.io/) on the Device Client
+Smart device clients are required to have a motion detection application installed and configured in order to process video streamed from its video camera device.
 
-DMSMail is the **DMS<sup>3</sup>** client-side component responsible for sending an email whenever a valid movement event is triggered in [Motion](https://motion-project.github.io/). These events are triggered through the [*on_picture_save* command ](http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigOptionOnPictureSave "on_picture_save command") and the [on_movie_end command](http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigOptionOnMovieEnd "on_movie_end command") in [Motion](https://motion-project.github.io/) and are how DMSMail gets called.
+**DMS<sup>3</sup>Client**, by default, is configured to run the [Motion](https://motion-project.github.io/) motion detection application (of course, [Motion](https://motion-project.github.io/) must still be installed on device clients). However, regardless of the application chosen, all **DMS<sup>3</sup>Client** configuration details are managed in one file, called `lib_motion_detector.go` found in the `dms3/dms3libs` folder. This file defines two important attributes of the configured motion detection application:
+- The command needed to run the application (*e.g.*, `motion`)
+- The possible motion states defined by the application (*i.e.*, Start and Stop)
+
+In most cases, `lib_motion_detector.go` will not require configuration.
+
+### 5. Optional: Integrate **DMS<sup>3</sup>MotionMail** with [Motion](https://motion-project.github.io/) on the Device Client
+
+**DMS<sup>3</sup>MotionMail** is a stand-alone client-side component responsible for sending an email whenever a valid movement event is triggered in [Motion](https://motion-project.github.io/). These events are triggered through the [*on_picture_save* command ](http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigOptionOnPictureSave "on_picture_save command") and the [on_movie_end](http://www.lavrsen.dk/foswiki/bin/view/Motion/ConfigOptionOnMovieEnd "on_movie_end command") commands (called [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking")) in [Motion](https://motion-project.github.io/) and are how **DMS<sup>3</sup>MotionMail** gets called.
+
+> Note that **DMS<sup>3</sup>MotionMail** runs independently from, and has no dependencies upon **DMS<sup>3</sup>Client** (or **DMS<sup>3</sup>Server**). It can, in fact, be run standalone, apart from **DMS<sup>3</sup>** entirely.
 
 The syntax for these [Motion](https://motion-project.github.io/) commands are:
 
-	<on_picture_save|on_movie_end> <absolute path to ruby> <absolute path to mail.rb> <%D %f %t>
+	<on_picture_save|on_movie_end> <absolute path to go> <absolute path to motion_mail.go> <%D %f %t>
 
 These commands are saved in the [Motion](https://motion-project.github.io/) configuration file called `motion.conf` (located in `/etc/motion`).
 
 > **Note:** the parameters passed on this command (<%D %f %t>) are called *conversion specifiers* and are described in detail in the [Motion](https://motion-project.github.io/) documentation on [ConversionSpecifiers](http://www.lavrsen.dk/foswiki/bin/view/Motion/ConversionSpecifiers "ConversionSpecifiers").
 
-1. Update the [Motion](https://motion-project.github.io/) `motion.conf` file to call DMSMail on picture save (or movie end)
+1. Update the [Motion](https://motion-project.github.io/) `motion.conf` file to call **DMS<sup>3</sup>MotionMail** on picture save (or movie end)
 
 	The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
-		$ sudo sh -c "echo 'on_picture_save /usr/bin/ruby /etc/distributed-motion-surveillance/dms_mail/mail.rb %D %f %t' >> /etc/motion/motion.conf"
+		$ sudo sh -c "echo 'on_picture_save /usr/local/go/bin/go
+/etc/dms3/dms3mail/motion_mail.go %D %f %t' >> /etc/motion/motion.conf"
 
 2. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
 
@@ -220,28 +218,24 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 		$ sudo service motion restart
 
-DMSMail will now generate and send an email whenever [Motion](https://motion-project.github.io/) generates an `on_picture_save` or `on_movie_end` command.
+**DMS<sup>3</sup>MotionMail** will now generate and send an email whenever [Motion](https://motion-project.github.io/) generates an `on_picture_save` or `on_movie_end` command.
 
 ### 6. Configuration Testing & Troubleshooting
 
-At this point, **DMS<sup>3</sup>** should now be properly installed and configured on both the server and device clients. Once both the **DMS<sup>3</sup>Server** and DMSClient daemons are running, **DMS<sup>3</sup>** should:
+At this point, **DMS<sup>3</sup>** should now be properly installed and configured on both the server and device clients. Once both the **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client** daemons are running, **DMS<sup>3</sup>** should:
 
  1. Watch for relevant device IDs present on the network at a regular interval
  2. Start/stop [Motion](https://motion-project.github.io/) when relevant device IDs join/leave the network
- 3. Generate and send an email when an event of interest is generated by [Motion](https://motion-project.github.io/) (assuming that the DMSMail component has been installed)
+ 3. Generate and send an email when an event of interest is generated by [Motion](https://motion-project.github.io/) (assuming that the **DMS<sup>3</sup>MotionMail** component has been installed)
 
 #### Running a Typical Use Case
-The simplest means for testing **DMS<sup>3</sup>** is to remove a device from the network (*i.e.*, disable the device's networking capability), and watch (or listen, if so configured) **DMS<sup>3</sup>Server** and DMSClient process a motion state event (in this instance, **DMS<sup>3</sup>Server** will send an 'enable' to all clients). Recall also that individual **DMS<sup>3</sup>** components can be configured to generate execution log files.
+The procedure for testing **DMS<sup>3</sup>** is to remove a device from the network (*i.e.*, disable the device's networking capability), and watch (or listen, if so configured) **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client** process a motion state event (in this instance, **DMS<sup>3</sup>Server** will send a start message to all participating device clients). Recall also that individual **DMS<sup>3</sup>** components can be configured to generate multi-level log files (INFO, ERROR, FATAL, and DEBUG).
 
-#### Unit Testing the DMS Libs Component
-As an aid in troubleshooting issues (generally, they are configuration and environment-related), **DMS<sup>3</sup>** is shipped with a `tests` folder as part of the Lib component. This `tests` folder contains a number of Ruby unit tests designed to verify operation of each of the library packages used in the Lib component.
+#### Unit Testing the **DMS<sup>3</sup>Libs** Component
+As an aid in troubleshooting issues (generally, they are configuration-related), **DMS<sup>3</sup>** is shipped with a `tests` folder as part of the Lib component. This `tests` folder contains a number of unit tests designed to verify operation of each of the library packages used in **DMS<sup>3</sup>Libs**.
 
-To run a Lib component unit test, from the command line, change directory into the `tests` folder and run a test:
+To run a **DMS<sup>3</sup>Libs** component unit test, from the command line, change directory into the `tests` folder and choose a test to run:
 
-		$ ruby lib_config_test.rb
+		$ go test <*>.go
 
 The unit test results will be displayed as each test is completed.
-
-To run all available Lib component unit tests, from the command line, change directory into the `tests` folder and run a test:
-
-		$ ruby libs_test.rb
