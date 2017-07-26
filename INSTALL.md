@@ -54,11 +54,11 @@ The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis resp
 
 	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**: they may be safely deleted
 
-	The organization of the server components is represented in the remaining structure of the parent `dms3` folder.
+	The organization of the server components is represented in the remaining structure of the parent `go-distributed-motion-s3` folder.
 
 	> 	**Note:** the location of this folder structure is not important, but the relative folder structure and names must be preserved
 
-3. Copy the remaining `dms3` folder structure into an appropriate local folder
+3. Copy the remaining `go-distributed-motion-s3` folder structure into an appropriate local folder
 
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
@@ -85,9 +85,6 @@ The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis resp
 		│   ├── server_config.go
 		│   ├── server_connector.go
 		│   └── server_manager.go
-		├── INSTALL.md
-		├── LICENSE
-		├── README.md
 		└── server_start.go
 	```
 
@@ -100,11 +97,11 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 
 	> The top-level informational files (*e.g.*, `README.MD`, `INSTALL.MD`, *etc.*) are not required to properly configure and run **DMS<sup>3</sup>**: they may be safely deleted
 
-	The organization of the client components is represented in the remaining structure of the parent `dms3` folder.
+	The organization of the client components is represented in the remaining structure of the parent `go-distributed-motion-s3` folder.
 
 	> 	**Note:** the location of this folder structure is not important, but the relative folder structure and names must be preserved
 
- 3. Copy the remaining `dms3` folder structure into an appropriate local folder
+ 3. Copy the remaining `go-distributed-motion-s3` folder structure into an appropriate local folder
 
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
@@ -129,12 +126,10 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 		│       ├── lib_log_test.go
 		│       ├── lib_network_test.go
 		│       └── lib_util_test.go
-		├── dms3mail
-		│   ├── mail_config.go
-		│   └── motion_mail.go
-		├── INSTALL.md
-		├── LICENSE
-		└── README.md
+		└── dms3mail
+		    ├── mail_config.go
+		    └── motion_mail.go
+
 	```
 
 ### 4. Configure **DMS<sup>3</sup>** Package Components
@@ -150,7 +145,7 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 		- determining if and when to run the *Always On* feature (set time range)
 		- identifying audio files used when enabling/disabling the surveillance system
 		- configuring component logging options
-	- `lib_config.go`, found in the `go-distributed-motion-s3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
+	- `lib_config.go`, found in the `go-distributed-motion-s3/dms3libs` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
@@ -171,7 +166,7 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 - 	`mail_config.go`, found in the `go-distributed-motion-s3/dms3mail` folder, is used for:
 		- setting email configuration options
 		- configuring component logging options
-- `lib_config.go`, found in the `go-distributed-motion-s3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
+- `lib_config.go`, found in the `go-distributed-motion-s3/dms3libs` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
