@@ -1,10 +1,10 @@
-# Distributed Motion Surveillance Sense System (DMS<sup>3</sup>)
+# Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)
 
 ## 1. What Is DMS<sup>3</sup>?
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/28589668-f04733e8-7133-11e7-9c30-aeb0369cb1a1.png)
 
-**Distributed Motion Surveillance Sense System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detection applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
+**Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detection applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not home" and automatically enables or disables the surveillance system
 - Distributes video stream processing, reporting, and user notification to capable "smart" device clients (*e.g.*, the Raspberry Pi) which:
@@ -98,19 +98,17 @@ Note that **DMS<sup>3</sup>Server** *only signals to participating DMS<sup>3</su
 
 ### **DMS<sup>3</sup>Client** Operation
 
-> #### What Are DMS<sup>3</sup> "Smart" and "Less Smart" Device Clients?
-> - **DMS<sup>3</sup> Smart Device Clients** are hardware devices capable of processing video streams for motion detection locally "on-board" the hardware. Most computers and smaller **single board computers (IoT SBCs)** would be classed as smart device clients, including:
->   - Raspberry PIs (**DMS<sup>3</sup>** was tested with the RaspPi Model 2 and Model 3) with a configured camera
->   - Any IoT single board computer (SBC) capable of running a Unix-like operating system (see requirements section for details)
->   - Older unused personal computers with a camera and wired or wireless (WiFi) connectivity
->
-> Note that **DMS<sup>3</sup>** client software would need to run on a smart device client. **DMS<sup>3</sup>** system requirements are available in *DMS<sup>3</sup> System Requirements*
->
-> - **DMS<sup>3</sup> Less Smart Device Clients** are hardware devices--typically purpose-built--unable to process video streams for motion detection. These devices often generate raw video data, which is then consumed and processed over the network by an external device(s). Some examples of less smart device clients include:
->
-> - IP cameras (*e.g.*, the [Nest Cam](https://nest.com/cameras/ "Google Nest")), either wired or wireless (WiFi)
-> - Webcams, typically using USB connections and run from a desktop computer
->
+#### What Are DMS<sup>3</sup> "Smart" and "Less Smart" Device Clients?
+- **DMS<sup>3</sup> Smart Device Clients (SDCs)** are hardware devices capable of processing video streams for motion detection locally "on-board" the hardware. Most computers and smaller **single board computers (IoT SBCs)** would be classed as smart device clients, including:
+  - Raspberry PIs (**DMS<sup>3</sup>** was tested with the RaspPi Model 2 and Model 3) with a configured camera
+  - Any IoT single board computer (SBC) capable of running a Unix-like operating system (see requirements section for details)
+  - Older unused personal computers with a camera and wired or wireless (WiFi) connectivity
+	> Note that **DMS<sup>3</sup>** client software would need to run on a smart device client. **DMS<sup>3</sup>** system requirements are available in *DMS<sup>3</sup> System Requirements*
+
+- **DMS<sup>3</sup> Less Smart Device Clients (LSDCs)** are hardware devices--typically purpose-built--unable to process video streams for motion detection. These devices generate raw real-time video data, which is then consumed and processed by an external device(s), oftentimes over the network. Some examples of less smart device clients include:
+
+	- IP cameras (*e.g.*, the [Nest Cam](https://nest.com/cameras/ "Google Nest")), either wired or wireless (WiFi)
+	- Webcams, typically using USB connections and run from a desktop computer
 
 #### Running on Smart Device Clients
 **DMS<sup>3</sup>Client** runs on each configured smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application.

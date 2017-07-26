@@ -1,5 +1,5 @@
 [Unit]
-Description=Distributed Motion Surveillance Sense Service (DMS3) Server
+Description=Distributed Motion Sense Surveillance Service (DMS3) Server
 After=network.target
 
 [Service]

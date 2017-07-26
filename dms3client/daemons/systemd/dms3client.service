@@ -1,5 +1,5 @@
 [Unit]
-Description=Distributed Motion Surveillance Sense Service (DMS3) Client
+Description=Distributed Motion Sense Surveillance Service (DMS3) Client
 After=network.target
 
 [Service]

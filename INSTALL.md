@@ -1,6 +1,6 @@
-## Distributed Motion Surveillance Sense System (DMS<sup>3</sup>) Installation
+## Distributed Motion Sense Surveillance System (DMS<sup>3</sup>) Installation
 
-**Distributed Motion Surveillance Sense System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
+**Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not home" and automatically enables or disables the surveillance system
 - Distributes video stream processing, reporting, and user notification to capable "smart" device clients (*e.g.*, the Raspberry Pi)
@@ -234,3 +234,11 @@ To run a **DMS<sup>3</sup>Libs** component unit test, from the command line, cha
 		$ go test <*>.go
 
 The unit test results will be displayed as each test is completed.
+
+### Appendix A: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)
+Less smart device clients (LSDCs), such as IP cameras and webcams require special configuration in **DMS<sup>3</sup>**. Where smart device clients (SDCs) have both a camera device and a means for running a motion detection application on the same client, LSDCs just have a camera device, with limited or no means for processing video stream data.
+
+**DMS<sup>3</sup>** resolves this limitation by allowing **DMS<sup>3</sup>Client** to run on the same host as **DMS<sup>3</sup>Server**. In this configuration, the host runs **DMS<sup>3</sup>Server** as expected, serving participating SDCs on the network. With the addition of **DMS<sup>3</sup>Client** running locally, the host effectively becomes its own SDC, which can serve any LSDC connected to it.
+
+To configure a host to run both the **DMS<sup>3</sup>Client** and **DMS<sup>3</sup>Server** components to support LSDCs, be sure to install both components as described in the installation section of this document. 
+> **Note:** Do not delete either set of components, as both are needed in this configuration instance
