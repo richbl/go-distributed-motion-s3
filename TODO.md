@@ -4,6 +4,7 @@
    - proof for logic
    - walk procedures
    - test daemons (fail recovery)
+   - USE CASE of running **DMS<sup>3</sup>Client** on a proxy machine (not **DMS<sup>3</sup>Server**)
    - confirm project references are up-to-date
 - README.md
    - confirm project references are up-to-date
