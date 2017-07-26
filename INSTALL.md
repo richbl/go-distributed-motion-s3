@@ -17,13 +17,13 @@ The installation of **DMS<sup>3</sup>** includes:
    - **DMS<sup>3</sup>Client**: required, installed on smart device client(s)
    - **DMS<sup>3</sup>MotionMail**: optional, installed on smart device client(s)
    - **DMS<sup>3</sup>Libs**: required, installed on server and smart device client(s)
-> For details on **DMS<sup>3</sup>** components, see the project introduction ([`README.md`](https://github.com/richbl/go-DMS3/blob/master/README.md))
+> For details on **DMS<sup>3</sup>** components, see the project introduction ([`README.md`](https://github.com/richbl/go-go-distributed-motion-s3/blob/master/README.md))
 
 3. Optional: the integration of **DMS<sup>3</sup>MotionMail** with [Motion](https://motion-project.github.io/) (if used)
 
 ### 1. Confirm That All **DMS<sup>3</sup>** Requirements are Met Before Proceeding
 
-1. Review **DMS<sup>3</sup>** requirements section in the [`README.md`](https://github.com/richbl/go-DMS3/blob/master/README.md)
+1. Review **DMS<sup>3</sup>** requirements section in the [`README.md`](https://github.com/richbl/go-go-distributed-motion-s3/blob/master/README.md)
 
    To summarize these requirements: the operating system is Unix-like (*e.g.*, Linux); a motion detection application should be installed on all smart device clients; and the Go language should be installed and fully operational
   
@@ -48,7 +48,7 @@ The installation of **DMS<sup>3</sup>** includes:
 #### **DMS<sup>3</sup>Server** Installation
 The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis responsible for signaling the logic of enabling/disabling the video surveillance system to all device client endpoints. That is, **DMS<sup>3</sup>Server** sends--at a predetermined interval--either a `Start` or a `Stop` message to all **DMS<sup>3</sup>** device clients listening on the network.
 
-1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-DMS3/releases) and unzip into a temporary folder
+1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-go-distributed-motion-s3/releases) and unzip into a temporary folder
 
 2. Optionally, delete non-essential top-level files, as well as the `dms3client`, and `dms3mail` components folders (as these components are unused on the server), but preserve the `dms3libs` and `dms3server` component folders
 
@@ -63,7 +63,7 @@ The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis resp
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
 	```
-		dms3/
+		go-distributed-motion-s3/
 		├── dms3libs
 		│   ├── lib_audio.go
 		│   ├── lib_config.go
@@ -94,7 +94,7 @@ The server component of **DMS<sup>3</sup>**, **DMS<sup>3</sup>Server**, iis resp
 #### **DMS<sup>3</sup>Client** Installation
 The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**, runs on each smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application.
 
- 1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-DMS3/releases) and unzip into a temporary folder
+ 1. Download the repository zip file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-go-distributed-motion-s3/releases) and unzip into a temporary folder
 
  2. Optionally, delete non-essential top-level files, as well as the `dms3server` component (as this component is unused on the client), but preserve these component folders: `dms3libs`, `dms3mail`, and `dms3client`.
 
@@ -109,7 +109,7 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 	The folder tree below represents the complete project for the server (after non-essential top-level files and components have been removed):
 
 	```
-		dms3/
+		go-distributed-motion-s3/
 		├── client_start.go
 		├── dms3client
 		│   ├── client_config.go
@@ -144,19 +144,19 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 
 	All server-side package components, **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Libs**, must be configured for proper operation. Each component includes a separate `*_config.go` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-	- 	`server_config.go`, found in the `dms3/dms3server` folder, is used for:
+	- 	`server_config.go`, found in the `go-distributed-motion-s3/dms3server` folder, is used for:
 		- setting the server port
 		- determining what devices to monitor (MAC addresses)
 		- determining if and when to run the *Always On* feature (set time range)
 		- identifying audio files used when enabling/disabling the surveillance system
 		- configuring component logging options
-	- `lib_config.go`, found in the `dms3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
+	- `lib_config.go`, found in the `go-distributed-motion-s3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
 2. Optional: configure the server to run **DMS<sup>3</sup>Server** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon") on machine startup
 
-	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Server** configuration is `dms3server.service`, located in  the `dms3/dms3server/daemons/systemd` folder
+	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Server** configuration is `dms3server.service`, located in  the `go-distributed-motion-s3/dms3server/daemons/systemd` folder
 
 #### **DMS<sup>3</sup>Client** Configuration
 
@@ -164,26 +164,26 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 
 	All client-side package components--**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>MotionMail**, and **DMS<sup>3</sup>Libs**--should be configured for proper operation. Each component includes a separate `*_config.go` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-- 	`client_config.go`, found in the `dms3/dms3client` folder, is used for:
+- 	`client_config.go`, found in the `go-distributed-motion-s3/dms3client` folder, is used for:
 		- setting the server IP address and port
 		- setting the frequency to check **DMS<sup>3</sup>Server** for motion state changes
 		- configuring component logging options
-- 	`mail_config.go`, found in the `dms3/dms3mail` folder, is used for:
+- 	`mail_config.go`, found in the `go-distributed-motion-s3/dms3mail` folder, is used for:
 		- setting email configuration options
 		- configuring component logging options
-- `lib_config.go`, found in the `dms3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
+- `lib_config.go`, found in the `go-distributed-motion-s3/lib` folder, is used to configure the location of system-level commands (*e.g.*, `/bin/ping`). In general, these settings should not need to be changed when running on any Debian-based system
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
 2. Optional: configure the device client to run **DMS<sup>3</sup>Client** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon") on machine startup
 
-	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Client** configuration is `dms3client.service`, located in  the `dms3/dms3client/daemons/systemd` folder
+	As different Unix-like systems use different approaches for system service management and startup, this step is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd). The file to use for **DMS<sup>3</sup>Client** configuration is `dms3client.service`, located in  the `go-distributed-motion-s3/dms3client/daemons/systemd` folder
 	
 ##### **DMS<sup>3</sup>Client** Motion Detection Application Configuration
 
 Smart device clients are required to have a motion detection application installed and configured in order to process video streamed from its video camera device.
 
-**DMS<sup>3</sup>Client**, by default, is configured to run the [Motion](https://motion-project.github.io/) motion detection application (of course, [Motion](https://motion-project.github.io/) must still be installed on device clients). However, regardless of the application chosen, all **DMS<sup>3</sup>Client** configuration details are managed in one file, called `lib_motion_detector.go` found in the `dms3/dms3libs` folder. This file defines two important attributes of the configured motion detection application:
+**DMS<sup>3</sup>Client**, by default, is configured to run the [Motion](https://motion-project.github.io/) motion detection application (of course, [Motion](https://motion-project.github.io/) must still be installed on device clients). However, regardless of the application chosen, all **DMS<sup>3</sup>Client** configuration details are managed in one file, called `lib_motion_detector.go` found in the `go-distributed-motion-s3/dms3libs` folder. This file defines two important attributes of the configured motion detection application:
 - The command needed to run the application (*e.g.*, `motion`)
 - The possible motion states defined by the application (*i.e.*, Start and Stop)
 
@@ -208,7 +208,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 	The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
 		$ sudo sh -c "echo 'on_picture_save /usr/local/go/bin/go
-/etc/dms3/dms3mail/motion_mail.go %D %f %t' >> /etc/motion/motion.conf"
+/etc/go-distributed-motion-s3/dms3mail/motion_mail.go %D %f %t' >> /etc/motion/motion.conf"
 
 2. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
 

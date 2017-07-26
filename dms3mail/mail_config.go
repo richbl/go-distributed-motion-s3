@@ -28,7 +28,7 @@ const LogDevice = 0
 const LogFilename = "dms_mail.log"
 
 // LogLocation is the location of logfile (full path)
-// By default, this is in the local folder (e.g., /etc/dms3/dms3server)
+// By default, this is in the local folder (e.g., /etc/go-distributed-motion-s3/dms3server)
 // Ignored if LogLevel == 0 or LogDevice == 0
 //
 var LogLocation = dms3libs.GetPackageDir()
