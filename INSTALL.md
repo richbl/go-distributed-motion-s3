@@ -66,7 +66,7 @@ The **DMS<sup>3</sup>** server component, **DMS<sup>3</sup>Server**, is responsi
 		├── dms3server
 		│   ├── daemons
 		│   │   └── systemd
-		│   │		   └── dms3server.service
+		│   │       └── dms3server.service
 		│   ├── media
 		│   │   ├── motion_start.wav
 		│   │   └── motion_stop.wav
@@ -99,7 +99,7 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 		├── dms3client
 		│   ├── daemons
 		│   │   └── systemd
-		│   │		   └── dms3sclient.service
+		│   │	    └── dms3sclient.service
 		│   ├── client_config.go
 		│   ├── client_connector.go
 		│   └── client_manager.go
