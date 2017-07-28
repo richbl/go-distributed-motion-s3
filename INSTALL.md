@@ -11,7 +11,7 @@ The installation of **DMS<sup>3</sup>** includes:
 1. The installation and configuration of **DMS<sup>3</sup>** components which include:
 
    - **DMS<sup>3</sup>Server**: required, installed on server hardware
-   - **DMS<sup>3</sup>Client**: required, installed on smart device client(s) SDCs)
+   - **DMS<sup>3</sup>Client**: required, installed on smart device client(s) (SDCs)
    - **DMS<sup>3</sup>MotionMail**: optional, installed on smart device client(s)
    - **DMS<sup>3</sup>Libs**: required, installed on server and smart device client(s)
 
