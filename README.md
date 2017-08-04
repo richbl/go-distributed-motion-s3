@@ -160,6 +160,10 @@ Once configured, **DMS<sup>3</sup>MotionMail** will respond to these two [Motion
  - A Unix-like operating system installed on the server and smart client endpoints
 	 - While **DMS<sup>3</sup>** was written and tested under Linux (Ubuntu 17.04), there should be no reason why this won't work under other Linux distributions
  - The [Go](https://golang.org/ "Go") language, correctly installed and configured on **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** smart device clients
+
+	**DMS<sup>3</sup>** uses the following [Go](https://golang.org/ "Go") packages:
+	- "github.com/BurntSushi/toml" for TOML configuration file parsing
+	- "gopkg.in/gomail.v2" for managing SMTP mailing in **DMS<sup>3</sup>MotionMail**
   - A motion detection application, such as [Motion](https://motion-project.github.io/ "Motion"), correctly installed and configured with appropriate video devices configured on all smart device clients
  - Specific Unix-like commands and tools used by **DMS<sup>3</sup>** components include:
 	 - [arp](http://en.wikipedia.org/wiki/Address_Resolution_Protocol "arp"): address resolution protocol
