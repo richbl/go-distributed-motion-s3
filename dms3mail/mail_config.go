@@ -2,65 +2,51 @@ package dms3mail
 
 import (
 	"go-distributed-motion-s3/dms3libs"
+	"log"
+	"os"
+
+	"github.com/BurntSushi/toml"
 )
 
-// LogLevel sets the log levels for application logging using the following table:
-//
-//		0 - OFF, no logging
-//		1 - FATAL, report fatal events
-//		2 - INFO, report informational events
-//    4 - DEBUG, report debugging events
-//
-const LogLevel = 2
+// MailConfig contains dms3mail configuration settings read from TOML file
+var MailConfig *structSettings
 
-// LogDevice determines to what device logging should be set using the following table:
-//
-//		0 - STDOUT (terminal)
-//		1 - log file
-//
-// Ignored if LogLevel == 0
-//
-const LogDevice = 0
+// motion mail configuration parameters
+type structSettings struct {
+	EmailFrom              string
+	EmailTo                string
+	EmailBody              string
+	SMTPAddress            string
+	SMTPPort               int
+	SMTPDomain             string
+	SMTPUsername           string
+	SMTPPassword           string
+	SMTPAuthentication     string
+	SMTPEnableStartTLSAuto bool
+	Logging                *dms3libs.StructLogging
+}
 
-// LogFilename is the logging filename
-// Ignored if LogLevel == 0 or LogDevice == 0
-//
-const LogFilename = "dms_mail.log"
+// LoadMailConfig loads a TOML configuration file and parses entries into parameter values
+func LoadMailConfig(configFile string) {
 
-// LogLocation is the location of logfile (full path)
-// By default, this is in the local folder (e.g., /etc/go-distributed-motion-s3/dms3server)
-// Ignored if LogLevel == 0 or LogDevice == 0
-//
-var LogLocation = dms3libs.GetPackageDir()
+	if _, err := os.Stat(configFile); os.IsNotExist(err) {
+		log.Fatalln(configFile + " structConfig file not found")
+	} else if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-// EmailFrom is the email sender
-const EmailFrom = "motion@businesslearninginc.com"
+	if _, err := toml.DecodeFile(configFile, &MailConfig); err != nil {
+		log.Fatalln(err.Error())
+	}
 
-// EmailTo is the email recipient
-const EmailTo = "user@gmail.com"
+	setLogLocation(MailConfig)
 
-// EmailBody is the email body
-// Note that reserved words use the syntax !ALLCAPS and are parsed and replaced
-//
-const EmailBody = "Motion detected an event of importance. The event (!EVENT) shows !PIXELS pixels changed, and was captured by Camera !CAMERA."
+}
 
-// SMTPAddress is the SMTP address of the receipient
-const SMTPAddress = "smtp.gmail.com"
+func setLogLocation(config *structSettings) {
 
-// SMTPPort is the port used by the recipient email account
-const SMTPPort = 587
+	if config.Logging.LogLocation == "" || !dms3libs.IsFile(config.Logging.LogLocation) {
+		config.Logging.LogLocation = dms3libs.GetPackageDir()
+	}
 
-// SMTPDomain is the recieving email domain
-const SMTPDomain = "localhost"
-
-// SMTPUsername is the username of the recipient
-const SMTPUsername = "user"
-
-// SMTPPassword is the password of the recipient
-const SMTPPassword = "password"
-
-// SMTPAuthentication is the email server authentication scheme
-const SMTPAuthentication = "plain"
-
-// SMTPEnableStartTLSAuto indicates whether TLS is used
-const SMTPEnableStartTLSAuto = true
+}

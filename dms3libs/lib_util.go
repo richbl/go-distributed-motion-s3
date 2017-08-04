@@ -74,7 +74,7 @@ func StripRet(value []byte) []byte {
 // GetPIDCount returns the count of application PIDs
 func GetPIDCount(application string) int {
 
-	res, _ := RunCommand(SysCommand["PGREP"] + " -x -c " + application)
+	res, _ := RunCommand(LibConfig.SysCommands.PGREP + " -x -c " + application)
 	count, _ := strconv.Atoi(string(StripRet(res)))
 	return count
 
@@ -90,7 +90,7 @@ func GetPIDList(application string) (int, []int) {
 		return 0, []int{0}
 	default: // one or more processes running
 		{
-			res, _ := RunCommand(SysCommand["PGREP"] + " -x " + application)
+			res, _ := RunCommand(LibConfig.SysCommands.PGREP + " -x " + application)
 			strPIDs := strings.Split(string(StripRet(res)), "\n")
 
 			PIDs := []int{}

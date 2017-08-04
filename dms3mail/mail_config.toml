@@ -1,0 +1,66 @@
+# Distributed-Motion-S3 (DMS3) MAIL configuration file
+# TOML 0.4.0
+
+# EmailFrom is the email sender
+EmailFrom = "motion@businesslearninginc.com"
+
+# EmailTo is the email recipient
+EmailTo = "user@gmail.com"
+
+# EmailBody is the email body
+# Note that reserved words use the syntax !ALLCAPS and are parsed and replaced
+#
+EmailBody = "Motion detected an event of importance. The event (!EVENT) shows !PIXELS pixels changed, and was captured by Camera !CAMERA."
+
+# SMTPAddress is the SMTP address of the recipient
+SMTPAddress = "smtp.gmail.com"
+
+# SMTPPort is the port used by the recipient email account
+SMTPPort = 587
+
+# SMTPDomain is the receiving email domain
+SMTPDomain = "localhost"
+
+# SMTPUsername is the username of the recipient
+SMTPUsername = "user"
+
+# SMTPPassword is the password of the recipient
+SMTPPassword = "password"
+
+# SMTPAuthentication is the email server authentication scheme
+SMTPAuthentication = "plain"
+
+# SMTPEnableStartTLSAuto indicates whether TLS is used
+SMTPEnableStartTLSAuto = true
+
+	[logging]
+	# LogLevel sets the log levels for application logging using the following table:
+	#
+	#  0 - OFF, no logging
+	#  1 - FATAL, report fatal events
+	#	2 - INFO, report informational events
+	#  4 - DEBUG, report debugging events
+	#
+	LogLevel = 2
+
+	# LogDevice determines to what device logging should be set using the following table:
+	#
+	#  0 - STDOUT (terminal)
+	#	1 - log file
+	#
+	# Ignored if LogLevel == 0
+	#
+	LogDevice = 0
+
+	# LogFilename is the logging filename
+	# Ignored if LogLevel == 0 or LogDevice == 0
+	#
+	LogFilename = "dms_mail.log"
+
+	# LogLocation is the location of logfile (absolute path)
+	# By default, the value is "" (empty string), which sets to the path of the local folder
+	# (e.g., /etc/go-distributed-motion-s3/dms3mail)... any other path will be used if 
+	# valid, else set to local folder
+	# Ignored if LogLevel == 0 or LogDevice == 0
+	#
+	LogLocation = ""

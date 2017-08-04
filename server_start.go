@@ -7,7 +7,12 @@ import (
 
 func main() {
 
-	dms3libs.CreateLogger(dms3server.LogLevel, dms3server.LogDevice, dms3server.LogLocation, dms3server.LogFilename)
-	dms3server.StartServer(dms3server.ServerPort)
+	dms3libs.LoadLibConfig("dms3libs/lib_config.toml")
+	dms3server.LoadServerConfig("dms3server/server_config.toml")
+
+	cfg := dms3server.ServerConfig.Logging
+	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+
+	dms3server.StartServer(dms3server.ServerConfig.ServerPort)
 
 }

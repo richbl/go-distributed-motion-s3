@@ -3,6 +3,7 @@ package dms3libs
 import (
 	"log"
 	"os"
+	"path/filepath"
 )
 
 var (
@@ -43,7 +44,7 @@ func CreateLogger(logLevel int, logDevice int, logLocation string, logFilename s
 			f = os.Stdout
 		case 1:
 			{
-				if f, err = os.OpenFile(logFilename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); err != nil {
+				if f, err = os.OpenFile(filepath.Join(logLocation, logFilename), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); err != nil {
 					log.Fatalln(err)
 				}
 			}

@@ -37,13 +37,13 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 	if dms3libs.MotionDetector.State() != state {
 		dms3libs.MotionDetector.SetState(state)
 
-		if PlayAudio == 1 {
+		if ServerConfig.PlayAudio == 1 {
 
 			switch state {
 			case dms3libs.Start:
-				dms3libs.PlayAudio(AudioMotionDetectorStart)
+				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStart)
 			case dms3libs.Stop:
-				dms3libs.PlayAudio(AudioMotionDetectorStop)
+				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStop)
 			}
 
 		}
@@ -59,7 +59,7 @@ func checkIntervalExpired() bool {
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 	curTime := dms3libs.GetCurTime()
 
-	if (curTime - checkIntervalTimestamp) >= CheckInterval {
+	if (curTime - checkIntervalTimestamp) >= ServerConfig.CheckInterval {
 		checkIntervalTimestamp = curTime
 		return true
 	}
@@ -69,17 +69,17 @@ func checkIntervalExpired() bool {
 }
 
 // timeInRange checks to see if the current time is within the bounds of the 'always on' range
-// (if that ScanForTime option is enabled)
+// (if the ScanForTime option is enabled)
 //
 func timeInRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if ScanForTime == 0 {
-		return false
+	if ServerConfig.ScanForTime {
+		return calcDataRange()
 	}
 
-	return calcDataRange()
+	return false
 
 }
 
@@ -94,11 +94,11 @@ func calcDataRange() bool {
 
 	curTime := dms3libs.To24H(time.Now())
 
-	if AlwaysOnRange[Start] > AlwaysOnRange[End] {
-		return curTime >= AlwaysOnRange[Start] || curTime < AlwaysOnRange[End]
+	if ServerConfig.AlwaysOnRange[Start] > ServerConfig.AlwaysOnRange[End] {
+		return curTime >= ServerConfig.AlwaysOnRange[Start] || curTime < ServerConfig.AlwaysOnRange[End]
 	}
 
-	return curTime >= AlwaysOnRange[Start] && curTime < AlwaysOnRange[End]
+	return curTime >= ServerConfig.AlwaysOnRange[Start] && curTime < ServerConfig.AlwaysOnRange[End]
 
 }
 
@@ -108,7 +108,7 @@ func calcDataRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	dms3libs.PingHosts(IPBase, IPRange)
-	return dms3libs.FindMacs(MacsToFind)
+	dms3libs.PingHosts(ServerConfig.IPBase, ServerConfig.IPRange)
+	return dms3libs.FindMacs(ServerConfig.MacsToFind)
 
 }

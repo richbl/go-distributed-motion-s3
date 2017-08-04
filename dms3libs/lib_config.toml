@@ -1,0 +1,11 @@
+# Distributed-Motion-S3 (DMS3) LIBS configuration file
+# TOML 0.4.0
+
+# syscommands provide a location mapping of required system commands
+[syscommands]
+	APLAY = "/usr/bin/aplay" 
+	ARP   = "/usr/sbin/arp"
+	CAT   = "/bin/cat"
+	GREP  = "/bin/grep"
+	PGREP = "/usr/bin/pgrep"
+	PING  = "/bin/ping"

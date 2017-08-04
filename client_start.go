@@ -6,6 +6,13 @@ import (
 )
 
 func main() {
-	dms3libs.CreateLogger(dms3client.LogLevel, dms3client.LogDevice, dms3client.LogLocation, dms3client.LogFilename)
-	dms3client.StartClient(dms3client.ServerIP, dms3client.ServerPort)
+
+	dms3libs.LoadLibConfig("dms3libs/lib_config.toml")
+	dms3client.LoadClientConfig("dms3client/client_config.toml")
+
+	cfg := dms3client.ClientConfig.Logging
+	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+
+	dms3client.StartClient(dms3client.ClientConfig.ServerIP, dms3client.ClientConfig.ServerPort)
+
 }

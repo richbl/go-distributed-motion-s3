@@ -21,7 +21,7 @@ func StartClient(ServerIP string, ServerPort int) {
 			go processClientRequest(conn)
 		}
 
-		time.Sleep(CheckInterval * time.Second)
+		time.Sleep(time.Duration(ClientConfig.CheckInterval) * time.Second)
 	}
 
 }
