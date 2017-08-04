@@ -47,7 +47,7 @@ func parseEvent(eventDetails *structEventDetails) {
 	flag.Parse()
 
 	if flag.NFlag() != 3 {
-		dms3libs.LogFatal("missing arguments passed... exiting")
+		dms3libs.LogFatal("only " + strconv.Itoa(flag.NFlag()) + " argument(s) passed... exiting")
 	}
 
 	if !dms3libs.IsFile(*filename) {

@@ -1,6 +1,6 @@
 ## Distributed Motion Sense Surveillance System (DMS<sup>3</sup>) Installation
 
-**Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, and [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
+**Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detector applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, or [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not home" and automatically enables or disables the surveillance system
 - Distributes video stream processing, reporting, and user notification to capable "smart" device clients, or SDCs (*e.g.*, the Raspberry Pi)
@@ -214,8 +214,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 	The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
-		$ sudo sh -c "echo 'on_picture_save /usr/local/go/bin/go
-/etc/go-distributed-motion-s3/dms3mail/motion_mail.go %D %f %t' >> /etc/motion/motion.conf"
+		$ sudo sh -c "echo 'on_picture_save /usr/local/go/bin/go /etc/go-distributed-motion-s3/dms3mail/motion_mail.go -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
 
 2. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
 
