@@ -11,18 +11,11 @@ import (
 var LibConfig *structConfig
 
 type structConfig struct {
-	SysCommands structSysCommands
+	SysCommands mapSysCommands
 }
 
-// structSysCommands provides a location mapping of required system commands
-type structSysCommands struct {
-	APLAY string
-	ARP   string
-	CAT   string
-	GREP  string
-	PGREP string
-	PING  string
-}
+// mapSysCommands provides a location mapping of required system commands
+type mapSysCommands map[string]string
 
 // StructLogging comment
 type StructLogging struct {

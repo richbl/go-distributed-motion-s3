@@ -2,8 +2,14 @@ package dms3libs_test
 
 import (
 	"go-distributed-motion-s3/dms3libs"
+	"strconv"
 	"testing"
+	"time"
 )
+
+func init() {
+	dms3libs.LoadLibConfig("../../dms3libs/lib_config.toml")
+}
 
 func TestPrintFuncName(t *testing.T) {
 
@@ -79,6 +85,31 @@ func TestGetPID(t *testing.T) {
 	testApplication := "gocode"
 
 	if dms3libs.GetPID(testApplication) == 0 {
+		t.Error("command failed")
+	}
+
+}
+
+func TestStartStopApplication(t *testing.T) {
+
+	// ACTION: set to known installed application configured to run as service
+	testApplication := "motion"
+
+	if !dms3libs.StartStopApplication(dms3libs.Start, testApplication) {
+		t.Error("start failed")
+	}
+
+	if !dms3libs.StartStopApplication(dms3libs.Stop, testApplication) {
+		t.Error("stop failed")
+	}
+
+}
+
+func TestGetCurTime(t *testing.T) {
+
+	curTime, _ := strconv.Atoi(dms3libs.To24H(time.Now()))
+
+	if dms3libs.GetCurTime() != curTime {
 		t.Error("command failed")
 	}
 

@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+func init() {
+	dms3libs.LoadLibConfig("../../dms3libs/lib_config.toml")
+}
+
 func TestPingHosts(t *testing.T) {
 
 	// ACTION: set active IP net address details
@@ -24,7 +28,7 @@ func TestFindMacs(t *testing.T) {
 	var localMAC []string
 
 	// determine local MAC address for testing
-	cmd := dms3libs.Config.SysCommands.CAT + " /sys/class/net/" + curInterface + "/address"
+	cmd := dms3libs.LibConfig.SysCommands["CAT"] + " /sys/class/net/" + curInterface + "/address"
 	if res, err := exec.Command("bash", "-c", cmd).Output(); err != nil {
 		t.Error("Unable to determine local MAC address for testing")
 	} else {

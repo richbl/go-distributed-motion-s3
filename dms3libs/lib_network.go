@@ -11,7 +11,7 @@ import (
 func PingHosts(ipBase string, ipRange []int) {
 
 	var wg sync.WaitGroup
-	cmd := LibConfig.SysCommands.PING + " -q -W 1 -c 1 " + ipBase
+	cmd := LibConfig.SysCommands["PING"] + " -q -W 1 -c 1 " + ipBase
 
 	for i := ipRange[0]; i < ipRange[1]; i++ {
 		wg.Add(1)
@@ -42,10 +42,10 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	res, err := RunCommand(LibConfig.SysCommands.ARP + " -n | " + LibConfig.SysCommands.GREP + " -E '" + macListRegex + "'")
+	res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -E '" + macListRegex + "'")
 
 	if err != nil {
-		LogInfo(LibConfig.SysCommands.ARP + " command code: " + err.Error())
+		LogInfo(LibConfig.SysCommands["ARP"] + " command code: " + err.Error())
 	}
 
 	return (len(string(res)) > 0)
