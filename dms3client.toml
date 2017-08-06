@@ -27,7 +27,7 @@ ServerPort = 1965
 	#
 	# Ignored if LogLevel == 0
 	#
-	LogDevice = 0
+	LogDevice = 1
 
 	# LogFilename is the logging filename
 	# Ignored if LogLevel == 0 or LogDevice == 0
@@ -35,9 +35,6 @@ ServerPort = 1965
 	LogFilename = "dms3client.log"
 
 	# LogLocation is the location of logfile (absolute path)
-	# By default, the value is "" (empty string), which sets to the path of the local folder
-	# (e.g., /etc/go-distributed-motion-s3/dms3client)... any other path will be used if 
-			# valid, else set to local folder
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogLocation = ""
+	LogLocation = "/var/log"

@@ -2,7 +2,7 @@
 # TOML 0.4.0
 
 # EmailFrom is the email sender
-EmailFrom = "motion@businesslearninginc.com"
+EmailFrom = "dms3mail@businesslearninginc.com"
 
 # EmailTo is the email recipient
 EmailTo = "user@gmail.com"
@@ -41,7 +41,7 @@ SMTPEnableStartTLSAuto = true
 	#	2 - INFO, report informational events
 	#  4 - DEBUG, report debugging events
 	#
-	LogLevel = 2
+	LogLevel = 4
 
 	# LogDevice determines to what device logging should be set using the following table:
 	#
@@ -55,12 +55,9 @@ SMTPEnableStartTLSAuto = true
 	# LogFilename is the logging filename
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogFilename = "dms_mail.log"
+	LogFilename = "dms3mail.log"
 
 	# LogLocation is the location of logfile (absolute path)
-	# By default, the value is "" (empty string), which sets to the path of the local folder
-	# (e.g., /etc/go-distributed-motion-s3/dms3mail)... any other path will be used if 
-	# valid, else set to local folder
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogLocation = ""
+	LogLocation = "/var/log"

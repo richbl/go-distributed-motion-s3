@@ -7,8 +7,8 @@ import (
 
 func main() {
 
-	dms3libs.LoadLibConfig("dms3libs/lib_config.toml")
-	dms3client.LoadClientConfig("dms3client/client_config.toml")
+	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs.toml")
+	dms3client.LoadClientConfig("/etc/distributed-motion-s3/dms3client.toml")
 
 	cfg := dms3client.ClientConfig.Logging
 	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)

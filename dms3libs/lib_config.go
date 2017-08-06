@@ -2,7 +2,6 @@ package dms3libs
 
 import (
 	"log"
-	"os"
 
 	"github.com/BurntSushi/toml"
 )
@@ -17,7 +16,7 @@ type structConfig struct {
 // mapSysCommands provides a location mapping of required system commands
 type mapSysCommands map[string]string
 
-// StructLogging comment
+// StructLogging is used for dms3 logging
 type StructLogging struct {
 	LogLevel    int
 	LogDevice   int
@@ -28,10 +27,8 @@ type StructLogging struct {
 // LoadLibConfig loads a TOML configuration file and parses entries into parameter values
 func LoadLibConfig(configFile string) {
 
-	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		log.Fatalln(configFile + " structConfig file not found")
-	} else if err != nil {
-		log.Fatalln(err.Error())
+	if !IsFile(configFile) {
+		log.Fatalln(configFile + " file not found")
 	}
 
 	if _, err := toml.DecodeFile(configFile, &LibConfig); err != nil {

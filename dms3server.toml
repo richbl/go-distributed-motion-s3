@@ -67,7 +67,7 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	#
 	# Ignored if LogLevel == 0
 	#
-	LogDevice = 0
+	LogDevice = 1
 
 	# LogFilename is the logging filename
 	# Ignored if LogLevel == 0 or LogDevice == 0
@@ -75,9 +75,6 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	LogFilename = "dms3server.log"
 
 	# LogLocation is the location of logfile (absolute path)
-	# By default, the value is "" (empty string), which sets to the path of the local folder
-	# (e.g., /etc/go-distributed-motion-s3/dms3server)... any other path will be used if 
-	# valid, else set to local folder
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogLocation = ""
+	LogLocation = "/var/log"
