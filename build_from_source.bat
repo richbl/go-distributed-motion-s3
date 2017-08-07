@@ -6,21 +6,21 @@ CONF_DIR="/etc/distributed-motion-s3"  # default location to store config files 
 
 # build dms3 components
 #
-echo 'building dms3 components...'
+printf "%s\n" "building dms3 components..."
 go build go_dms3client.go
 go build go_dms3server.go
 go build go_dms3mail.go
 
 # move components into /usr/local/bin
 #
-echo 'moving dms3 components to' ${EXEC_DIR} '(root permissions expected)...'
+printf "%s\n" "moving dms3 components to ${EXEC_DIR} (root permissions required)..."
 mv go_dms3client ${EXEC_DIR}
 mv go_dms3server ${EXEC_DIR}
 mv go_dms3mail ${EXEC_DIR}
 
 # copy TOML files into /etc/distributed-motion-s3
 #
-echo 'copying dms3 component config files to' ${CONF_DIR} '(root permissions expected)...'
+printf "%s\n" "copying dms3 component config files to ${CONF_DIR} (root permissions required)..."
 mkdir -p ${CONF_DIR}
 cp dms3client.toml ${CONF_DIR}
 cp dms3libs.toml ${CONF_DIR}
