@@ -58,7 +58,7 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	#  2 - INFO, report informational events
 	#  4 - DEBUG, report debugging events
 	#
-	LogLevel = 4
+	LogLevel = 1
 
 	# LogDevice determines to what device logging should be set using the following table:
 	#
@@ -67,7 +67,7 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	#
 	# Ignored if LogLevel == 0
 	#
-	LogDevice = 1
+	LogDevice = 0
 
 	# LogFilename is the logging filename
 	# Ignored if LogLevel == 0 or LogDevice == 0

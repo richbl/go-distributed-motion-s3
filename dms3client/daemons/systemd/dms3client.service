@@ -5,8 +5,7 @@ After=network.target
 [Service]
 Type=simple
 Restart=on-failure
-ExecStart=/usr/local/go/bin/go /etc/go-distributed-motion-s3/server_start.go
-
+ExecStart=/usr/local/bin/go_dms3client
 
 [Install]
 WantedBy=multi-user.target

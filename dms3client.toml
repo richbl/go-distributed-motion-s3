@@ -2,7 +2,7 @@
 # TOML 0.4.0
 
 # CheckInterval is the interval (in seconds) for checking the dms server
-CheckInterval = 5
+CheckInterval = 10
 
 # ServerIP is the address on which the dms server is running
 ServerIP = "localhost"
@@ -18,7 +18,7 @@ ServerPort = 1965
 	#	2 - INFO, report informational events
 	#  4 - DEBUG, report debugging events
 	#
-	LogLevel = 4
+	LogLevel = 1
 
 	# LogDevice determines to what device logging should be set using the following table:
 	#
@@ -27,7 +27,7 @@ ServerPort = 1965
 	#
 	# Ignored if LogLevel == 0
 	#
-	LogDevice = 1
+	LogDevice = 0
 
 	# LogFilename is the logging filename
 	# Ignored if LogLevel == 0 or LogDevice == 0
