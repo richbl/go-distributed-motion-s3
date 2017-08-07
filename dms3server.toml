@@ -77,4 +77,4 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	# LogLocation is the location of logfile (absolute path)
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogLocation = "/var/log"
+	LogLocation = "/var/log/dms3"

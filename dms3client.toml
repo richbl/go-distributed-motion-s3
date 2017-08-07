@@ -37,4 +37,4 @@ ServerPort = 1965
 	# LogLocation is the location of logfile (absolute path)
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
-	LogLocation = "/var/log"
+	LogLocation = "/var/log/dms3"
