@@ -177,7 +177,7 @@ In most cases when using [Motion](https://motion-project.github.io/), `lib_detec
 
 The syntax for these [Motion](https://motion-project.github.io/) commands are:
 
-	<on_picture_save|on_movie_end> <absolute path to go> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
+	<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
 
 These commands are saved in the [Motion](https://motion-project.github.io/) configuration file called `motion.conf` (located in `/etc/motion`).
 
@@ -187,7 +187,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 	The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
-		$ sudo sh -c "echo 'on_picture_save /usr/local/go/bin/go /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+		$ sudo sh -c "echo 'on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
 
 2. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
 

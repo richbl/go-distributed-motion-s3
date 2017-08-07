@@ -145,7 +145,7 @@ When using [Motion](https://motion-project.github.io/ "Motion"), **DMS<sup>3</su
 
 The syntax for these [Motion](https://motion-project.github.io/ "Motion") commands are:
 
-	<on_picture_save|on_movie_end> <absolute path to go> <absolute path to motion_mail.go> <%D %f %t>
+	<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
 
 These commands are managed through the [Motion](https://motion-project.github.io/ "Motion") configuration file called `motion.conf`.
 
