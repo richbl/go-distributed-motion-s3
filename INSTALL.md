@@ -58,7 +58,7 @@ The **DMS<sup>3</sup>** server component, **DMS<sup>3</sup>Server**, is responsi
 
 To install **DMS<sup>3</sup>Server**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3server` into a location on the server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/local/share/bin`)
+1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3server` into a location on the server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
 2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3server.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3server.go`
 3. Confirm that the user running `go_dms3server` has proper permissions to create a log file (`dms3server.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3server.toml`
 
@@ -69,7 +69,7 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 
 To install **DMS<sup>3</sup>Client**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3client` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/local/share/bin`)
+1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3client` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
 2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3client.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3client.go`
 3. Confirm that the user running `go_dms3client` has proper permissions to create a log file (`dms3client.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3client.toml`
 
@@ -81,7 +81,7 @@ If a  smart device client (SDC) is running the [Motion](https://motion-project.g
 
 To install **DMS<sup>3</sup>Mail**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3mail` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/local/share/bin`)
+1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3mail` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
 2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3mail.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3mail.go`
 3. Confirm that the user running `go_dms3mail` has proper permissions to create a log file (`dms3mail.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3mail.toml`
 
