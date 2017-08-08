@@ -13,16 +13,16 @@ go build go_dms3mail.go
 
 # move components into /usr/local/bin
 #
-printf "%s\n" "moving dms3 components to ${EXEC_DIR} (root permissions required)..."
+printf "%s\n" "moving dms3 components to ${EXEC_DIR} (root permissions expected)..."
 mv go_dms3client ${EXEC_DIR}
 mv go_dms3server ${EXEC_DIR}
 mv go_dms3mail ${EXEC_DIR}
 
 # copy TOML files into /etc/distributed-motion-s3
 #
-printf "%s\n" "copying dms3 component config files to ${CONF_DIR} (root permissions required)..."
+printf "%s\n" "copying dms3 component config files to ${CONF_DIR} (root permissions expected)..."
 mkdir -p ${CONF_DIR}
-cp dms3client.toml ${CONF_DIR}
-cp dms3libs.toml ${CONF_DIR}
-cp dms3server.toml ${CONF_DIR}
-cp dms3mail.toml ${CONF_DIR}
+cp -i dms3client.toml ${CONF_DIR}
+cp -i dms3server.toml ${CONF_DIR}
+cp -i dms3mail.toml ${CONF_DIR}
+cp -i dms3libs.toml ${CONF_DIR}
