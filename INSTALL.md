@@ -8,17 +8,18 @@
 
 The installation of **DMS<sup>3</sup>** includes:
 
-1. The installation and configuration of **DMS<sup>3</sup>** components which include:
+1. The installation and configuration of **DMS<sup>3</sup>** components on participating hardware devices:
 
-   - **DMS<sup>3</sup>Server**: required, installed on server hardware
-   - **DMS<sup>3</sup>Client**: required, installed on smart device client(s) (SDCs)
-   - **DMS<sup>3</sup>Libs**: required, installed on server and smart device client(s) (SDCs)
-   - **DMS<sup>3</sup>Mail**: optional, installed on smart device client(s) (SDCs)
-
+	| Component | Install Location | Required? |
+	| :------------- | :------------- | :------------- |
+	| **DMS<sup>3</sup>Server** | server | Yes |
+	| **DMS<sup>3</sup>Client** | smart device clients (SDCs) | Yes |
+	| **DMS<sup>3</sup>Libs** | server, SDCs | Yes |
+	| **DMS<sup>3</sup>Mail** | SDCs | Optional |
 
 2. Required on every participating SDC, the installation and configuration of a motion detection application, such as [Motion](https://motion-project.github.io/ "Motion") or the [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") Library
 
-3. Optional: the integration of **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) (if used)
+3. Optional: if using [Motion](https://motion-project.github.io/), the integration of the **DMS<sup>3</sup>Mail** component to manage real-time email notification of surveillance events
 
 ### 1. Confirm That All **DMS<sup>3</sup>** Requirements are Met Before Proceeding
 
@@ -162,12 +163,14 @@ In most cases when using [Motion](https://motion-project.github.io/), `lib_detec
 
    In the section called Daemon, set the `daemon` variable to `on` as noted below:
 
-	    ############################################################
-	    # Daemon
-	    ############################################################
+	```
+	############################################################
+	# Daemon
+	############################################################
 
-	    # Start in daemon (background) mode and release terminal (default: off)
-	    daemon on
+	# Start in daemon (background) mode and release terminal (default: off)
+	daemon on
+	```
 
 ### 5. Optional: Integrate **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) on the Device Client
 
@@ -177,7 +180,9 @@ In most cases when using [Motion](https://motion-project.github.io/), `lib_detec
 
 The syntax for these [Motion](https://motion-project.github.io/) commands are:
 
-	<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
+```
+<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
+```
 
 These commands are saved in the [Motion](https://motion-project.github.io/) configuration file called `motion.conf` (located in `/etc/motion`).
 
@@ -187,15 +192,21 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 	The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
-		$ sudo sh -c "echo 'on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+	```
+	$ sudo sh -c "echo 'on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+	```
 
 2. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
 
-		$ sudo /etc/init.d/motion restart
+	```
+	$ sudo /etc/init.d/motion restart
+	```
 
 	or if running with [`systemd`](https://en.wikipedia.org/wiki/Systemd)
 
-		$ sudo service motion restart
+	```
+	$ sudo service motion restart
+	```
 
 **DMS<sup>3</sup>Mail** will now generate and send an email whenever [Motion](https://motion-project.github.io/) generates an `on_picture_save` or `on_movie_end` command.
 
@@ -215,7 +226,9 @@ As an aid in troubleshooting issues, the **DMS<sup>3</sup>** source project tree
 
 To run a **DMS<sup>3</sup>Libs** component unit test, from the command line, change directory into the `tests` folder and choose a test to run:
 
-		$ go test <*>.go
+```
+$ go test <*>.go
+```
 
 The unit test results will be displayed as each test is completed.
 
