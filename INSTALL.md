@@ -27,15 +27,16 @@ The installation of **DMS<sup>3</sup>** includes:
 
 	- The operating system is Unix-like (e.g., Linux)
 	- A motion detection application installed on all smart device clients
-	- The [Go](https://golang.org/ "Go") language installed on both **DMS<sup>3</sup>Server** and all participating smart device clients (SDCs)
 
 ### 2. Download and Install the **DMS<sup>3</sup>** Package
 
 #### Download **DMS<sup>3</sup>**
 
-Download the release file(s) from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-distributed-motion-s3/releases) and unzip into a temporary folder.
+Download the appropriate release file(s) from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-distributed-motion-s3/releases) and unzip into a temporary folder.
 
-> **DMS<sup>3</sup>** can also be downloaded and installed using source files. To do so, use the `Clone or Download` button on the [Github project main page](https://github.com/richbl/go-distributed-motion-s3).
+> **Important**: **DMS<sup>3</sup>** components must be compiled for the operating system (e.g., Linux) and CPU architecture (e.g., AMD64) of the hardware device on which the component will be installed. If the OS and architecture are not available in an official **DMS<sup>3</sup>** release, clone/download the **DMS<sup>3</sup>** project tree and compile as appropriate. For details on [Go](https://golang.org/ "Go") compiler support, see the [Go support for various architectures and OS platforms](https://golang.org/doc/install/source#environment "Go Support").
+
+**DMS<sup>3</sup>** can also be downloaded, compiled, and installed using source files. To do so, use the `Clone or Download` button on the [Github project main page](https://github.com/richbl/go-distributed-motion-s3).
 
 #### Install **DMS<sup>3</sup>**
 
@@ -48,7 +49,7 @@ For proper operation, each component element must be copied into the following l
 
 | Component Element | Default Location | Configurable? |
 | :------------- | :------------- | :------------- |
-| [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`) | None | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
+| [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`) | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
 | [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `go_dms3client.go`)
 | Log file (e.g., `dms3client.log`), optionally generated at runtime | `/var/log/dms3` | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)
 

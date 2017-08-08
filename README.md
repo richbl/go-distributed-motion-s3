@@ -157,22 +157,16 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
 
 ## 7. DMS<sup>3</sup> Requirements
 
- - A Unix-like operating system installed on the server and smart client endpoints
+ - A Unix-like operating system installed on the server and smart device client (SDC) endpoints
 	 - While **DMS<sup>3</sup>** was written and tested under Linux (Ubuntu 17.04), there should be no reason why this won't work under other Linux distributions
- - The [Go](https://golang.org/ "Go") language, correctly installed and configured on **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** smart device clients
-
-	**DMS<sup>3</sup>** uses the following [Go](https://golang.org/ "Go") packages:
-	- [github.com/BurntSushi/toml](https://github.com/BurntSushi/toml) for TOML configuration file parsing
-	- [gopkg.in/gomail.v2](https://github.com/go-gomail/gomail/tree/v2) for managing SMTP mailing in **DMS<sup>3</sup>Mail**
+ 
   - A motion detection application, such as [Motion](https://motion-project.github.io/ "Motion"), correctly installed and configured with appropriate video devices configured on all smart device clients
- - Specific Unix-like commands and tools used by **DMS<sup>3</sup>** components include:
+ - Specific Unix-like commands and tools used by **DMS<sup>3</sup>** components include (all should already exist on most Unix-like operating systems):
 	 - [arp](http://en.wikipedia.org/wiki/Address_Resolution_Protocol "arp"): address resolution protocol
 	 - [grep](http://en.wikipedia.org/wiki/Grep "grep"): globally search a regular expression and print
 	 - [pgrep](http://en.wikipedia.org/wiki/Pgrep "pgrep"): globally search a regular expression and print
 	 - [ping](http://en.wikipedia.org/wiki/Ping_(networking_utility) "ping"): ICMP network packet echo/response tool
 	 - [aplay](http://en.wikipedia.org/wiki/Aplay "aplay"): ALSA audio player (optional)
-
- For specific details on system commands and tools used by **DMS<sup>3</sup>**, see the file `lib_config.go`.
 
 ## 8. DMS<sup>3</sup> Installation
 For complete details on **DMS<sup>3</sup>** installation, see the installation file ([`INSTALL.md`](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md "INSTALL.md")).
