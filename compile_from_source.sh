@@ -12,7 +12,6 @@ LNX_AMD64="linux_amd64"                # Linux AMD64 platform
 
 mkdir -p ${RELEASE_DIR}/${LNX_ARM7}
 mkdir -p ${RELEASE_DIR}/${LNX_AMD64}
-mkdir -p ${RELEASE_DIR}/${DAEMON_DIR}
 
 # build dms3 components
 #
