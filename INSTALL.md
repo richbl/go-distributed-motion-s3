@@ -62,9 +62,9 @@ The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 	│   ├── go_dms3mail
 	│   └── go_dms3server
 	└── linux_arm7
-		├── go_dms3client
-		├── go_dms3mail
-		└── go_dms3server
+	    ├── go_dms3client
+	    ├── go_dms3mail
+	    └── go_dms3server
 		
 ```
 
