@@ -6,17 +6,27 @@ CONF_DIR="/etc/distributed-motion-s3"  # default location to store config files 
 
 # build dms3 components
 #
-printf "%s\n" "building dms3 components..."
-go build go_dms3client.go
-go build go_dms3server.go
-go build go_dms3mail.go
+# printf "%s\n" "building dms3 components for Linux/ARM7..."
+# env GOOS=linux GOARCH=arm GOARM=7 go build -o go_dms3client_LinuxARM7 go_dms3client.go
+# env GOOS=linux GOARCH=arm GOARM=7 go build -o go_dms3server_LinuxARM7 go_dms3server.go
+# env GOOS=linux GOARCH=arm GOARM=7 go build -o go_dms3mail_LinuxARM7 go_dms3mail.go
+
+printf "%s\n" "building dms3 components for Linux/AMD64..."
+env GOOS=linux GOARCH=amd64 go build -o go_dms3client_LinuxAMD64 go_dms3client.go
+env GOOS=linux GOARCH=amd64 go build -o go_dms3server_LinuxAMD64 go_dms3server.go
+env GOOS=linux GOARCH=amd64 go build -o go_dms3mail_LinuxAMD64 go_dms3mail.go
 
 # move components into /usr/local/bin
 #
-printf "%s\n" "moving dms3 components to ${EXEC_DIR} (root permissions expected)..."
-mv go_dms3client ${EXEC_DIR}
-mv go_dms3server ${EXEC_DIR}
-mv go_dms3mail ${EXEC_DIR}
+# printf "%s\n" "moving Linux/ARM7 dms3 components to ${EXEC_DIR} (root permissions expected)..."
+# mv go_dms3client_LinuxARM7 ${EXEC_DIR}/go_dms3client
+# mv go_dms3server_LinuxARM7 ${EXEC_DIR}/go_dms3server
+# mv go_dms3mail_LinuxARM7 ${EXEC_DIR}/go_dms3mail
+
+printf "%s\n" "moving Linux/AMD64 dms3 components to ${EXEC_DIR} (root permissions expected)..."
+mv go_dms3client_LinuxAMD64 ${EXEC_DIR}/go_dms3client
+mv go_dms3server_LinuxAMD64 ${EXEC_DIR}/go_dms3server
+mv go_dms3mail_LinuxAMD64 ${EXEC_DIR}/go_dms3mail
 
 # copy TOML files into /etc/distributed-motion-s3
 #
