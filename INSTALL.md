@@ -32,7 +32,7 @@ The installation of **DMS<sup>3</sup>** includes:
 
 #### Download **DMS<sup>3</sup>**
 
-Download the appropriate release file(s) from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-distributed-motion-s3/releases) and unzip into a temporary folder.
+Download the appropriate release file from the [**DMS<sup>3</sup>** release repository](https://github.com/richbl/go-distributed-motion-s3/releases) and unzip into a temporary folder.
 
 > **Important**: **DMS<sup>3</sup>** components must be compiled for the operating system (e.g., Linux) and CPU architecture (e.g., AMD64) of the hardware device on which the component will be installed. If the OS and architecture are not available in an official **DMS<sup>3</sup>** release, clone/download the **DMS<sup>3</sup>** project tree and compile as appropriate. For details on [Go](https://golang.org/ "Go") compiler support, see the [Go support for various architectures and OS platforms](https://golang.org/doc/install/source#environment "Go Support").
 
@@ -40,18 +40,48 @@ Download the appropriate release file(s) from the [**DMS<sup>3</sup>** release r
 
 #### Install **DMS<sup>3</sup>**
 
-Each **DMS<sup>3</sup>** component is organized into three component elements:
+The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
+
+```
+	dms3_release/
+	├── dms3client
+	│   ├── dms3client.service
+	│   └── dms3client.toml
+	├── dms3libs
+	│   └── dms3libs.toml
+	├── dms3mail
+	│   └── dms3mail.toml
+	├── dms3server
+	│   ├── dms3server.service
+	│   ├── dms3server.toml
+	│   └── media
+	│       ├── motion_start.wav
+	│       └── motion_stop.wav
+	├── linux_amd64
+	│   ├── go_dms3client
+	│   ├── go_dms3mail
+	│   └── go_dms3server
+	└── linux_arm7
+		├── go_dms3client
+		├── go_dms3mail
+		└── go_dms3server
+		
+```
+
+Each **DMS<sup>3</sup>** component is organized into four component elements:
 - A compiled [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`)
 - A component configuration file (using the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file format)
-- A component log file, optionally generated based on component configuration
+- An optional [`systemd`](https://en.wikipedia.org/wiki/Systemd) daemon service file (e.g., `dms3client.service`)
+- An optional component log file, runtime-generated based on component configuration
 
 For proper operation, each component element must be copied into the following locations:
 
 | Component Element | Default Location | Configurable? |
 | :------------- | :------------- | :------------- |
 | [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`) | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
-| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `go_dms3client.go`)
-| Log file (e.g., `dms3client.log`), optionally generated at runtime | `/var/log/dms3` | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)
+| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `go_dms3client.go`)
+| Optional: daemon service file (e.g., `dms3client.service`) | `/etc/systemd/system` | No (platform-dependent)
+| Optional: log file (e.g., `dms3client.log`), runtime-generated | `/var/log/dms3` | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)
 
 > **Note:** that any or all of the **DMS<sup>3</sup>** components can be installed on the same host machine: **DMS<sup>3</sup>** component operation will not interfere with one another
 
@@ -60,9 +90,10 @@ The **DMS<sup>3</sup>** server component, **DMS<sup>3</sup>Server**, is responsi
 
 To install **DMS<sup>3</sup>Server**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3server` into a location on the server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3server.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3server.go`
+1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3server` from the release folder into a location on the server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
+2. Copy both the `dms3server` and `dms3libs` folders into the default location, `/etc/distributed-motion-s3`, or as configured in `go_dms3server.go`
 3. Confirm that the user running `go_dms3server` has proper permissions to create a log file (`dms3server.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3server.toml`
+4. Optionally, install the daemon service file (e.g., `dms3server.service`) into `/etc/systemd/system`
 
 One and only one **DMS<sup>3</sup>Server** component should be installed and running in  **DMS<sup>3</sup>**.
 
@@ -72,8 +103,9 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 To install **DMS<sup>3</sup>Client**:
 
 1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3client` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3client.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3client.go`
+2. Copy both the `dms3client` and `dms3libs` folders into the default location, `/etc/distributed-motion-s3`, or as configured in `go_dms3client.go`
 3. Confirm that the user running `go_dms3client` has proper permissions to create a log file (`dms3client.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3client.toml`
+4. Optionally, install the daemon service file (e.g., `dms3client.service`) into `/etc/systemd/system`
 
 A **DMS<sup>3</sup>Client** component must be installed and running on each of the smart device clients (SDCs) participating in  **DMS<sup>3</sup>**.
 
@@ -84,7 +116,7 @@ If a  smart device client (SDC) is running the [Motion](https://motion-project.g
 To install **DMS<sup>3</sup>Mail**:
 
 1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3mail` into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-2. Copy the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file `dms3mail.toml` into the default location `/etc/distributed-motion-s3`, or as configured in `go_dms3mail.go`
+2. Copy both the `dms3mail` and `dms3libs` folders into the default location, `/etc/distributed-motion-s3`, or as configured in `go_dms3mail.go`
 3. Confirm that the user running `go_dms3mail` has proper permissions to create a log file (`dms3mail.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3mail.toml`
 
 
@@ -99,13 +131,13 @@ To install **DMS<sup>3</sup>Mail**:
 
 	All server-side package components, **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Libs**, must be configured for proper operation. Each component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-	- 	`dms3server.toml`, by default installed into `/etc/distributed-motion-s3`, is used for:
+	- 	`dms3server.toml`, by default installed into `/etc/distributed-motion-s3/dms3server`, is used for:
 		- setting the server port
 		- determining what devices to monitor (MAC addresses)
 		- determining if and when to run the *Always On* feature (set time range)
 		- identifying audio files used when enabling/disabling the surveillance system
 		- configuring component logging options
-	- `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3`, is used to configure the location of system-level commands (e.g., `ping`)
+	- `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3/dms3libs`, is used to configure the location of system-level commands (e.g., `ping`)
 
 	Each configuration file is self-documenting, and provides examples of common default values.
 
@@ -113,9 +145,7 @@ To install **DMS<sup>3</sup>Mail**:
 
 	Running the **DMS<sup>3</sup>Server** component as a [`systemd`](https://en.wikipedia.org/wiki/Systemd) service is preferred, as this service can be configured to run at machine startup, recover from failures, etc.
 	
-	As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd).
-	
-	>The [`systemd`](https://en.wikipedia.org/wiki/Systemd) file to use for **DMS<sup>3</sup>Server** configuration is `dms3server.service`, located in  the project source tree in the `go-distributed-motion-s3/dms3server/daemons/systemd` folder.
+	As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3server.service`.
 
 #### **DMS<sup>3</sup>** Smart Device Client (SDC) Configuration
 
@@ -123,12 +153,12 @@ To install **DMS<sup>3</sup>Mail**:
 
 	All client-side package components--**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Libs**, and **DMS<sup>3</sup>Mail** (if installed)--must be configured for proper operation. Each component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
 
-	- 	`dms3client.toml`, by default installed into `/etc/distributed-motion-s3`, is used for:
+	- 	`dms3client.toml`, by default installed into `/etc/distributed-motion-s3/dms3client`, is used for:
 		- setting the server IP address and port
 		- setting the frequency to check **DMS<sup>3</sup>Server** for motion state changes
 		- configuring component logging options
-	- `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3`, is used to configure the location of system-level commands (e.g., `ping`)
-	- 	`dms3mail.toml`, by default installed into `/etc/distributed-motion-s3`, if installed, is used for:
+	- `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3/dms3libs`, is used to configure the location of system-level commands (e.g., `ping`)
+	- 	`dms3mail.toml`, by default installed into `/etc/distributed-motion-s3/dms3mail`, if installed, is used for:
 		- setting email configuration options
 		- configuring component logging options
 
@@ -138,9 +168,7 @@ To install **DMS<sup>3</sup>Mail**:
 
 	Running the **DMS<sup>3</sup>Client** component as a [`systemd`](https://en.wikipedia.org/wiki/Systemd) service is preferred, as this service can be configured to run at machine startup, recover from failures, etc.
 	
-	As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd).
-	
-	>The [`systemd`](https://en.wikipedia.org/wiki/Systemd) file to use for **DMS<sup>3</sup>Client** configuration is `dms3client.service`, located in  the project source tree in the `go-distributed-motion-s3/dms3client/daemons/systemd` folder.
+	As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3client.service`
 	
 #### **DMS<sup>3</sup>**  Smart Device Client (SDC) Motion Detection Application Configuration
 
