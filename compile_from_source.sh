@@ -5,7 +5,7 @@ PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/
 #
 EXEC_DIR="/usr/local/bin"              # set to anywhere seen by $PATH
 CONF_DIR="/etc/distributed-motion-s3"  # default location to store config files (*.toml)
-RELEASE_DIR="./rel"                    # release folder containing all platform builds
+RELEASE_DIR="./dms3_release"           # release folder containing all platform builds
 
 LNX_ARM7="linux_arm7"                  # Linux Arm7 platform
 LNX_AMD64="linux_amd64"                # Linux AMD64 platform
