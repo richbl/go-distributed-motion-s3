@@ -12,7 +12,7 @@ ServerPort = 1965
 # AudioMotionDetectorStart is the audio file played when the motion detector application is
 # activated
 # By default, the value is "" (empty string), which sets to the path of the local /media folder
-# and default file (e.g., /etc/go-distributed-motion-s3/dms3server/media/motion_start.wav)...
+# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_start.wav)...
 # any other path will be used if valid, else set to local folder
 # Ignored if PlayAudio == 0
 #
@@ -21,7 +21,7 @@ AudioMotionDetectorStart = ""
 # AudioMotionDetectorStop is the audio file played when the motion detector application is
 # activated
 # By default, the value is "" (empty string), which sets to the path of the local /media folder
-# and default file (e.g., /etc/go-distributed-motion-s3/dms3server/media/motion_stop.wav)...
+# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_stop.wav)...
 # any other path will be used if valid, else set to local folder
 # Ignored if PlayAudio == 0
 #

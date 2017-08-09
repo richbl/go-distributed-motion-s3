@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
+
 # Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)
 
 ## 1. What Is DMS<sup>3</sup>?
