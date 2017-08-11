@@ -89,16 +89,17 @@ func timeInRange() bool {
 func calcDataRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	const Start = 0
-	const End = 1
 
 	curTime := dms3libs.To24H(time.Now())
 
-	if ServerConfig.AlwaysOnRange[Start] > ServerConfig.AlwaysOnRange[End] {
-		return curTime >= ServerConfig.AlwaysOnRange[Start] || curTime < ServerConfig.AlwaysOnRange[End]
+	startTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[0])
+	endTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[1])
+
+	if startTime > endTime {
+		return curTime >= startTime || curTime < endTime
 	}
 
-	return curTime >= ServerConfig.AlwaysOnRange[Start] && curTime < ServerConfig.AlwaysOnRange[End]
+	return curTime >= startTime && curTime < endTime
 
 }
 

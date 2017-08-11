@@ -173,3 +173,12 @@ func GetCurTime() int {
 func To24H(value time.Time) string {
 	return value.Format("150405")
 }
+
+// Format24H formats 24-hour time to six places (HHMMSS)
+func Format24H(time string) string {
+	return rightPadToLen(time, "0", 6)
+}
+
+func rightPadToLen(s string, padStr string, pLen int) string {
+	return s + strings.Repeat(padStr, pLen-len(s))
+}

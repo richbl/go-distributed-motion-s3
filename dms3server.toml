@@ -35,7 +35,7 @@ CheckInterval = 15
 
 # AlwaysOnRange is the start and end times (24-hour format) for motion to always be enabled,
 # regardless of current IoT device existence on the LAN
-# Ignored if ScanForTime == 0
+# Ignored if ScanForTime == false
 #
 AlwaysOnRange = ["2300", "0400"]
 
