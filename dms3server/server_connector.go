@@ -7,6 +7,17 @@ import (
 	"strconv"
 )
 
+// Init configs the library and configuration for dms3server
+func Init() {
+
+	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
+	LoadServerConfig("/etc/distributed-motion-s3/dms3server/dms3server.toml")
+
+	cfg := ServerConfig.Logging
+	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+	StartServer(ServerConfig.ServerPort)
+}
+
 // StartServer starts the TCP server
 func StartServer(ServerPort int) {
 
