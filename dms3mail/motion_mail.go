@@ -19,6 +19,19 @@ type structEventDetails struct {
 	pixelsDetected int
 }
 
+// Init comment
+func Init() {
+
+	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
+	LoadMailConfig("/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
+
+	cfg := MailConfig.Logging
+	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+
+	GenerateEventEmail()
+
+}
+
 // GenerateEventEmail is the entry point for this package, first calling parseEvent to interpret
 // the Motion event, and then calling generateSMTPEmail to create and send the email
 //
