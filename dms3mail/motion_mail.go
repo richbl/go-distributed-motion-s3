@@ -19,7 +19,7 @@ type structEventDetails struct {
 	pixelsDetected int
 }
 
-// Init comment
+// Init configs the library and configuration for dms3mail
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")

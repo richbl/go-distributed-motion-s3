@@ -16,6 +16,7 @@ func Init() {
 	cfg := ServerConfig.Logging
 	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
 	StartServer(ServerConfig.ServerPort)
+
 }
 
 // StartServer starts the TCP server

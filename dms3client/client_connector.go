@@ -8,6 +8,19 @@ import (
 	"time"
 )
 
+// Init configs the library and configuration for dms3client
+func Init() {
+
+	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
+	LoadClientConfig("/etc/distributed-motion-s3/dms3client/dms3client.toml")
+
+	cfg := ClientConfig.Logging
+	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+
+	StartClient(ClientConfig.ServerIP, ClientConfig.ServerPort)
+
+}
+
 // StartClient periodically attempts to connect to the server (based on CheckInterval)
 func StartClient(ServerIP string, ServerPort int) {
 
