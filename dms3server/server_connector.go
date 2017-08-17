@@ -57,6 +57,8 @@ func processClientRequest(conn net.Conn) {
 
 	if _, err := conn.Write([]byte(strconv.Itoa(int(state)))); err != nil {
 		dms3libs.LogInfo(err.Error())
+	} else {
+		dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
 	}
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())

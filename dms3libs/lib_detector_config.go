@@ -23,8 +23,8 @@ func (s *structMotionDetector) SetState(state MotionDetectorState) {
 
 // states of the motion detector application
 const (
-	Start MotionDetectorState = iota
-	Stop
+	Stop MotionDetectorState = iota
+	Start
 )
 
 type structMotionDetector struct {

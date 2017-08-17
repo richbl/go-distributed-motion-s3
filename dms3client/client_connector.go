@@ -51,6 +51,7 @@ func processClientRequest(conn net.Conn) {
 		state, _ := strconv.Atoi(string(buf[:n]))
 		dms3libs.MotionDetector.SetState(dms3libs.MotionDetectorState(state))
 		ProcessMotionDetectorState(dms3libs.MotionDetector.State())
+		dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
 	}
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
