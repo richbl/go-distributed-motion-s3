@@ -1,39 +1,41 @@
 # Distributed-Motion-S3 (DMS3) MAIL configuration file
 # TOML 0.4.0
 
-# EmailFrom is the email sender
-EmailFrom = "dms3mail@businesslearninginc.com"
+[Email]
+	# EmailFrom is the email sender
+	From = "dms3mail@businesslearninginc.com"
 
-# EmailTo is the email recipient
-EmailTo = "user@gmail.com"
+	# EmailTo is the email recipient
+	To = "user@gmail.com"
 
-# EmailBody is the email body
-# Note that reserved words use the syntax !ALLCAPS and are parsed and replaced
-#
-EmailBody = "Motion detected an event of importance. The event (!EVENT) shows !PIXELS pixels changed, and was captured by Camera !CAMERA."
+	# EmailBody is the email body
+	# Note that reserved words use the syntax !ALLCAPS and are parsed and replaced
+	#
+	Body = "Motion detected an event of importance. The event (!EVENT) shows !PIXELS pixels changed, and was captured by Camera !CAMERA."
 
-# SMTPAddress is the SMTP address of the recipient
-SMTPAddress = "smtp.gmail.com"
+[SMTP]
+	# SMTPAddress is the SMTP address of the recipient
+	Address = "smtp.gmail.com"
 
-# SMTPPort is the port used by the recipient email account
-SMTPPort = 587
+	# SMTPPort is the port used by the recipient email account
+	Port = 587
 
-# SMTPDomain is the receiving email domain
-SMTPDomain = "localhost"
+	# SMTPDomain is the receiving email domain
+	Domain = "localhost"
 
-# SMTPUsername is the username of the recipient
-SMTPUsername = "user"
+	# SMTPUsername is the username of the recipient
+	Username = "user"
 
-# SMTPPassword is the password of the recipient
-SMTPPassword = "password"
+	# SMTPPassword is the password of the recipient
+	Password = "password"
 
-# SMTPAuthentication is the email server authentication scheme
-SMTPAuthentication = "plain"
+	# SMTPAuthentication is the email server authentication scheme
+	Authentication = "plain"
 
-# SMTPEnableStartTLSAuto indicates whether TLS is used
-SMTPEnableStartTLSAuto = true
+	# SMTPEnableStartTLSAuto indicates whether TLS is used
+	EnableStartTLSAuto = true
 
-	[logging]
+[Logging]
 	# LogLevel sets the log levels for application logging using the following table:
 	#
 	#  0 - OFF, no logging

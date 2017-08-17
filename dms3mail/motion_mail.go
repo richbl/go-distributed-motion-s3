@@ -116,7 +116,7 @@ func createEmailBody(eventDetails *structEventDetails) string {
 		"!CAMERA": strconv.Itoa(eventDetails.cameraNumber),
 	}
 
-	processedEmailBody := MailConfig.EmailBody
+	processedEmailBody := MailConfig.Email.Body
 
 	for key, val := range replacements {
 		processedEmailBody = strings.Replace(processedEmailBody, key, val, -1)
@@ -132,13 +132,13 @@ func createEmailBody(eventDetails *structEventDetails) string {
 func generateSMTPEmail(eventDetails *structEventDetails) {
 
 	mail := gomail.NewMessage()
-	mail.SetHeader("From", MailConfig.EmailFrom)
-	mail.SetHeader("To", MailConfig.EmailTo)
+	mail.SetHeader("From", MailConfig.Email.From)
+	mail.SetHeader("To", MailConfig.Email.To)
 	mail.SetHeader("Subject", "Motion Detected on Camera #"+strconv.Itoa(eventDetails.cameraNumber)+" at "+eventDetails.eventDate)
 	mail.SetBody("text/html", createEmailBody(eventDetails))
 	mail.Attach(eventDetails.eventMedia)
 
-	dialer := gomail.NewDialer(MailConfig.SMTPAddress, MailConfig.SMTPPort, MailConfig.SMTPUsername, MailConfig.SMTPPassword)
+	dialer := gomail.NewDialer(MailConfig.SMTP.Address, MailConfig.SMTP.Port, MailConfig.SMTP.Username, MailConfig.SMTP.Password)
 
 	if err := dialer.DialAndSend(mail); err != nil {
 		dms3libs.LogFatal(err.Error())
