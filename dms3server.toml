@@ -1,56 +1,61 @@
 # Distributed-Motion-S3 (DMS3) SERVER configuration file
 # TOML 0.4.0
 
-# PlayAudio enables (1) or disables (0) the play-back of audio on motion detector application
-# start/stop
-#
-PlayAudio = 1
+[Server]
+	# Port is the port on which to run the motion server
+	Port = 1965
 
-# ServerPort is the port on which to run the motion server
-ServerPort = 1965
+	# CheckInterval is the interval (in seconds) between local checks for change to motion_state
+	CheckInterval = 15
 
-# AudioMotionDetectorStart is the audio file played when the motion detector application is
-# activated
-# By default, the value is "" (empty string), which sets to the path of the local /media folder
-# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_start.wav)...
-# any other path will be used if valid, else set to local folder
-# Ignored if PlayAudio == 0
-#
-AudioMotionDetectorStart = ""
+[Audio]
+	# Enables (true) or disables (false) the play-back of audio on motion detector application 
+	# start/stop
+	#
+	Enable = true
 
-# AudioMotionDetectorStop is the audio file played when the motion detector application is
-# activated
-# By default, the value is "" (empty string), which sets to the path of the local /media folder
-# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_stop.wav)...
-# any other path will be used if valid, else set to local folder
-# Ignored if PlayAudio == 0
-#
-AudioMotionDetectorStop = ""
+	# PlayMotionStart is the audio file played when the motion detector application is
+	# activated
+	# By default, the value is "" (empty string), which sets to the path of the local /media folder
+	# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_start.wav)...
+	# any other path will be used if valid, else set to local folder
+	# Ignored if Audio.Enable == false
+	#
+	PlayMotionStart = ""
 
-# ScanForTime enables (true) or disables (false) motion detector application based on time-of-day
-ScanForTime = false
+	# PlayMotionStop is the audio file played when the motion detector application is
+	# activated
+	# By default, the value is "" (empty string), which sets to the path of the local /media folder
+	# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_stop.wav)...
+	# any other path will be used if valid, else set to local folder
+	# Ignored if Audio.Enable == false
+	#
+	PlayMotionStop = ""
 
-# CheckInterval is the interval (in seconds) between checks for change to motion_state
-CheckInterval = 15
+[AlwaysOn]
+	# Enables (true) or disables (false) motion detector application based on time-of-day
+	Enable = false
 
-# AlwaysOnRange is the start and end times (24-hour format) for motion to always be enabled,
-# regardless of current IoT device existence on the LAN
-# Ignored if ScanForTime == false
-#
-AlwaysOnRange = ["2300", "0400"]
+	# TimeRange is the start and end times (24-hour format) for motion to always be enabled,
+	# regardless of current IoT device existence on the LAN
+	# Ignored if AlwaysOn.Enable == false
+	#
+	TimeRange = ["2300", "0400"]
 
-# IPBase is the first three address octets defining the LAN (e.g., 10.10.10.) where devices will
-# be scanned for to determine when motion should be run
-#
-IPBase = "10.10.10."
+[UserProxy]
+	# IPBase is the first three address octets defining the LAN (e.g., 10.10.10.) where user
+	# proxies (devices representing users on the network, such as a smartphone) will
+	# be scanned for to determine when motion should be run
+	#
+	IPBase = "10.10.10."
 
-# IPRange is the fourth address octet defined as a range (e.g., 100..254)
-IPRange = [100, 254]
+	# IPRange is the fourth address octet defined as a range (e.g., 100..254)
+	IPRange = [100, 254]
 
-# MacsToFind are the MAC addresses of IoT device(s) to search for on the LAN
-MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
+	# MacsToFind are the MAC addresses of user proxy device(s) to search for on the LAN
+	MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 
-	[logging]
+[Logging]
 	# LogLevel sets the log levels for application logging using the following table:
 	#
 	#  0 - OFF, no logging
@@ -58,7 +63,7 @@ MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 	#  2 - INFO, report informational events
 	#  4 - DEBUG, report debugging events
 	#
-	LogLevel = 1
+	LogLevel = 2
 
 	# LogDevice determines to what device logging should be set using the following table:
 	#

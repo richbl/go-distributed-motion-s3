@@ -37,13 +37,13 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 	if dms3libs.MotionDetector.State() != state {
 		dms3libs.MotionDetector.SetState(state)
 
-		if ServerConfig.PlayAudio == 1 {
+		if ServerConfig.Audio.Enable {
 
 			switch state {
 			case dms3libs.Start:
-				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStart)
+				dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStart)
 			case dms3libs.Stop:
-				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStop)
+				dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStop)
 			}
 
 		}
@@ -59,7 +59,7 @@ func checkIntervalExpired() bool {
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 	curTime := dms3libs.GetCurTime()
 
-	if (curTime - checkIntervalTimestamp) >= ServerConfig.CheckInterval {
+	if (curTime - checkIntervalTimestamp) >= ServerConfig.Server.CheckInterval {
 		checkIntervalTimestamp = curTime
 		return true
 	}
@@ -69,13 +69,13 @@ func checkIntervalExpired() bool {
 }
 
 // timeInRange checks to see if the current time is within the bounds of the 'always on' range
-// (if the ScanForTime option is enabled)
+// (if the AlwaysOn option is enabled)
 //
 func timeInRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if ServerConfig.ScanForTime {
+	if ServerConfig.AlwaysOn.Enable {
 		return calcDataRange()
 	}
 
@@ -92,8 +92,8 @@ func calcDataRange() bool {
 
 	curTime := dms3libs.To24H(time.Now())
 
-	startTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[0])
-	endTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[1])
+	startTime := dms3libs.Format24H(ServerConfig.AlwaysOn.TimeRange[0])
+	endTime := dms3libs.Format24H(ServerConfig.AlwaysOn.TimeRange[1])
 
 	if startTime > endTime {
 		return curTime >= startTime || curTime < endTime
@@ -109,7 +109,7 @@ func calcDataRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	dms3libs.PingHosts(ServerConfig.IPBase, ServerConfig.IPRange)
-	return dms3libs.FindMacs(ServerConfig.MacsToFind)
+	dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
+	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 
 }

@@ -14,17 +14,37 @@ var ServerConfig *structSettings
 
 // server-side configuration parameters
 type structSettings struct {
-	CheckInterval            int
-	ServerPort               int
-	PlayAudio                int
-	AudioMotionDetectorStart string
-	AudioMotionDetectorStop  string
-	ScanForTime              bool
-	AlwaysOnRange            []string
-	IPBase                   string
-	IPRange                  []int
-	MacsToFind               []string
-	Logging                  *dms3libs.StructLogging
+	Server    *structServer
+	Audio     *structAudio
+	AlwaysOn  *structAlwaysOn
+	UserProxy *structUserProxy
+	Logging   *dms3libs.StructLogging
+}
+
+// server details
+type structServer struct {
+	Port          int
+	CheckInterval int
+}
+
+// audio parameters used when the motion detector application starts/stops
+type structAudio struct {
+	Enable          bool
+	PlayMotionStart string
+	PlayMotionStop  string
+}
+
+// Always On feature parameters (enable the motion detector application based on time of day)
+type structAlwaysOn struct {
+	Enable    bool
+	TimeRange []string
+}
+
+// User proxy parameters (representing the user's existence on the LAN)
+type structUserProxy struct {
+	IPBase     string
+	IPRange    []int
+	MacsToFind []string
 }
 
 // LoadServerConfig loads a TOML configuration file and parses entries into parameter values
@@ -55,11 +75,11 @@ func setLogLocation(config *structSettings) {
 
 func setMediaLocation(config *structSettings) {
 
-	if config.AudioMotionDetectorStart == "" || !dms3libs.IsFile(config.AudioMotionDetectorStart) {
-		config.AudioMotionDetectorStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
+	if config.Audio.PlayMotionStart == "" || !dms3libs.IsFile(config.Audio.PlayMotionStart) {
+		config.Audio.PlayMotionStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
 	}
 
-	if config.AudioMotionDetectorStop == "" || !dms3libs.IsFile(config.AudioMotionDetectorStop) {
-		config.AudioMotionDetectorStop = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_stop.wav")
+	if config.Audio.PlayMotionStop == "" || !dms3libs.IsFile(config.Audio.PlayMotionStop) {
+		config.Audio.PlayMotionStop = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_stop.wav")
 	}
 }

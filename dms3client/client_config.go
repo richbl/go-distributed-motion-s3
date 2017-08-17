@@ -13,10 +13,15 @@ var ClientConfig *structSettings
 
 // client-side configuration parameters
 type structSettings struct {
+	Server  *structServer
+	Logging *dms3libs.StructLogging
+}
+
+// server connection details
+type structServer struct {
+	IP            string
+	Port          int
 	CheckInterval int
-	ServerIP      string
-	ServerPort    int
-	Logging       *dms3libs.StructLogging
 }
 
 // LoadClientConfig loads a TOML configuration file and parses entries into parameter values

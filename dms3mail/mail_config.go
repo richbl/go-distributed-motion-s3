@@ -11,12 +11,21 @@ import (
 // MailConfig contains dms3mail configuration settings read from TOML file
 var MailConfig *structSettings
 
+// motion mail configuration parameters
+type structSettings struct {
+	Email   *structEmail
+	SMTP    *structSMTP
+	Logging *dms3libs.StructLogging
+}
+
+// email composition parameters
 type structEmail struct {
-	From string
 	To   string
+	From string
 	Body string
 }
 
+// SMTP mailer parameters
 type structSMTP struct {
 	Address            string
 	Port               int
@@ -25,13 +34,6 @@ type structSMTP struct {
 	Password           string
 	Authentication     string
 	EnableStartTLSAuto bool
-}
-
-// motion mail configuration parameters
-type structSettings struct {
-	Email   *structEmail
-	SMTP    *structSMTP
-	Logging *dms3libs.StructLogging
 }
 
 // LoadMailConfig loads a TOML configuration file and parses entries into parameter values

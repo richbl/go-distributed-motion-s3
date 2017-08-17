@@ -27,18 +27,18 @@ func TestAudioConfig(t *testing.T) {
 
 	dms3server.LoadServerConfig("../../dms3server/server_config.toml")
 
-	if dms3libs.IsFile(dms3server.ServerConfig.AudioMotionDetectorStart) {
-		dms3libs.PlayAudio(dms3server.ServerConfig.AudioMotionDetectorStart)
-		t.Error("Audio file", dms3server.ServerConfig.AudioMotionDetectorStart, "played successfully")
+	if dms3libs.IsFile(dms3server.ServerConfig.PlayMotionStart) {
+		dms3libs.PlayAudio(dms3server.ServerConfig.PlayMotionStart)
+		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStart, "played successfully")
 	} else {
-		t.Error("Audio file", dms3server.ServerConfig.AudioMotionDetectorStart, "not found")
+		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStart, "not found")
 	}
 
-	if dms3libs.IsFile(dms3server.ServerConfig.AudioMotionDetectorStop) {
-		dms3libs.PlayAudio(dms3server.ServerConfig.AudioMotionDetectorStop)
-		t.Error("Audio file", dms3server.ServerConfig.AudioMotionDetectorStop, "played successfully")
+	if dms3libs.IsFile(dms3server.ServerConfig.PlayMotionStop) {
+		dms3libs.PlayAudio(dms3server.ServerConfig.PlayMotionStop)
+		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStop, "played successfully")
 	} else {
-		t.Error("Audio file", dms3server.ServerConfig.AudioMotionDetectorStop, "not found")
+		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStop, "not found")
 	}
 
 }

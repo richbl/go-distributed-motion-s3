@@ -17,7 +17,7 @@ func Init() {
 	cfg := ClientConfig.Logging
 	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
 
-	StartClient(ClientConfig.ServerIP, ClientConfig.ServerPort)
+	StartClient(ClientConfig.Server.IP, ClientConfig.Server.Port)
 
 }
 
@@ -34,7 +34,7 @@ func StartClient(ServerIP string, ServerPort int) {
 			go processClientRequest(conn)
 		}
 
-		time.Sleep(time.Duration(ClientConfig.CheckInterval) * time.Second)
+		time.Sleep(time.Duration(ClientConfig.Server.CheckInterval) * time.Second)
 	}
 
 }
