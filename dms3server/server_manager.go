@@ -96,10 +96,10 @@ func calcDataRange() bool {
 	endTime := dms3libs.Format24H(ServerConfig.AlwaysOn.TimeRange[1])
 
 	if startTime > endTime {
-		return curTime >= startTime || curTime < endTime
+		return (curTime >= startTime) || (curTime < endTime)
 	}
 
-	return curTime >= startTime && curTime < endTime
+	return (curTime >= startTime) && (curTime < endTime)
 
 }
 

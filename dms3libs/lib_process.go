@@ -80,7 +80,13 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 				return false // already running
 			}
 
-			RunCommand(application)
+			_, err := RunCommand(application)
+
+			if err != nil {
+				LogInfo("Failed to run " + application + ": " + err.Error())
+				return false
+			}
+
 			return true
 		}
 	case Stop:
