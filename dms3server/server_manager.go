@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var checkIntervalTimestamp = dms3libs.GetCurTime()
+var checkIntervalTimestamp = time.Now()
 
 // DetermineMotionDetectorState determines whether to start the motion detector application based
 // device presence/time logic
@@ -57,10 +57,9 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 func checkIntervalExpired() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	curTime := dms3libs.GetCurTime()
 
-	if (curTime - checkIntervalTimestamp) >= ServerConfig.Server.CheckInterval {
-		checkIntervalTimestamp = curTime
+	if time.Since(checkIntervalTimestamp).Seconds() >= float64(ServerConfig.Server.CheckInterval) {
+		checkIntervalTimestamp = time.Now()
 		return true
 	}
 
@@ -76,17 +75,17 @@ func timeInRange() bool {
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
 	if ServerConfig.AlwaysOn.Enable {
-		return calcDataRange()
+		return calcTimeRange()
 	}
 
 	return false
 
 }
 
-// calcDataRange checks to see if the configured time range crosses into the next day, and
+// calcTimeRange checks to see if the configured time range crosses into the next day, and
 // determines time range accordingly
 //
-func calcDataRange() bool {
+func calcTimeRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
