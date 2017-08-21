@@ -28,8 +28,6 @@ func StartClient(ServerIP string, ServerPort int) {
 		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
 			dms3libs.LogInfo(err.Error())
 		} else {
-			// server connection established
-			defer conn.Close()
 			dms3libs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
 			go processClientRequest(conn)
 		}
@@ -48,10 +46,17 @@ func processClientRequest(conn net.Conn) {
 	if n, err := conn.Read(buf); err != nil {
 		dms3libs.LogInfo(err.Error())
 	} else {
-		state, _ := strconv.Atoi(string(buf[:n]))
-		dms3libs.MotionDetector.SetState(dms3libs.MotionDetectorState(state))
-		ProcessMotionDetectorState(dms3libs.MotionDetector.State())
-		dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
+		val, _ := strconv.Atoi(string(buf[:n]))
+		state := dms3libs.MotionDetectorState(val)
+
+		if dms3libs.MotionDetector.IsState(state) {
+			dms3libs.MotionDetector.SetState(state)
+			ProcessMotionDetectorState()
+			dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
+		} else {
+			dms3libs.LogInfo("Unanticipated motion detector state: ignored")
+		}
+
 	}
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())

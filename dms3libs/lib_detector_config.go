@@ -21,6 +21,18 @@ func (s *structMotionDetector) SetState(state MotionDetectorState) {
 	s.state = state
 }
 
+// IsState validates MotionDetectorState
+func (s *structMotionDetector) IsState(state MotionDetectorState) bool {
+
+	switch state {
+	case Start, Stop:
+		return true
+	default:
+		return false
+	}
+
+}
+
 // states of the motion detector application
 const (
 	Stop MotionDetectorState = iota

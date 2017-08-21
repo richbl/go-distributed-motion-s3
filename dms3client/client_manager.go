@@ -4,25 +4,13 @@ import (
 	"go-distributed-motion-s3/dms3libs"
 )
 
-// ProcessMotionDetectorState processes the application state received from the server
-func ProcessMotionDetectorState(state dms3libs.MotionDetectorState) {
+// ProcessMotionDetectorState starts/stops the motion detector application
+func ProcessMotionDetectorState() {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	switch state {
-	case dms3libs.Start, dms3libs.Stop:
-		startStopMotionDetector(state)
-	default:
-		dms3libs.LogInfo("Unanticipated motion detector state: ignored")
-	}
-
-}
-
-// startStopMotionDetector starts/stops the motion detector application
-func startStopMotionDetector(state dms3libs.MotionDetectorState) {
-
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	var cmdStr string
+	cmdStr := ""
+	state := dms3libs.MotionDetector.State()
 
 	switch state {
 	case dms3libs.Start:
