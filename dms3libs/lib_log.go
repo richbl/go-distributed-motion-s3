@@ -65,6 +65,8 @@ func LogFatal(msg string) {
 		Fatal.Fatalln(msg)
 	}
 
+	os.Exit(1)
+
 }
 
 // LogInfo generates an informational log message based on loggingLevel
