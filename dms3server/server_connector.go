@@ -53,12 +53,13 @@ func serverLoop(listener net.Listener) {
 func processClientRequest(conn net.Conn) {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	state := DetermineMotionDetectorState()
 
-	if _, err := conn.Write([]byte(strconv.Itoa(int(state)))); err != nil {
+	state := strconv.Itoa(int(DetermineMotionDetectorState()))
+
+	if _, err := conn.Write([]byte(state)); err != nil {
 		dms3libs.LogInfo(err.Error())
 	} else {
-		dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
+		dms3libs.LogInfo("Motion detector state set at: " + state)
 	}
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
