@@ -49,8 +49,7 @@ func processClientRequest(conn net.Conn) {
 		val, _ := strconv.Atoi(string(buf[:n]))
 		state := dms3libs.MotionDetectorState(val)
 
-		if dms3libs.MotionDetector.IsState(state) {
-			dms3libs.MotionDetector.SetState(state)
+		if dms3libs.MotionDetector.SetState(state) {
 			ProcessMotionDetectorState()
 			dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
 		} else {

@@ -34,19 +34,21 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if dms3libs.MotionDetector.State() != state {
-		dms3libs.MotionDetector.SetState(state)
+	if dms3libs.MotionDetector.State() == state {
+		return state
+	}
 
-		if ServerConfig.Audio.Enable {
+	dms3libs.MotionDetector.SetState(state)
 
-			switch state {
-			case dms3libs.Start:
-				dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStart)
-			case dms3libs.Stop:
-				dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStop)
-			}
+	if ServerConfig.Audio.Enable {
 
+		switch state {
+		case dms3libs.Start:
+			dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStart)
+		case dms3libs.Stop:
+			dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStop)
 		}
+
 	}
 
 	return state
