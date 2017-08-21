@@ -2,7 +2,6 @@ package main
 
 import (
 	"go-distributed-motion-s3/compile_dms3"
-	"os"
 )
 
 func main() {
@@ -30,11 +29,9 @@ func main() {
 	//
 	dms3compile.CopyConfigFiles(releaseDir)
 
-	os.Exit(0) // TODO no need to copy release locally
-
 	// copy release folder into /etc/distributed-motion-s3
 	//
-	dms3compile.CopyReleaseFolder(releaseDir, confDir)
+	// dms3compile.CopyReleaseFolder(releaseDir, confDir)
 
 	// copy compiled dms3 components into /usr/local/bin
 	//
