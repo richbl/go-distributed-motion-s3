@@ -11,10 +11,12 @@ import (
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	LoadServerConfig("/etc/distributed-motion-s3/dms3server/dms3server.toml")
+	dms3libs.LoadComponentConfig(&ServerConfig, "/etc/distributed-motion-s3/dms3server/dms3server.toml")
 
-	cfg := ServerConfig.Logging
-	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+	dms3libs.SetLogFileLocation(ServerConfig.Logging)
+	dms3libs.CreateLogger(ServerConfig.Logging)
+	SetMediaLocation(ServerConfig)
+
 	StartServer(ServerConfig.Server.Port)
 
 }
@@ -59,7 +61,7 @@ func processClientRequest(conn net.Conn) {
 	if _, err := conn.Write([]byte(state)); err != nil {
 		dms3libs.LogInfo(err.Error())
 	} else {
-		dms3libs.LogInfo("Motion detector state set at: " + state)
+		dms3libs.LogInfo("Sent motion detector state as: " + state)
 	}
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())

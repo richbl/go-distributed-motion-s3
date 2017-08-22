@@ -2,11 +2,7 @@ package dms3server
 
 import (
 	"go-distributed-motion-s3/dms3libs"
-	"log"
-	"os"
 	"path/filepath"
-
-	"github.com/BurntSushi/toml"
 )
 
 // ServerConfig contains dms3Server configuration settings read from TOML file
@@ -47,33 +43,9 @@ type structUserProxy struct {
 	MacsToFind []string
 }
 
-// LoadServerConfig loads a TOML configuration file and parses entries into parameter values
-func LoadServerConfig(configFile string) {
-
-	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		log.Fatalln(configFile + " structConfig file not found")
-	} else if err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	if _, err := toml.DecodeFile(configFile, &ServerConfig); err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	setLogLocation(ServerConfig)
-	setMediaLocation(ServerConfig)
-
-}
-
-func setLogLocation(config *structSettings) {
-
-	if config.Logging.LogLocation == "" || !dms3libs.IsFile(config.Logging.LogLocation) {
-		config.Logging.LogLocation = dms3libs.GetPackageDir()
-	}
-
-}
-
-func setMediaLocation(config *structSettings) {
+// SetMediaLocation sets the location where audio files are located for motion detection
+// application start/stop
+func SetMediaLocation(config *structSettings) {
 
 	if config.Audio.PlayMotionStart == "" || !dms3libs.IsFile(config.Audio.PlayMotionStart) {
 		config.Audio.PlayMotionStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")

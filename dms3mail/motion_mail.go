@@ -23,10 +23,10 @@ type structEventDetails struct {
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	LoadMailConfig("/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
+	dms3libs.LoadComponentConfig(&MailConfig, "/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
 
-	cfg := MailConfig.Logging
-	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+	dms3libs.SetLogFileLocation(MailConfig.Logging)
+	dms3libs.CreateLogger(MailConfig.Logging)
 
 	GenerateEventEmail()
 

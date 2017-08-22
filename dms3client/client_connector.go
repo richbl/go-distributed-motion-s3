@@ -12,10 +12,10 @@ import (
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	LoadClientConfig("/etc/distributed-motion-s3/dms3client/dms3client.toml")
+	dms3libs.LoadComponentConfig(&ClientConfig, "/etc/distributed-motion-s3/dms3client/dms3client.toml")
 
-	cfg := ClientConfig.Logging
-	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
+	dms3libs.SetLogFileLocation(ClientConfig.Logging)
+	dms3libs.CreateLogger(ClientConfig.Logging)
 
 	StartClient(ClientConfig.Server.IP, ClientConfig.Server.Port)
 
@@ -51,7 +51,7 @@ func processClientRequest(conn net.Conn) {
 
 		if dms3libs.MotionDetector.SetState(state) {
 			ProcessMotionDetectorState()
-			dms3libs.LogInfo("Motion detector state set at: " + strconv.Itoa(int(state)))
+			dms3libs.LogInfo("Received motion detector state as: " + strconv.Itoa(int(state)))
 		} else {
 			dms3libs.LogInfo("Unanticipated motion detector state: ignored")
 		}
