@@ -36,8 +36,8 @@ func RmDir(dir string) {
 
 }
 
-// walkDir generates a map of directories (0) and files (1)
-func walkDir(dirname string) map[string]int {
+// WalkDir generates a map of directories (0) and files (1)
+func WalkDir(dirname string) map[string]int {
 
 	fileList := map[string]int{}
 
@@ -84,7 +84,7 @@ func CopyFile(src string, dest string) {
 // CopyDir copies a directory from srcDir to destDir
 func CopyDir(srcDir string, destDir string) {
 
-	dirTree := walkDir(srcDir)
+	dirTree := WalkDir(srcDir)
 
 	// create directory tree...
 	for dirName, dirType := range dirTree {

@@ -35,7 +35,6 @@ func StartServer(ServerPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on
 // dms3client connect
-//
 func serverLoop(listener net.Listener) {
 
 	for {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-distributed-motion-s3/compile_dms3"
+	"go-distributed-motion-s3/dms3_build"
 )
 
 func main() {
@@ -14,28 +14,28 @@ func main() {
 
 	// build platform-specific components into release folder
 	//
-	dms3compile.BuildReleaseFolder(releaseDir)
-	dms3compile.BuildComponents(releaseDir)
+	dms3build.BuildReleaseFolder(releaseDir)
+	dms3build.BuildComponents(releaseDir)
 
 	// copy service daemons into release folder
 	//
-	dms3compile.CopyServiceDaemons(releaseDir)
+	dms3build.CopyServiceDaemons(releaseDir)
 
 	// copy dms3server media files into release folder
 	//
-	dms3compile.CopyMediaFiles(releaseDir)
+	dms3build.CopyMediaFiles(releaseDir)
 
 	// copy TOML files into release folder
 	//
-	dms3compile.CopyConfigFiles(releaseDir)
+	dms3build.CopyConfigFiles(releaseDir)
 
 	// copy release folder into /etc/distributed-motion-s3
 	//
-	// dms3compile.CopyReleaseFolder(releaseDir, confDir)
+	// dms3build.CopyReleaseFolder(releaseDir, confDir)
 
 	// copy compiled dms3 components into /usr/local/bin
 	//
-	dms3compile.CopyComponents(releaseDir, execDir, "linuxAMD64")
-	// dms3compile.CopyComponents(releaseDir, execDir, build, "linuxArm7")
+	// dms3build.CopyComponents(releaseDir, execDir, "linuxAMD64")
+	// dms3build.CopyComponents(releaseDir, execDir, build, "linuxArm7")
 
 }
