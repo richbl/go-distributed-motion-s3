@@ -15,7 +15,7 @@ var Clients = []structDevice{
 		User:                "pi",
 		Server:              "picam-alpha.local",
 		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "acm44655!!",
+		RemoteAdminPassword: "PASSWORD",
 		Port:                "22",
 		Platform:            LinuxArm7,
 	},
@@ -23,7 +23,7 @@ var Clients = []structDevice{
 		User:                "pi",
 		Server:              "picam-beta.local",
 		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "acm44655!!",
+		RemoteAdminPassword: "PASSWORD",
 		Port:                "22",
 		Platform:            LinuxArm7,
 	},
@@ -35,7 +35,7 @@ var Servers = []structDevice{
 		User:                "richbl",
 		Server:              "backup.local",
 		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "acm44655!!",
+		RemoteAdminPassword: "PASSWORD",
 		Port:                "22",
 		Platform:            LinuxAMD64,
 	},
