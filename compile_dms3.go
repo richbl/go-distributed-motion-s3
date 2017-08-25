@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-distributed-motion-s3/dms3_build"
+	"go-distributed-motion-s3/dms3build"
 )
 
 func main() {

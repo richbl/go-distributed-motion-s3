@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-distributed-motion-s3/dms3_build"
+	"go-distributed-motion-s3/dms3build"
 
 	"github.com/hypersleep/easyssh"
 )
@@ -20,24 +20,18 @@ func main() {
 			Port:     dms3build.Clients[itr].Port,
 		}
 
-		fmt.Print("Copying files to remote client ", dms3build.Clients[itr].User, "@", dms3build.Clients[itr].Server, "... ")
+		// copy dms3 release folder to remote device platform
 		dms3build.RemoteCopyDir(ssh, "dms3_release", "dms3_release")
-		ssh.Run("chmod +x dms3_release/linux_arm7/go_dms3client", 5)
-		ssh.Run("chmod +x dms3_release/linux_arm7/go_dms3mail", 5)
-		fmt.Println("Success")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/linux_arm7/go_dms3client")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/linux_arm7/go_dms3mail")
 
-		fmt.Print("Copying installer script to remote client ", dms3build.Clients[itr].User, "@", dms3build.Clients[itr].Server, "... ")
-		ssh.Scp("dms3_build/dms3client_remote_installer.sh", "dms3client_remote_installer.sh")
-		ssh.Run("chmod +x dms3client_remote_installer.sh", 5)
-		fmt.Println("Success")
+		// copy client installer to remote device platform
+		dms3build.RemoteCopyFile(ssh, "dms3build/dms3client_remote_installer.sh", "dms3client_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer.sh")
 
-		fmt.Print("Running installer script on remote client ", dms3build.Clients[itr].User, "@", dms3build.Clients[itr].Server, "... ")
-		ssh.Run("sudo ./dms3client_remote_installer.sh", 5)
-		fmt.Println("Success")
-
-		fmt.Print("Removing installer script on remote client ", dms3build.Clients[itr].User, "@", dms3build.Clients[itr].Server, "... ")
-		ssh.Run("rm dms3client_remote_installer.sh", 5)
-		fmt.Println("Success")
+		// run client installer, then remove on completion
+		dms3build.RemoteRunCommand(ssh, "sudo ./dms3client_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "rm dms3client_remote_installer.sh")
 		fmt.Println("")
 
 	}
@@ -51,23 +45,17 @@ func main() {
 			Port:     dms3build.Servers[itr].Port,
 		}
 
-		fmt.Print("Copying files to remote server ", dms3build.Servers[itr].User, "@", dms3build.Servers[itr].Server, "... ")
+		// copy dms3 release folder to remote device platform
 		dms3build.RemoteCopyDir(ssh, "dms3_release", "dms3_release")
-		ssh.Run("chmod +x dms3_release/linux_amd64/go_dms3server", 5)
-		fmt.Println("Success")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/linux_amd64/go_dms3server")
 
-		fmt.Print("Copying installer script to remote server ", dms3build.Servers[itr].User, "@", dms3build.Servers[itr].Server, "... ")
-		ssh.Scp("dms3_build/dms3server_remote_installer.sh", "dms3server_remote_installer.sh")
-		ssh.Run("chmod +x dms3server_remote_installer.sh", 5)
-		fmt.Println("Success")
+		// copy server installer to remote device platform
+		dms3build.RemoteCopyFile(ssh, "dms3build/dms3server_remote_installer.sh", "dms3server_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer.sh")
 
-		fmt.Print("Running installer script on remote server ", dms3build.Servers[itr].User, "@", dms3build.Servers[itr].Server, "... ")
-		ssh.Run("./dms3server_remote_installer.sh", 5)
-		fmt.Println("Success")
-
-		fmt.Print("Removing installer script on remote server ", dms3build.Servers[itr].User, "@", dms3build.Servers[itr].Server, "... ")
-		ssh.Run("rm dms3server_remote_installer.sh", 5)
-		fmt.Println("Success")
+		// run server installer, then remove on completion
+		dms3build.RemoteRunCommand(ssh, "sudo ./dms3server_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "rm dms3server_remote_installer.sh")
 		fmt.Println("")
 
 	}

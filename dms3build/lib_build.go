@@ -134,6 +134,7 @@ func RemoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
 // RemoteCopyDir copies a directory over SSH from srcDir to destDir
 func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 
+	fmt.Print("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "... ")
 	dirTree := dms3libs.WalkDir(srcDir)
 
 	// create directory tree...
@@ -153,5 +154,30 @@ func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 		}
 
 	}
+
+	fmt.Println("Success")
+	fmt.Println()
+
+}
+
+// RemoteRunCommand runs a command via the SSH protocol
+func RemoteRunCommand(ssh *easyssh.MakeConfig, command string) {
+
+	fmt.Print("Running command " + "'" + command + "'... ")
+	_, _, _, err := ssh.Run(command, 5)
+	dms3libs.CheckErr(err)
+	fmt.Println("Success")
+	fmt.Println()
+
+}
+
+// RemoteCopyFile copies a file from src to a remote dest using SCP
+func RemoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
+
+	fmt.Print("Copying file " + srcFile + " to " + destFile + " on " + ssh.User + "@" + ssh.Server + "... ")
+	err := ssh.Scp(srcFile, destFile)
+	dms3libs.CheckErr(err)
+	fmt.Println("Success")
+	fmt.Println()
 
 }

@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# this bash script will be transferred to the dms3 device component platform, executed, and
+# then deleted automatically
+
+# IMPORTANT: be sure to set root password access before using
+
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 PASS="password"
 
