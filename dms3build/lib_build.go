@@ -3,10 +3,12 @@ package dms3build
 import (
 	"fmt"
 	"go-distributed-motion-s3/dms3libs"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/hypersleep/easyssh"
+	"github.com/mrgleam/easyssh"
 )
 
 // BuildReleaseFolder creates the directory structure for each platform passed into it
@@ -14,9 +16,9 @@ func BuildReleaseFolder(releaseDir string) {
 
 	dms3libs.RmDir(releaseDir)
 
-	for itr := range buildEnv {
-		fmt.Print("Creating release folder for " + buildEnv[itr].envName + " platform... ")
-		dms3libs.MkDir(filepath.Join(releaseDir, buildEnv[itr].dirName))
+	for itr := range BuildEnv {
+		fmt.Print("Creating release folder for " + BuildEnv[itr].envName + " platform... ")
+		dms3libs.MkDir(filepath.Join(releaseDir, BuildEnv[itr].DirName))
 		fmt.Println("Success")
 	}
 
@@ -39,13 +41,13 @@ func BuildReleaseFolder(releaseDir string) {
 // BuildComponents compiles dms3 components for each platform passed into it
 func BuildComponents(releaseDir string) {
 
-	for itr := range buildEnv {
-		fmt.Print("Building dms3 components for " + buildEnv[itr].envName + " platform... ")
+	for itr := range BuildEnv {
+		fmt.Print("Building dms3 components for " + BuildEnv[itr].envName + " platform... ")
 
 		for jtr := range components {
 
 			if components[jtr].compile {
-				_, err := dms3libs.RunCommand("env " + buildEnv[itr].compileTags + " go build -o " + filepath.Join(releaseDir, buildEnv[itr].dirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
+				_, err := dms3libs.RunCommand("env " + BuildEnv[itr].compileTags + " go build -o " + filepath.Join(releaseDir, BuildEnv[itr].DirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
 				dms3libs.CheckErr(err)
 			}
 		}
@@ -83,43 +85,11 @@ func CopyConfigFiles(releaseDir string) {
 	fmt.Print("Copying dms3 component config files (TOML) into " + releaseDir + " folder... ")
 
 	for itr := range components {
-		dms3libs.CopyFile(components[itr].configFilename, filepath.Join(releaseDir, components[itr].dirName+"/"+components[itr].configFilename))
+		dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join(releaseDir, components[itr].dirName+"/"+components[itr].configFilename))
 	}
 
 	fmt.Println("Success")
 	fmt.Println()
-
-}
-
-// CopyReleaseFolder copies the release folder into /etc/distributed-motion-s3
-func CopyReleaseFolder(releaseDir string, confDir string) {
-
-	fmt.Print("Copying " + releaseDir + " folder into " + confDir + " folder... ")
-	dms3libs.RmDir(confDir)
-	dms3libs.CopyDir(releaseDir, confDir)
-
-	for itr := range buildEnv {
-		dms3libs.RmDir(filepath.Join(confDir, buildEnv[itr].dirName))
-	}
-
-	fmt.Println("Success")
-	fmt.Println()
-
-}
-
-// CopyComponents copies dms3 components into /usr/local/bin
-func CopyComponents(releaseDir string, execDir string, platform string) {
-
-	for itr := range buildEnv {
-
-		if buildEnv[itr].envName == platform {
-			fmt.Print("Copying " + buildEnv[itr].envName + " dms3 components into " + execDir + " folder (root permissions expected)... ")
-			dms3libs.CopyDir(filepath.Join(releaseDir, buildEnv[itr].dirName), execDir)
-			fmt.Println("Success")
-			fmt.Println()
-		}
-
-	}
 
 }
 
@@ -163,11 +133,10 @@ func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 // RemoteRunCommand runs a command via the SSH protocol
 func RemoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 
-	fmt.Print("Running command " + "'" + command + "'... ")
+	fmt.Print("Running command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "... ")
 	_, _, _, err := ssh.Run(command, 5)
 	dms3libs.CheckErr(err)
 	fmt.Println("Success")
-	fmt.Println()
 
 }
 
@@ -178,6 +147,38 @@ func RemoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
 	err := ssh.Scp(srcFile, destFile)
 	dms3libs.CheckErr(err)
 	fmt.Println("Success")
-	fmt.Println()
+
+}
+
+// readFile reads a file and returns fileContents
+func readFile(filename string) (fileContents []byte) {
+
+	fileContents, err := ioutil.ReadFile(filename)
+	dms3libs.CheckErr(err)
+
+	return fileContents
+
+}
+
+// ReplaceFileContents replaces strings in filename, returning temporary file
+func ReplaceFileContents(filename string, replacements map[string]string) (tmpFile *os.File) {
+
+	res := readFile(filename)
+	contents := string(res)
+
+	for key, val := range replacements {
+		contents = strings.Replace(contents, key, val, -1)
+	}
+
+	tmpFile, err := ioutil.TempFile("", "dms3_")
+	dms3libs.CheckErr(err)
+
+	_, err = tmpFile.Write([]byte(contents))
+	dms3libs.CheckErr(err)
+
+	err = tmpFile.Close()
+	dms3libs.CheckErr(err)
+
+	return tmpFile
 
 }

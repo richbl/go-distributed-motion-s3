@@ -3,7 +3,7 @@ package dms3build
 // structPlatform contains build environment/platform details
 type structPlatform struct {
 	envName     string
-	dirName     string
+	DirName     string
 	compileTags string
 }
 
@@ -16,15 +16,25 @@ type structComponent struct {
 	compile        bool
 }
 
-var buildEnv = []structPlatform{
+// platform types
+const (
+	LinuxArm7 PlatformType = iota
+	LinuxAMD64
+)
+
+// PlatformType represents all available platform types
+type PlatformType int
+
+// BuildEnv contains platform build details
+var BuildEnv = []structPlatform{
 	{
 		envName:     "linuxArm7",
-		dirName:     "linux_arm7",
+		DirName:     "linux_arm7",
 		compileTags: "GOOS=linux GOARCH=arm GOARM=7",
 	},
 	{
 		envName:     "linuxAMD64",
-		dirName:     "linux_amd64",
+		DirName:     "linux_amd64",
 		compileTags: "GOOS=linux GOARCH=amd64",
 	},
 }

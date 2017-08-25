@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# this bash script will be transferred to the dms3 device component platform, executed, and
+# this bash script will be copied to the dms3 device component platform, executed, and
 # then deleted automatically
 
-# IMPORTANT: be sure to set root password access before using
-
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-PASS="password"
+
+PASS="!PASSWORD"  # DO NOT ALTER: this is automatically replaced during dms3 component installation
 
 printf "\n%s\n" "Stopping dms3server service... "
 echo $PASS | sudo -S service dms3server stop
