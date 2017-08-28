@@ -9,7 +9,7 @@
 	Port = 1965
 
 	# CheckInterval is the interval (in seconds) for checking the dms server
-	CheckInterval = 10
+	CheckInterval = 15
 
 [Logging]
 	# LogLevel sets the log levels for application logging using the following table:

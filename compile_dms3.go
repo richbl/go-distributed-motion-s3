@@ -15,20 +15,19 @@ func main() {
 	const releaseDir = "dms3_release"
 
 	// build platform-specific components into release folder
-	//
 	dms3build.BuildReleaseFolder(releaseDir)
 	dms3build.BuildComponents(releaseDir)
 
 	// copy service daemons into release folder
-	//
 	dms3build.CopyServiceDaemons(releaseDir)
 
+	// copy remote installer scripts into release folder
+	dms3build.CopyInstallerFiles(releaseDir)
+
 	// copy dms3server media files into release folder
-	//
 	dms3build.CopyMediaFiles(releaseDir)
 
 	// copy TOML files into release folder
-	//
 	dms3build.CopyConfigFiles(releaseDir)
 
 }

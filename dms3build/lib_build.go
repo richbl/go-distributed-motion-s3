@@ -3,10 +3,8 @@ package dms3build
 import (
 	"fmt"
 	"go-distributed-motion-s3/dms3libs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/mrgleam/easyssh"
 )
@@ -79,6 +77,17 @@ func CopyMediaFiles(releaseDir string) {
 
 }
 
+// CopyInstallerFiles copies dms3s remote installer scripts into release folder
+func CopyInstallerFiles(releaseDir string) {
+
+	fmt.Print("Copying dms3 remote installer scripts into " + releaseDir + " folder... ")
+	dms3libs.CopyFile("dms3build/dms3client_remote_installer.sh", filepath.Join(releaseDir, "dms3build/dms3client_remote_installer.sh"))
+	dms3libs.CopyFile("dms3build/dms3server_remote_installer.sh", filepath.Join(releaseDir, "dms3build/dms3server_remote_installer.sh"))
+	fmt.Println("Success")
+	fmt.Println()
+
+}
+
 // CopyConfigFiles copies dms3server media files into release folder
 func CopyConfigFiles(releaseDir string) {
 
@@ -111,7 +120,7 @@ func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 	for dirName, dirType := range dirTree {
 
 		if dirType == 0 {
-			RemoteMkDir(ssh, destDir+"/"+strings.TrimLeft(dirName, srcDir))
+			RemoteMkDir(ssh, destDir+dirName[len(srcDir):])
 		}
 
 	}
@@ -120,13 +129,12 @@ func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 	for dirName, dirType := range dirTree {
 
 		if dirType == 1 {
-			ssh.Scp(dirName, dirName)
+			ssh.Scp(dirName, destDir+dirName[len(srcDir):])
 		}
 
 	}
 
 	fmt.Println("Success")
-	fmt.Println()
 
 }
 
@@ -150,35 +158,22 @@ func RemoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
 
 }
 
-// readFile reads a file and returns fileContents
-func readFile(filename string) (fileContents []byte) {
+// ExecFilePath returns the absolute path to the project root (default: go-distributed-motion-s3)
+func ExecFilePath() string {
 
-	fileContents, err := ioutil.ReadFile(filename)
-	dms3libs.CheckErr(err)
-
-	return fileContents
+	ex, _ := os.Executable()
+	return filepath.Dir(ex)
 
 }
 
-// ReplaceFileContents replaces strings in filename, returning temporary file
-func ReplaceFileContents(filename string, replacements map[string]string) (tmpFile *os.File) {
+// IsRunningRelease checks if the installer is running against the project source or release folder
+func IsRunningRelease() bool {
 
-	res := readFile(filename)
-	contents := string(res)
+	dir, _ := filepath.Abs(ExecFilePath())
 
-	for key, val := range replacements {
-		contents = strings.Replace(contents, key, val, -1)
+	if filepath.Base(filepath.Dir(dir)) == "dms3_release" {
+		return true
 	}
-
-	tmpFile, err := ioutil.TempFile("", "dms3_")
-	dms3libs.CheckErr(err)
-
-	_, err = tmpFile.Write([]byte(contents))
-	dms3libs.CheckErr(err)
-
-	err = tmpFile.Close()
-	dms3libs.CheckErr(err)
-
-	return tmpFile
+	return false
 
 }

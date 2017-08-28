@@ -1,0 +1,30 @@
+# Distributed-Motion-S3 (DMS3) CLIENT configuration file
+# TOML 0.4.0
+
+[Clients]
+
+   [Clients.0]
+      User = "pi"
+      DeviceName = "picam-alpha.local"
+      SSHPassword = "" 
+      RemoteAdminPassword = "PASSWORD"
+      Port = "22"
+      Platform = 0
+
+   [Clients.1]
+      User = "pi"
+      DeviceName = "picam-beta.local"
+      SSHPassword = "" 
+      RemoteAdminPassword = "PASSWORD"
+      Port = "22"
+      Platform = 0
+
+[Servers]
+
+   [Servers.0]
+      User = "richbl"
+      DeviceName = "backup.local"
+      SSHPassword = "" 
+      RemoteAdminPassword = "PASSWORD"
+      Port = "22"
+      Platform = 1

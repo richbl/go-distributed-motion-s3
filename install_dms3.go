@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"go-distributed-motion-s3/dms3build"
+	"go-distributed-motion-s3/dms3libs"
 	"os"
+	"path/filepath"
 
 	"github.com/mrgleam/easyssh"
 )
@@ -18,33 +20,48 @@ import (
 func main() {
 
 	var ssh *easyssh.MakeConfig
+	paths := make(map[string]string)
+
+	// determine if running from the release folder or from source project
+	if dms3build.IsRunningRelease() {
+		base := filepath.Dir(filepath.Dir(dms3build.ExecFilePath()))
+		paths["configFolder"] = filepath.Join(base, "dms3_release/dms3build")
+		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
+	} else {
+		base, _ := os.Getwd()
+		paths["configFolder"] = filepath.Join(base, "config")
+		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
+	}
+
+	if !dms3libs.IsFile(paths["releaseFolder"]) {
+		fmt.Println("No release folder found")
+		os.Exit(1)
+	}
+
+	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, paths["configFolder"]+"/dms3build.toml")
 
 	// dms3client component installation
 	//
-	for itr := range dms3build.Clients {
+	for _, client := range dms3build.BuildConfig.Clients {
 
 		ssh = &easyssh.MakeConfig{
-			User:     dms3build.Clients[itr].User,
-			Server:   dms3build.Clients[itr].Server,
-			Password: dms3build.Clients[itr].SSHPassword,
-			Port:     dms3build.Clients[itr].Port,
+			User:     client.User,
+			Server:   client.DeviceName,
+			Password: client.SSHPassword,
+			Port:     client.Port,
 		}
 
 		// copy dms3 release folder to remote device platform
-		dms3build.RemoteCopyDir(ssh, "dms3_release", "dms3_release")
-		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[dms3build.Clients[itr].Platform].DirName+"/go_dms3client")
-		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[dms3build.Clients[itr].Platform].DirName+"/go_dms3mail")
+		dms3build.RemoteCopyDir(ssh, paths["releaseFolder"], "dms3_release")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[client.Platform].DirName+"/go_dms3client")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[client.Platform].DirName+"/go_dms3mail")
 
 		// copy client installer to remote device platform
-		installerFile := dms3build.ReplaceFileContents("dms3build/dms3client_remote_installer.sh", map[string]string{
-			"!PASSWORD": dms3build.Clients[itr].RemoteAdminPassword,
-		})
-		dms3build.RemoteCopyFile(ssh, installerFile.Name(), "dms3client_remote_installer.sh")
+		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/dms3build/dms3client_remote_installer.sh", "dms3client_remote_installer.sh")
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer.sh")
-		os.Remove(installerFile.Name())
 
 		// run client installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+dms3build.Clients[itr].RemoteAdminPassword+"' | sudo ./dms3client_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo ./dms3client_remote_installer.sh")
 		dms3build.RemoteRunCommand(ssh, "rm dms3client_remote_installer.sh")
 		fmt.Println("")
 
@@ -52,29 +69,25 @@ func main() {
 
 	// dms3server component installation
 	//
-	for itr := range dms3build.Servers {
+	for _, server := range dms3build.BuildConfig.Servers {
 
 		ssh = &easyssh.MakeConfig{
-			User:     dms3build.Servers[itr].User,
-			Server:   dms3build.Servers[itr].Server,
-			Password: dms3build.Servers[itr].SSHPassword,
-			Port:     dms3build.Servers[itr].Port,
+			User:     server.User,
+			Server:   server.DeviceName,
+			Password: server.SSHPassword,
+			Port:     server.Port,
 		}
 
 		// copy dms3 release folder to remote device platform
-		dms3build.RemoteCopyDir(ssh, "dms3_release", "dms3_release")
-		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[dms3build.Servers[itr].Platform].DirName+"/go_dms3server")
+		dms3build.RemoteCopyDir(ssh, paths["releaseFolder"], "dms3_release")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[server.Platform].DirName+"/go_dms3server")
 
 		// copy server installer to remote device platform
-		installerFile := dms3build.ReplaceFileContents("dms3build/dms3server_remote_installer.sh", map[string]string{
-			"!PASSWORD": dms3build.Servers[itr].RemoteAdminPassword,
-		})
-		dms3build.RemoteCopyFile(ssh, installerFile.Name(), "dms3server_remote_installer.sh")
+		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/dms3build/dms3server_remote_installer.sh", "dms3server_remote_installer.sh")
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer.sh")
-		os.Remove(installerFile.Name())
 
 		// run server installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+dms3build.Servers[itr].RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer.sh")
 		dms3build.RemoteRunCommand(ssh, "rm dms3server_remote_installer.sh")
 		fmt.Println("")
 

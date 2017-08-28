@@ -34,7 +34,7 @@
 
 [AlwaysOn]
 	# Enables (true) or disables (false) motion detector application based on time-of-day
-	Enable = false
+	Enable = true
 
 	# TimeRange is the start and end times (24-hour format) for motion to always be enabled,
 	# regardless of absence/existence of user proxy device(s) on the LAN

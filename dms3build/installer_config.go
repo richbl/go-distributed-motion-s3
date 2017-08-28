@@ -1,42 +1,19 @@
 package dms3build
 
+// BuildConfig contains installation configuration settings read from TOML file
+var BuildConfig *structSettings
+
+// client-side configuration parameters
+type structSettings struct {
+	Clients map[string]structDevice
+	Servers map[string]structDevice
+}
+
 type structDevice struct {
 	User                string
-	Server              string
+	DeviceName          string
 	SSHPassword         string
 	RemoteAdminPassword string
 	Port                string
 	Platform            PlatformType
-}
-
-// Clients represent dms3 smart device component platforms
-var Clients = []structDevice{
-	{
-		User:                "pi",
-		Server:              "picam-alpha.local",
-		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "PASSWORD",
-		Port:                "22",
-		Platform:            LinuxArm7,
-	},
-	{
-		User:                "pi",
-		Server:              "picam-beta.local",
-		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "PASSWORD",
-		Port:                "22",
-		Platform:            LinuxArm7,
-	},
-}
-
-// Servers represent dms3 server component platforms
-var Servers = []structDevice{
-	{
-		User:                "richbl",
-		Server:              "backup.local",
-		SSHPassword:         "", // SSH certificate
-		RemoteAdminPassword: "PASSWORD",
-		Port:                "22",
-		Platform:            LinuxAMD64,
-	},
 }

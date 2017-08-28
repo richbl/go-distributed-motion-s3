@@ -62,6 +62,13 @@ var components = []structComponent{
 		compile:        true,
 	},
 	{
+		srcName:        "install_dms3.go",
+		exeName:        "install_dms3",
+		dirName:        "dms3build",
+		configFilename: "dms3build.toml",
+		compile:        true,
+	},
+	{
 		srcName:        "",
 		exeName:        "dms3libs",
 		dirName:        "dms3libs",
