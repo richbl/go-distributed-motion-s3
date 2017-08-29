@@ -172,7 +172,12 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
 	 - [aplay](http://en.wikipedia.org/wiki/Aplay "aplay"): ALSA audio player (optional)
 
 ## 8. DMS<sup>3</sup> Installation
-For complete details on **DMS<sup>3</sup>** installation, see the installation file ([`INSTALL.md`](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md "INSTALL.md")).
+**DMS<sup>3</sup>** provides two separate installation documents: 
+
+- [Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/QUICK_INSTALL.md): uses the available `dms3build` build tools and installer to provided automated installation of **DMS<sup>3</sup>** components across participating hardware devices
+- [Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md): uses project sources to first compile for specific hardware device platforms, and then manually install **DMS<sup>3</sup>** components
+
+> **Note:** to learn more about the technical details of the **DMS<sup>3</sup>**  project, refer to the [Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md) documentation, as this document provides much greater technical depth in describing the **DMS<sup>3</sup>** installation process
 
 ## 9. License
 
