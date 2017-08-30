@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	dms3libs.LoadLibConfig("../../dms3libs/lib_config.toml")
+	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
 }
 
 func TestPingHosts(t *testing.T) {

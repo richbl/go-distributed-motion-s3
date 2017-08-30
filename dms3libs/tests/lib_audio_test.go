@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	dms3libs.LoadLibConfig("../../dms3libs/lib_config.toml")
+	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
 }
 
 func TestPlayAudio(t *testing.T) {
@@ -25,20 +25,31 @@ func TestPlayAudio(t *testing.T) {
 
 func TestAudioConfig(t *testing.T) {
 
-	dms3server.LoadServerConfig("../../dms3server/server_config.toml")
+	dms3libs.LoadComponentConfig(&dms3server.ServerConfig, "../../config/dms3server.toml")
 
-	if dms3libs.IsFile(dms3server.ServerConfig.PlayMotionStart) {
-		dms3libs.PlayAudio(dms3server.ServerConfig.PlayMotionStart)
-		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStart, "played successfully")
-	} else {
-		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStart, "not found")
+	mediaFileStart := dms3server.ServerConfig.Audio.PlayMotionStart
+	mediaFileStop := dms3server.ServerConfig.Audio.PlayMotionStop
+
+	if mediaFileStart == "" {
+		mediaFileStart = "../../dms3server/media/motion_start.wav"
 	}
 
-	if dms3libs.IsFile(dms3server.ServerConfig.PlayMotionStop) {
-		dms3libs.PlayAudio(dms3server.ServerConfig.PlayMotionStop)
-		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStop, "played successfully")
+	if dms3libs.IsFile(mediaFileStart) {
+		dms3libs.PlayAudio(mediaFileStart)
+		t.Error("Audio file", mediaFileStart, "played successfully")
 	} else {
-		t.Error("Audio file", dms3server.ServerConfig.PlayMotionStop, "not found")
+		t.Error("Audio file", mediaFileStart, "not found")
+	}
+
+	if mediaFileStop == "" {
+		mediaFileStop = "../../dms3server/media/motion_stop.wav"
+	}
+
+	if dms3libs.IsFile(mediaFileStop) {
+		dms3libs.PlayAudio(mediaFileStop)
+		t.Error("Audio file", mediaFileStop, "played successfully")
+	} else {
+		t.Error("Audio file", mediaFileStop, "not found")
 	}
 
 }

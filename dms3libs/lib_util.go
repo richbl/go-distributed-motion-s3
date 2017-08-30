@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -44,14 +43,6 @@ func StripRet(value []byte) []byte {
 	}
 
 	return value[:len(value)-1]
-
-}
-
-// GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
-func GetCurTime() int {
-
-	curTime, _ := strconv.Atoi(To24H(time.Now()))
-	return curTime
 
 }
 
