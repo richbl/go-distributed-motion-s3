@@ -77,24 +77,15 @@ func CopyMediaFiles(releaseDir string) {
 
 }
 
-// CopyInstallerFiles copies dms3s remote installer scripts into release folder
-func CopyInstallerFiles(releaseDir string) {
-
-	fmt.Print("Copying dms3 remote installer scripts into " + releaseDir + " folder... ")
-	dms3libs.CopyFile("dms3build/dms3client_remote_installer.sh", filepath.Join(releaseDir, "dms3build/dms3client_remote_installer.sh"))
-	dms3libs.CopyFile("dms3build/dms3server_remote_installer.sh", filepath.Join(releaseDir, "dms3build/dms3server_remote_installer.sh"))
-	fmt.Println("Success")
-	fmt.Println()
-
-}
-
 // CopyConfigFiles copies dms3server media files into release folder
 func CopyConfigFiles(releaseDir string) {
 
 	fmt.Print("Copying dms3 component config files (TOML) into " + releaseDir + " folder... ")
 
 	for itr := range components {
-		dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join(releaseDir, components[itr].dirName+"/"+components[itr].configFilename))
+		if components[itr].configFilename != "" {
+			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join(releaseDir, components[itr].dirName+"/"+components[itr].configFilename))
+		}
 	}
 
 	fmt.Println("Success")

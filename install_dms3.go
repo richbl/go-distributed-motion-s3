@@ -57,12 +57,12 @@ func main() {
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[client.Platform].DirName+"/go_dms3mail")
 
 		// copy client installer to remote device platform
-		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/dms3build/dms3client_remote_installer.sh", "dms3client_remote_installer.sh")
-		dms3build.RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer.sh")
+		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/"+dms3build.BuildEnv[client.Platform].DirName+"/dms3client_remote_installer", "dms3client_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
 
 		// run client installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo ./dms3client_remote_installer.sh")
-		dms3build.RemoteRunCommand(ssh, "rm dms3client_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "rm dms3client_remote_installer")
 		fmt.Println("")
 
 	}
@@ -83,12 +83,12 @@ func main() {
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3_release/"+dms3build.BuildEnv[server.Platform].DirName+"/go_dms3server")
 
 		// copy server installer to remote device platform
-		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/dms3build/dms3server_remote_installer.sh", "dms3server_remote_installer.sh")
-		dms3build.RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer.sh")
+		dms3build.RemoteCopyFile(ssh, paths["releaseFolder"]+"/"+dms3build.BuildEnv[server.Platform].DirName+"/dms3server_remote_installer", "dms3server_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
 
 		// run server installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer.sh")
-		dms3build.RemoteRunCommand(ssh, "rm dms3server_remote_installer.sh")
+		dms3build.RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "rm dms3server_remote_installer")
 		fmt.Println("")
 
 	}

@@ -4,7 +4,6 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 // IsFile returns true/false on existence of file passed in
@@ -26,7 +25,7 @@ func MkDir(newPath string) {
 
 }
 
-// RmDir creates a new folder with permissions passed in
+// RmDir removes the folder passed in
 func RmDir(dir string) {
 
 	if IsFile(dir) {
@@ -84,13 +83,19 @@ func CopyFile(src string, dest string) {
 // CopyDir copies a directory from srcDir to destDir
 func CopyDir(srcDir string, destDir string) {
 
+	pathRoot := filepath.Dir(srcDir)
+
+	if pathRoot == "." {
+		pathRoot = ""
+	}
+
 	dirTree := WalkDir(srcDir)
 
 	// create directory tree...
 	for dirName, dirType := range dirTree {
 
 		if dirType == 0 {
-			MkDir(destDir + "/" + strings.TrimLeft(dirName, srcDir))
+			MkDir(filepath.Join(destDir, dirName[len(pathRoot):]))
 		}
 
 	}
@@ -99,7 +104,7 @@ func CopyDir(srcDir string, destDir string) {
 	for dirName, dirType := range dirTree {
 
 		if dirType == 1 {
-			CopyFile(dirName, destDir+"/"+strings.TrimLeft(dirName, srcDir))
+			CopyFile(dirName, filepath.Join(destDir, dirName[len(pathRoot):]))
 		}
 
 	}

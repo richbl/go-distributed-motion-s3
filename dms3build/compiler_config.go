@@ -9,11 +9,11 @@ type structPlatform struct {
 
 // structComponent contains component details
 type structComponent struct {
-	srcName        string
-	exeName        string
-	dirName        string
-	configFilename string
-	compile        bool
+	srcName        string // component source filename
+	exeName        string // compiled filename
+	dirName        string // location for compiled component in release folder
+	configFilename string // relevant config (TOML) file
+	compile        bool   // whether component should be compiled
 }
 
 // platform types
@@ -66,6 +66,20 @@ var components = []structComponent{
 		exeName:        "install_dms3",
 		dirName:        "dms3build",
 		configFilename: "dms3build.toml",
+		compile:        true,
+	},
+	{
+		srcName:        "dms3build/remote_installers/dms3client_remote_installer.go",
+		exeName:        "dms3client_remote_installer",
+		dirName:        "dms3build",
+		configFilename: "",
+		compile:        true,
+	},
+	{
+		srcName:        "dms3build/remote_installers/dms3server_remote_installer.go",
+		exeName:        "dms3server_remote_installer",
+		dirName:        "dms3build",
+		configFilename: "",
 		compile:        true,
 	},
 	{

@@ -6,7 +6,7 @@
    [Clients.0]
       User = "pi"
       DeviceName = "picam-alpha.local"
-      SSHPassword = "" 
+      SSHPassword = ""        # using cert
       RemoteAdminPassword = "PASSWORD"
       Port = "22"
       Platform = 0
@@ -14,7 +14,7 @@
    [Clients.1]
       User = "pi"
       DeviceName = "picam-beta.local"
-      SSHPassword = "" 
+      SSHPassword = ""      # using cert
       RemoteAdminPassword = "PASSWORD"
       Port = "22"
       Platform = 0
@@ -24,7 +24,7 @@
    [Servers.0]
       User = "richbl"
       DeviceName = "backup.local"
-      SSHPassword = "" 
+      SSHPassword = ""      # using cert
       RemoteAdminPassword = "PASSWORD"
       Port = "22"
       Platform = 1

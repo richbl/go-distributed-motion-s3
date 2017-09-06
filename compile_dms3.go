@@ -21,9 +21,6 @@ func main() {
 	// copy service daemons into release folder
 	dms3build.CopyServiceDaemons(releaseDir)
 
-	// copy remote installer scripts into release folder
-	dms3build.CopyInstallerFiles(releaseDir)
-
 	// copy dms3server media files into release folder
 	dms3build.CopyMediaFiles(releaseDir)
 
