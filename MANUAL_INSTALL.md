@@ -36,34 +36,37 @@ The **DMS<sup>3</sup>** project sources must first be compiled into binary execu
 The result of a successful **DMS<sup>3</sup>** project compile is the creation of a `dms_release` folder. The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 
 ```
-      dms3_release/
-      ├── dms3build
-      │   ├── dms3build.toml
-      │   ├── dms3client_remote_installer.sh
-      │   └── dms3server_remote_installer.sh
-      ├── dms3client
-      │   ├── dms3client.service
-      │   └── dms3client.toml
-      ├── dms3libs
-      │   └── dms3libs.toml
-      ├── dms3mail
-      │   └── dms3mail.toml
-      ├── dms3server
-      │   ├── dms3server.service
-      │   ├── dms3server.toml
-      │   └── media
-      │       ├── motion_start.wav
-      │       └── motion_stop.wav
-      ├── linux_amd64
-      │   ├── go_dms3client
-      │   ├── go_dms3mail
-      │   ├── go_dms3server
-      │   └── install_dms3
-      └── linux_arm7
-          ├── go_dms3client
-          ├── go_dms3mail
-          ├── go_dms3server
-          └── install_dms3	
+	dms3_release/
+	├── dms3build
+	│   └── dms3build.toml
+	├── dms3client
+	│   ├── dms3client.service
+	│   └── dms3client.toml
+	├── dms3libs
+	│   └── dms3libs.toml
+	├── dms3mail
+	│   └── dms3mail.toml
+	├── dms3server
+	│   ├── dms3server.service
+	│   ├── dms3server.toml
+	│   └── media
+	│       ├── motion_start.wav
+	│       └── motion_stop.wav
+	├── linux_amd64
+	│   ├── dms3client_remote_installer
+	│   ├── dms3server_remote_installer
+	│   ├── go_dms3client
+	│   ├── go_dms3mail
+	│   ├── go_dms3server
+	│   └── install_dms3
+	└── linux_arm7
+	    ├── dms3client_remote_installer
+	    ├── dms3server_remote_installer
+	    ├── go_dms3client
+	    ├── go_dms3mail
+	    ├── go_dms3server
+  	    └── install_dms3
+
 ```
 
 ### 3. Install **DMS<sup>3</sup>**
