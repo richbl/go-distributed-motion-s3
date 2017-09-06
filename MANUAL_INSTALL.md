@@ -1,8 +1,8 @@
-## Distributed Motion Sense Surveillance System (DMS<sup>3</sup>) Manual Installation
+## Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation
 
-This procedure describes how to manually install the **Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
+This procedure describes how to manually install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
 
-For details on how to quickly install **Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** using the included `dms3build` installer, see the [Distributed Motion Sense Surveillance System (DMS<sup>3</sup>) Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md) documentation.
+For details on how to quickly install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** using the included `dms3build` installer, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md) documentation.
 
 
 ### Installation Overview

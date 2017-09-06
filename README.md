@@ -1,13 +1,13 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
 
-# Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)
+# Distributed Motion Surveillance Security System (DMS<sup>3</sup>)
 
 ## 1. What Is DMS<sup>3</sup>?
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/28693283-c3c11518-72d8-11e7-8d41-f167cb8f3b13.png)
 
-**Distributed Motion Sense Surveillance System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detection applications (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, or [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
+**Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** is a [Go](https://golang.org/ "Go")-based application that integrates third-party open-source motion detection applications (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, or [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not home" and automatically enables or disables the surveillance system
 - Distributes video stream processing, reporting, and user notification to capable "smart" device clients (e.g., a Raspberry Pi) which:
