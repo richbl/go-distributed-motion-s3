@@ -79,7 +79,7 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
          SSHPassword:         "", // using SSH certificate
          RemoteAdminPassword: "PASSWORD",
          Port:                "22",
-         Platform:            LinuxAMD64,
+         Platform:            1,
       }
    ```
 
@@ -92,7 +92,7 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
          SSHPassword:         "", // using SSH certificate
          RemoteAdminPassword: "PASSWORD",
          Port:                "22",
-         Platform:            LinuxArm7,
+         Platform:            0,
       }
    ```
 
