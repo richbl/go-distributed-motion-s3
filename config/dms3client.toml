@@ -3,7 +3,7 @@
 
 [Server]
 	# IP is the address on which the dms server is running
-	IP = "localhost"
+	IP = "10.10.10.9"
 
 	# Port is the port on which the dms server is running
 	Port = 1965

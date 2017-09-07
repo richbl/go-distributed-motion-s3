@@ -6,6 +6,7 @@ import (
 	"go-distributed-motion-s3/dms3libs"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/mrgleam/easyssh"
 )
@@ -61,7 +62,7 @@ func main() {
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
 
 		// run client installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer "+strconv.Itoa(int(client.Platform)))
 		dms3build.RemoteRunCommand(ssh, "rm dms3client_remote_installer")
 		fmt.Println("")
 
@@ -87,7 +88,7 @@ func main() {
 		dms3build.RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
 
 		// run server installer, then remove on completion
-		dms3build.RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
+		dms3build.RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer "+strconv.Itoa(int(server.Platform)))
 		dms3build.RemoteRunCommand(ssh, "rm dms3server_remote_installer")
 		fmt.Println("")
 
