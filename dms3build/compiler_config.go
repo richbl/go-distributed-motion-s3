@@ -1,12 +1,5 @@
 package dms3build
 
-// structPlatform contains build environment/platform details
-type structPlatform struct {
-	envName     string
-	DirName     string
-	compileTags string
-}
-
 // structComponent contains component details
 type structComponent struct {
 	srcName        string // component source filename
@@ -14,29 +7,6 @@ type structComponent struct {
 	dirName        string // location for compiled component in release folder
 	configFilename string // relevant config (TOML) file
 	compile        bool   // whether component should be compiled
-}
-
-// platform types
-const (
-	LinuxArm7 PlatformType = iota
-	LinuxAMD64
-)
-
-// PlatformType represents all available platform types
-type PlatformType int
-
-// BuildEnv contains platform build details
-var BuildEnv = []structPlatform{
-	{
-		envName:     "linuxArm7",
-		DirName:     "linux_arm7",
-		compileTags: "GOOS=linux GOARCH=arm GOARM=7",
-	},
-	{
-		envName:     "linuxAMD64",
-		DirName:     "linux_amd64",
-		compileTags: "GOOS=linux GOARCH=amd64",
-	},
 }
 
 var components = []structComponent{
@@ -88,5 +58,37 @@ var components = []structComponent{
 		dirName:        "dms3libs",
 		configFilename: "dms3libs.toml",
 		compile:        false,
+	},
+}
+
+// PlatformType represents all available platform types
+type PlatformType string
+
+// platform types
+const (
+	LinuxArm6  PlatformType = "LinuxArm6"
+	LinuxArm7  PlatformType = "LinuxArm7"
+	LinuxAMD64 PlatformType = "LinuxAMD64"
+)
+
+// structPlatform contains build environment/platform details
+type structPlatform struct {
+	DirName     string
+	compileTags string
+}
+
+// BuildEnv contains platform build details
+var BuildEnv = map[PlatformType]structPlatform{
+	LinuxArm6: {
+		DirName:     "linux_arm6",
+		compileTags: "GOOS=linux GOARCH=arm GOARM=6",
+	},
+	LinuxArm7: {
+		DirName:     "linux_arm7",
+		compileTags: "GOOS=linux GOARCH=arm GOARM=7",
+	},
+	LinuxAMD64: {
+		DirName:     "linux_amd64",
+		compileTags: "GOOS=linux GOARCH=amd64",
 	},
 }

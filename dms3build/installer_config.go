@@ -14,6 +14,6 @@ type structDevice struct {
 	DeviceName          string
 	SSHPassword         string
 	RemoteAdminPassword string
-	Port                string
+	Port                int
 	Platform            PlatformType
 }

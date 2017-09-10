@@ -8,23 +8,22 @@ import (
 // and media files into a dms3_release folder
 //
 // the dms3_release folder is then used as the base object for performing dms3 component
-// installation on dms3client(s) and dms3server(s) (see install_dms3.go for details)
+// installation on dms3client(s) and dms3server(s) device platforms (see install_dms3.go for
+// details)
 //
 func main() {
 
-	const releaseDir = "dms3_release"
-
 	// build platform-specific components into release folder
-	dms3build.BuildReleaseFolder(releaseDir)
-	dms3build.BuildComponents(releaseDir)
+	dms3build.BuildReleaseFolder()
+	dms3build.BuildComponents()
 
 	// copy service daemons into release folder
-	dms3build.CopyServiceDaemons(releaseDir)
+	dms3build.CopyServiceDaemons()
 
 	// copy dms3server media files into release folder
-	dms3build.CopyMediaFiles(releaseDir)
+	dms3build.CopyMediaFiles()
 
 	// copy TOML files into release folder
-	dms3build.CopyConfigFiles(releaseDir)
+	dms3build.CopyConfigFiles()
 
 }

@@ -1,22 +1,24 @@
 package dms3build
 
 import (
+	"errors"
 	"fmt"
 	"go-distributed-motion-s3/dms3libs"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/mrgleam/easyssh"
 )
 
 // BuildReleaseFolder creates the directory structure for each platform passed into it
-func BuildReleaseFolder(releaseDir string) {
+func BuildReleaseFolder() {
 
-	dms3libs.RmDir(releaseDir)
+	dms3libs.RmDir("dms3_release")
 
-	for itr := range BuildEnv {
-		fmt.Print("Creating release folder for " + BuildEnv[itr].envName + " platform... ")
-		dms3libs.MkDir(filepath.Join(releaseDir, BuildEnv[itr].DirName))
+	for platformType := range BuildEnv {
+		fmt.Print("Creating release folder for " + BuildEnv[platformType].DirName + " platform... ")
+		dms3libs.MkDir(filepath.Join("dms3_release", BuildEnv[platformType].DirName))
 		fmt.Println("Success")
 	}
 
@@ -28,7 +30,7 @@ func BuildReleaseFolder(releaseDir string) {
 			dirName = filepath.Join(dirName, "media")
 		}
 
-		dms3libs.MkDir(filepath.Join(releaseDir, dirName))
+		dms3libs.MkDir(filepath.Join("dms3_release", dirName))
 		fmt.Println("Success")
 	}
 
@@ -37,17 +39,18 @@ func BuildReleaseFolder(releaseDir string) {
 }
 
 // BuildComponents compiles dms3 components for each platform passed into it
-func BuildComponents(releaseDir string) {
+func BuildComponents() {
 
-	for itr := range BuildEnv {
-		fmt.Print("Building dms3 components for " + BuildEnv[itr].envName + " platform... ")
+	for platformType := range BuildEnv {
+		fmt.Print("Building dms3 components for " + BuildEnv[platformType].DirName + " platform... ")
 
 		for jtr := range components {
 
 			if components[jtr].compile {
-				_, err := dms3libs.RunCommand("env " + BuildEnv[itr].compileTags + " go build -o " + filepath.Join(releaseDir, BuildEnv[itr].DirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
+				_, err := dms3libs.RunCommand("env " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].DirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
 				dms3libs.CheckErr(err)
 			}
+
 		}
 
 		fmt.Println("Success")
@@ -57,34 +60,34 @@ func BuildComponents(releaseDir string) {
 }
 
 // CopyServiceDaemons copies daemons into release folder
-func CopyServiceDaemons(releaseDir string) {
+func CopyServiceDaemons() {
 
-	fmt.Print("Copying dms3 service daemons into " + releaseDir + " folder... ")
-	dms3libs.CopyFile("dms3client/daemons/systemd/dms3client.service", filepath.Join(releaseDir, "dms3client/dms3client.service"))
-	dms3libs.CopyFile("dms3server/daemons/systemd/dms3server.service", filepath.Join(releaseDir, "dms3server/dms3server.service"))
+	fmt.Print("Copying dms3 service daemons into dms3_release folder... ")
+	dms3libs.CopyFile("dms3client/daemons/systemd/dms3client.service", filepath.Join("dms3_release", "dms3client/dms3client.service"))
+	dms3libs.CopyFile("dms3server/daemons/systemd/dms3server.service", filepath.Join("dms3_release", "dms3server/dms3server.service"))
 	fmt.Println("Success")
 	fmt.Println()
 }
 
 // CopyMediaFiles copies dms3server media files into release folder
-func CopyMediaFiles(releaseDir string) {
+func CopyMediaFiles() {
 
-	fmt.Print("Copying dms3server media files (WAV) into " + releaseDir + " folder... ")
-	dms3libs.CopyFile("dms3server/media/motion_start.wav", filepath.Join(releaseDir, "dms3server/media/motion_start.wav"))
-	dms3libs.CopyFile("dms3server/media/motion_stop.wav", filepath.Join(releaseDir, "dms3server/media/motion_stop.wav"))
+	fmt.Print("Copying dms3server media files (WAV) into dms3_release folder... ")
+	dms3libs.CopyFile("dms3server/media/motion_start.wav", filepath.Join("dms3_release", "dms3server/media/motion_start.wav"))
+	dms3libs.CopyFile("dms3server/media/motion_stop.wav", filepath.Join("dms3_release", "dms3server/media/motion_stop.wav"))
 	fmt.Println("Success")
 	fmt.Println()
 
 }
 
 // CopyConfigFiles copies dms3server media files into release folder
-func CopyConfigFiles(releaseDir string) {
+func CopyConfigFiles() {
 
-	fmt.Print("Copying dms3 component config files (TOML) into " + releaseDir + " folder... ")
+	fmt.Print("Copying dms3 component config files (TOML) into dms3_release folder... ")
 
 	for itr := range components {
 		if components[itr].configFilename != "" {
-			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join(releaseDir, components[itr].dirName+"/"+components[itr].configFilename))
+			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join("dms3_release", components[itr].dirName+"/"+components[itr].configFilename))
 		}
 	}
 
@@ -157,14 +160,122 @@ func ExecFilePath() string {
 
 }
 
-// IsRunningRelease checks if the installer is running against the project source or release folder
-func IsRunningRelease() bool {
+func isRunningRelease() bool {
 
 	dir, _ := filepath.Abs(ExecFilePath())
 
 	if filepath.Base(filepath.Dir(dir)) == "dms3_release" {
 		return true
 	}
+
 	return false
+
+}
+
+// ReleasePath sets the installer release path based on whether called from source project or
+// from a binary release folder
+//
+func ReleasePath() map[string]string {
+
+	paths := make(map[string]string)
+
+	if isRunningRelease() {
+		base := filepath.Dir(filepath.Dir(ExecFilePath()))
+		paths["configFolder"] = filepath.Join(base, "dms3_release/dms3build")
+		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
+	} else {
+		base, _ := os.Getwd()
+		paths["configFolder"] = filepath.Join(base, "config")
+		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
+	}
+
+	return paths
+
+}
+
+// ConfirmReleaseFolder checks for the existence of the release folder
+func ConfirmReleaseFolder(releasePath string) {
+
+	if !dms3libs.IsFile(releasePath) {
+		dms3libs.CheckErr(errors.New("No release folder found"))
+	}
+
+}
+
+// InstallClientComponents installs dms3client components onto device platforms identified in
+// the dms3build.toml configuration file
+//
+func InstallClientComponents(releasePath string) {
+
+	var ssh *easyssh.MakeConfig
+
+	for _, client := range BuildConfig.Clients {
+
+		ssh = &easyssh.MakeConfig{
+			User:     client.User,
+			Server:   client.DeviceName,
+			Password: client.SSHPassword,
+			Port:     strconv.Itoa(client.Port),
+		}
+
+		// copy dms3 release folder components to remote device platform
+		RemoteMkDir(ssh, "dms3_release")
+
+		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3client"), filepath.Join("dms3_release", "dms3client"))
+		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
+		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
+
+		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "go_dms3client"), filepath.Join("dms3_release", "go_dms3client"))
+		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "go_dms3mail"), filepath.Join("dms3_release", "go_dms3mail"))
+		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "dms3client_remote_installer"), "dms3client_remote_installer")
+		RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
+
+		// copy systemd service file (for manual installation)
+		RemoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3client"), "dms3client.service"), "dms3client.service")
+
+		// run client installer, then remove on completion
+		RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
+		RemoteRunCommand(ssh, "rm dms3client_remote_installer")
+		fmt.Println("")
+
+	}
+
+}
+
+// InstallServerComponents installs dms3server components onto device platforms identified in
+// the dms3build.toml configuration file
+//
+func InstallServerComponents(releasePath string) {
+
+	var ssh *easyssh.MakeConfig
+
+	for _, server := range BuildConfig.Servers {
+
+		ssh = &easyssh.MakeConfig{
+			User:     server.User,
+			Server:   server.DeviceName,
+			Password: server.SSHPassword,
+			Port:     strconv.Itoa(server.Port),
+		}
+
+		// copy dms3 release folder components to remote device platform
+		RemoteMkDir(ssh, "dms3_release")
+
+		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3server"), filepath.Join("dms3_release", "dms3server"))
+		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
+
+		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].DirName), "go_dms3server"), filepath.Join("dms3_release", "go_dms3server"))
+		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].DirName), "dms3server_remote_installer"), "dms3server_remote_installer")
+		RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
+
+		// copy systemd service file (for manual installation)
+		RemoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3server"), "dms3server.service"), "dms3server.service")
+
+		// run server installer, then remove on completion
+		RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
+		RemoteRunCommand(ssh, "rm dms3server_remote_installer")
+		fmt.Println("")
+
+	}
 
 }

@@ -115,14 +115,3 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 	}
 
 }
-
-// GetArgs parses the command line, returning an array of args
-func GetArgs() []string {
-
-	if len(os.Args) == 1 {
-		LogFatal("no arguments passed")
-	}
-
-	return os.Args
-
-}

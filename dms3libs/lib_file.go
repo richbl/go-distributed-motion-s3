@@ -39,7 +39,6 @@ func RmDir(dir string) {
 func WalkDir(dirname string) map[string]int {
 
 	fileList := map[string]int{}
-
 	error := filepath.Walk(dirname, func(path string, f os.FileInfo, err error) error {
 
 		// exclude root directory

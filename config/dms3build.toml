@@ -8,24 +8,32 @@
       DeviceName = "picam-alpha.local"
       SSHPassword = ""        # using SSH certifcate
       RemoteAdminPassword = "PASSWORD"
-      Port = "22"
-      Platform = 0
+      Port = 22
+      Platform = "LinuxArm7"
 
    [Clients.1]
       User = "pi"
       DeviceName = "picam-beta.local"
       SSHPassword = ""      # using SSH certifcate
       RemoteAdminPassword = "PASSWORD"
-      Port = "22"
-      Platform = 0
+      Port = 22
+      Platform = "LinuxArm7"
 
    [Clients.2]
+      User = "pi"
+      DeviceName = "picam-gamma.local"
+      SSHPassword = ""      # using SSH certifcate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "LinuxArm6"
+
+   [Clients.3]
       User = "richbl"
       DeviceName = "main.local"
       SSHPassword = ""      # using SSH certifcate
       RemoteAdminPassword = "PASSWORD"
-      Port = "22"
-      Platform = 1
+      Port = 22
+      Platform = "LinuxAMD64"
 
 [Servers]
 
@@ -34,5 +42,5 @@
       DeviceName = "main.local"
       SSHPassword = ""      # using SSH certifcate
       RemoteAdminPassword = "PASSWORD"
-      Port = "22"
-      Platform = 1
+      Port = 22
+      Platform = "LinuxAMD64"

@@ -62,8 +62,10 @@ func rightPadToLen(s string, padStr string, pLen int) string {
 
 // CheckErr does simple error management (no logging dependencies)
 func CheckErr(err error) {
+
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+
 }
