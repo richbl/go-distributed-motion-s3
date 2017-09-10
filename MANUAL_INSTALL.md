@@ -59,13 +59,20 @@ The result of a successful **DMS<sup>3</sup>** project compile is the creation o
 	│   ├── go_dms3mail
 	│   ├── go_dms3server
 	│   └── install_dms3
+	├── linux_arm6
+	│   ├── dms3client_remote_installer
+	│   ├── dms3server_remote_installer
+	│   ├── go_dms3client
+	│   ├── go_dms3mail
+	│   ├── go_dms3server
+	│   └── install_dms3
 	└── linux_arm7
 	    ├── dms3client_remote_installer
 	    ├── dms3server_remote_installer
 	    ├── go_dms3client
 	    ├── go_dms3mail
 	    ├── go_dms3server
-  	    └── install_dms3
+	    └── install_dms3
 
 ```
 
