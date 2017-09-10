@@ -54,14 +54,20 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
 	│   ├── go_dms3mail
 	│   ├── go_dms3server
 	│   └── install_dms3
+	├── linux_arm6
+	│   ├── dms3client_remote_installer
+	│   ├── dms3server_remote_installer
+	│   ├── go_dms3client
+	│   ├── go_dms3mail
+	│   ├── go_dms3server
+	│   └── install_dms3
 	└── linux_arm7
 	    ├── dms3client_remote_installer
 	    ├── dms3server_remote_installer
 	    ├── go_dms3client
 	    ├── go_dms3mail
 	    ├── go_dms3server
-  	    └── install_dms3
-
+	    └── install_dms3
 ```
 
 ### 3. Install the **DMS<sup>3</sup>** Components
@@ -73,27 +79,25 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
    An example of a **DMS<sup>3</sup>Server** component device:
 
    ```
-      {
-         User:                "richbl",
-         Server:              "backup.local",
-         SSHPassword:         "", // using SSH certificate
-         RemoteAdminPassword: "PASSWORD",
-         Port:                "22",
-         Platform:            1,
-      }
+   [Servers.0]
+      User = "richbl"
+      DeviceName = "main.local"
+      SSHPassword = ""      # using SSH certifcate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "LinuxAMD64"
    ```
 
    An example of a **DMS<sup>3</sup>Client** smart client device (SDC):
 
    ```
-      {
-         User:                "pi",
-         Server:              "picam-alpha.local",
-         SSHPassword:         "", // using SSH certificate
-         RemoteAdminPassword: "PASSWORD",
-         Port:                "22",
-         Platform:            0,
-      }
+   [Clients.0]
+      User = "pi"
+      DeviceName = "picam-alpha.local"
+      SSHPassword = ""        # using SSH certifcate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "LinuxArm7"
    ```
 
    A device configuration must be filled out for each device that will participate in the **DMS<sup>3</sup>** network environment.
