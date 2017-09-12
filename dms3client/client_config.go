@@ -4,8 +4,8 @@ import (
 	"go-distributed-motion-s3/dms3libs"
 )
 
-// ClientConfig contains dms3Client configuration settings read from TOML file
-var ClientConfig *structSettings
+// clientConfig contains dms3Client configuration settings read from TOML file
+var clientConfig *structSettings
 
 // client-side configuration parameters
 type structSettings struct {

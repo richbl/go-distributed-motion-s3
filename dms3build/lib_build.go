@@ -17,8 +17,8 @@ func BuildReleaseFolder() {
 	dms3libs.RmDir("dms3_release")
 
 	for platformType := range BuildEnv {
-		fmt.Print("Creating release folder for " + BuildEnv[platformType].DirName + " platform... ")
-		dms3libs.MkDir(filepath.Join("dms3_release", BuildEnv[platformType].DirName))
+		fmt.Print("Creating release folder for " + BuildEnv[platformType].dirName + " platform... ")
+		dms3libs.MkDir(filepath.Join("dms3_release", BuildEnv[platformType].dirName))
 		fmt.Println("Success")
 	}
 
@@ -42,12 +42,12 @@ func BuildReleaseFolder() {
 func BuildComponents() {
 
 	for platformType := range BuildEnv {
-		fmt.Print("Building dms3 components for " + BuildEnv[platformType].DirName + " platform... ")
+		fmt.Print("Building dms3 components for " + BuildEnv[platformType].dirName + " platform... ")
 
 		for jtr := range components {
 
 			if components[jtr].compile {
-				_, err := dms3libs.RunCommand("env " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].DirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
+				_, err := dms3libs.RunCommand("env " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].dirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
 				dms3libs.CheckErr(err)
 			}
 
@@ -86,89 +86,15 @@ func CopyConfigFiles() {
 	fmt.Print("Copying dms3 component config files (TOML) into dms3_release folder... ")
 
 	for itr := range components {
+
 		if components[itr].configFilename != "" {
 			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join("dms3_release", components[itr].dirName+"/"+components[itr].configFilename))
 		}
+
 	}
 
 	fmt.Println("Success")
 	fmt.Println()
-
-}
-
-// RemoteMkDir creates a new folder over SSH with permissions passed in
-func RemoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
-
-	_, _, _, err := ssh.Run("mkdir -p "+newPath, 5)
-	dms3libs.CheckErr(err)
-
-}
-
-// RemoteCopyDir copies a directory over SSH from srcDir to destDir
-func RemoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
-
-	fmt.Print("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "... ")
-	dirTree := dms3libs.WalkDir(srcDir)
-
-	// create directory tree...
-	for dirName, dirType := range dirTree {
-
-		if dirType == 0 {
-			RemoteMkDir(ssh, destDir+dirName[len(srcDir):])
-		}
-
-	}
-
-	// ...then copy files into directory tree
-	for dirName, dirType := range dirTree {
-
-		if dirType == 1 {
-			ssh.Scp(dirName, destDir+dirName[len(srcDir):])
-		}
-
-	}
-
-	fmt.Println("Success")
-
-}
-
-// RemoteRunCommand runs a command via the SSH protocol
-func RemoteRunCommand(ssh *easyssh.MakeConfig, command string) {
-
-	fmt.Print("Running command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "... ")
-	_, _, _, err := ssh.Run(command, 5)
-	dms3libs.CheckErr(err)
-	fmt.Println("Success")
-
-}
-
-// RemoteCopyFile copies a file from src to a remote dest using SCP
-func RemoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
-
-	fmt.Print("Copying file " + srcFile + " to " + destFile + " on " + ssh.User + "@" + ssh.Server + "... ")
-	err := ssh.Scp(srcFile, destFile)
-	dms3libs.CheckErr(err)
-	fmt.Println("Success")
-
-}
-
-// ExecFilePath returns the absolute path to the project root (default: go-distributed-motion-s3)
-func ExecFilePath() string {
-
-	ex, _ := os.Executable()
-	return filepath.Dir(ex)
-
-}
-
-func isRunningRelease() bool {
-
-	dir, _ := filepath.Abs(ExecFilePath())
-
-	if filepath.Base(filepath.Dir(dir)) == "dms3_release" {
-		return true
-	}
-
-	return false
 
 }
 
@@ -180,7 +106,7 @@ func ReleasePath() map[string]string {
 	paths := make(map[string]string)
 
 	if isRunningRelease() {
-		base := filepath.Dir(filepath.Dir(ExecFilePath()))
+		base := filepath.Dir(filepath.Dir(execFilePath()))
 		paths["configFolder"] = filepath.Join(base, "dms3_release/dms3build")
 		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
 	} else {
@@ -219,23 +145,23 @@ func InstallClientComponents(releasePath string) {
 		}
 
 		// copy dms3 release folder components to remote device platform
-		RemoteMkDir(ssh, "dms3_release")
+		remoteMkDir(ssh, "dms3_release")
 
-		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3client"), filepath.Join("dms3_release", "dms3client"))
-		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
-		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3client"), filepath.Join("dms3_release", "dms3client"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
 
-		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "go_dms3client"), filepath.Join("dms3_release", "go_dms3client"))
-		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "go_dms3mail"), filepath.Join("dms3_release", "go_dms3mail"))
-		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].DirName), "dms3client_remote_installer"), "dms3client_remote_installer")
-		RemoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
+		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "go_dms3client"), filepath.Join("dms3_release", "go_dms3client"))
+		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "go_dms3mail"), filepath.Join("dms3_release", "go_dms3mail"))
+		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "dms3client_remote_installer"), "dms3client_remote_installer")
+		remoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
 
 		// copy systemd service file (for manual installation)
-		RemoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3client"), "dms3client.service"), "dms3client.service")
+		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3client"), "dms3client.service"), "dms3client.service")
 
 		// run client installer, then remove on completion
-		RemoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
-		RemoteRunCommand(ssh, "rm dms3client_remote_installer")
+		remoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
+		remoteRunCommand(ssh, "rm dms3client_remote_installer")
 		fmt.Println("")
 
 	}
@@ -259,23 +185,100 @@ func InstallServerComponents(releasePath string) {
 		}
 
 		// copy dms3 release folder components to remote device platform
-		RemoteMkDir(ssh, "dms3_release")
+		remoteMkDir(ssh, "dms3_release")
 
-		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3server"), filepath.Join("dms3_release", "dms3server"))
-		RemoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3server"), filepath.Join("dms3_release", "dms3server"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
 
-		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].DirName), "go_dms3server"), filepath.Join("dms3_release", "go_dms3server"))
-		RemoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].DirName), "dms3server_remote_installer"), "dms3server_remote_installer")
-		RemoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
+		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "go_dms3server"), filepath.Join("dms3_release", "go_dms3server"))
+		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "dms3server_remote_installer"), "dms3server_remote_installer")
+		remoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
 
 		// copy systemd service file (for manual installation)
-		RemoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3server"), "dms3server.service"), "dms3server.service")
+		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3server"), "dms3server.service"), "dms3server.service")
 
 		// run server installer, then remove on completion
-		RemoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
-		RemoteRunCommand(ssh, "rm dms3server_remote_installer")
+		remoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
+		remoteRunCommand(ssh, "rm dms3server_remote_installer")
 		fmt.Println("")
 
 	}
+
+}
+
+// remoteMkDir creates a new folder over SSH with permissions passed in
+func remoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
+
+	_, _, _, err := ssh.Run("mkdir -p "+newPath, 5)
+	dms3libs.CheckErr(err)
+
+}
+
+// remoteCopyDir copies a directory over SSH from srcDir to destDir
+func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
+
+	fmt.Print("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "... ")
+	dirTree := dms3libs.WalkDir(srcDir)
+
+	// create directory tree...
+	for dirName, dirType := range dirTree {
+
+		if dirType == 0 {
+			remoteMkDir(ssh, destDir+dirName[len(srcDir):])
+		}
+
+	}
+
+	// ...then copy files into directory tree
+	for dirName, dirType := range dirTree {
+
+		if dirType == 1 {
+			remoteCopyFile(ssh, dirName, destDir+dirName[len(srcDir):])
+		}
+
+	}
+
+	fmt.Println("Success")
+
+}
+
+// remoteRunCommand runs a command via the SSH protocol
+func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
+
+	fmt.Print("Running command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "... ")
+	_, _, _, err := ssh.Run(command, 5)
+	dms3libs.CheckErr(err)
+	fmt.Println("Success")
+
+}
+
+// remoteCopyFile copies a file from src to a remote dest using SCP
+func remoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
+
+	fmt.Print("Copying file " + srcFile + " to " + destFile + " on " + ssh.User + "@" + ssh.Server + "... ")
+	err := ssh.Scp(srcFile, destFile)
+	dms3libs.CheckErr(err)
+	fmt.Println("Success")
+
+}
+
+// execFilePath returns the absolute path to the project root (default: go-distributed-motion-s3)
+func execFilePath() string {
+
+	ex, _ := os.Executable()
+	return filepath.Dir(ex)
+
+}
+
+// isRunningRelease checks if the executable was called from the dms3_release folder
+func isRunningRelease() bool {
+
+	dir, _ := filepath.Abs(execFilePath())
+
+	if filepath.Base(filepath.Dir(dir)) == "dms3_release" {
+		return true
+	}
+
+	return false
 
 }

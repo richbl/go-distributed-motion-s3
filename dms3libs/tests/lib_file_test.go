@@ -76,7 +76,7 @@ func TestWalkDir(t *testing.T) {
 		t.Error("wrong directory count in", currentDir)
 	}
 
-	if fileCount != 8 {
+	if fileCount != 9 {
 		t.Error("wrong file count in", currentDir)
 	}
 

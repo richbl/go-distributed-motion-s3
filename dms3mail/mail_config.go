@@ -4,8 +4,8 @@ import (
 	"go-distributed-motion-s3/dms3libs"
 )
 
-// MailConfig contains dms3mail configuration settings read from TOML file
-var MailConfig *structSettings
+// mailConfig contains dms3mail configuration settings read from TOML file
+var mailConfig *structSettings
 
 // motion mail configuration parameters
 type structSettings struct {

@@ -12,12 +12,12 @@ import (
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	dms3libs.LoadComponentConfig(&ClientConfig, "/etc/distributed-motion-s3/dms3client/dms3client.toml")
+	dms3libs.LoadComponentConfig(&clientConfig, "/etc/distributed-motion-s3/dms3client/dms3client.toml")
 
-	dms3libs.SetLogFileLocation(ClientConfig.Logging)
-	dms3libs.CreateLogger(ClientConfig.Logging)
+	dms3libs.SetLogFileLocation(clientConfig.Logging)
+	dms3libs.CreateLogger(clientConfig.Logging)
 
-	StartClient(ClientConfig.Server.IP, ClientConfig.Server.Port)
+	StartClient(clientConfig.Server.IP, clientConfig.Server.Port)
 
 }
 
@@ -32,7 +32,7 @@ func StartClient(ServerIP string, ServerPort int) {
 			go processClientRequest(conn)
 		}
 
-		time.Sleep(time.Duration(ClientConfig.Server.CheckInterval) * time.Second)
+		time.Sleep(time.Duration(clientConfig.Server.CheckInterval) * time.Second)
 	}
 
 }

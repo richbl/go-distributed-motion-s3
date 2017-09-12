@@ -61,34 +61,34 @@ var components = []structComponent{
 	},
 }
 
-// PlatformType represents all available platform types
-type PlatformType string
+// platformType represents all available platform types
+type platformType string
 
 // platform types
 const (
-	LinuxArm6  PlatformType = "LinuxArm6"
-	LinuxArm7  PlatformType = "LinuxArm7"
-	LinuxAMD64 PlatformType = "LinuxAMD64"
+	linuxArm6  platformType = "linuxArm6"
+	linuxArm7  platformType = "linuxArm7"
+	linuxAMD64 platformType = "linuxAMD64"
 )
 
 // structPlatform contains build environment/platform details
 type structPlatform struct {
-	DirName     string
+	dirName     string
 	compileTags string
 }
 
 // BuildEnv contains platform build details
-var BuildEnv = map[PlatformType]structPlatform{
-	LinuxArm6: {
-		DirName:     "linux_arm6",
+var BuildEnv = map[platformType]structPlatform{
+	linuxArm6: {
+		dirName:     "linux_arm6",
 		compileTags: "GOOS=linux GOARCH=arm GOARM=6",
 	},
-	LinuxArm7: {
-		DirName:     "linux_arm7",
+	linuxArm7: {
+		dirName:     "linux_arm7",
 		compileTags: "GOOS=linux GOARCH=arm GOARM=7",
 	},
-	LinuxAMD64: {
-		DirName:     "linux_amd64",
+	linuxAMD64: {
+		dirName:     "linux_amd64",
 		compileTags: "GOOS=linux GOARCH=amd64",
 	},
 }

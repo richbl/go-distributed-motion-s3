@@ -36,7 +36,7 @@ func TestAudioConfig(t *testing.T) {
 
 	if dms3libs.IsFile(mediaFileStart) {
 		dms3libs.PlayAudio(mediaFileStart)
-		t.Error("Audio file", mediaFileStart, "played successfully")
+		t.Log("Audio file", mediaFileStart, "played successfully")
 	} else {
 		t.Error("Audio file", mediaFileStart, "not found")
 	}
@@ -47,7 +47,7 @@ func TestAudioConfig(t *testing.T) {
 
 	if dms3libs.IsFile(mediaFileStop) {
 		dms3libs.PlayAudio(mediaFileStop)
-		t.Error("Audio file", mediaFileStop, "played successfully")
+		t.Log("Audio file", mediaFileStop, "played successfully")
 	} else {
 		t.Error("Audio file", mediaFileStop, "not found")
 	}

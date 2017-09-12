@@ -23,10 +23,10 @@ type structEventDetails struct {
 func Init() {
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	dms3libs.LoadComponentConfig(&MailConfig, "/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
+	dms3libs.LoadComponentConfig(&mailConfig, "/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
 
-	dms3libs.SetLogFileLocation(MailConfig.Logging)
-	dms3libs.CreateLogger(MailConfig.Logging)
+	dms3libs.SetLogFileLocation(mailConfig.Logging)
+	dms3libs.CreateLogger(mailConfig.Logging)
 
 	GenerateEventEmail()
 
@@ -116,7 +116,7 @@ func createEmailBody(eventDetails *structEventDetails) string {
 		"!CAMERA": strconv.Itoa(eventDetails.cameraNumber),
 	}
 
-	processedEmailBody := MailConfig.Email.Body
+	processedEmailBody := mailConfig.Email.Body
 
 	for key, val := range replacements {
 		processedEmailBody = strings.Replace(processedEmailBody, key, val, -1)
@@ -132,13 +132,13 @@ func createEmailBody(eventDetails *structEventDetails) string {
 func generateSMTPEmail(eventDetails *structEventDetails) {
 
 	mail := gomail.NewMessage()
-	mail.SetHeader("From", MailConfig.Email.From)
-	mail.SetHeader("To", MailConfig.Email.To)
+	mail.SetHeader("From", mailConfig.Email.From)
+	mail.SetHeader("To", mailConfig.Email.To)
 	mail.SetHeader("Subject", "Motion Detected on Camera #"+strconv.Itoa(eventDetails.cameraNumber)+" at "+eventDetails.eventDate)
 	mail.SetBody("text/html", createEmailBody(eventDetails))
 	mail.Attach(eventDetails.eventMedia)
 
-	dialer := gomail.NewDialer(MailConfig.SMTP.Address, MailConfig.SMTP.Port, MailConfig.SMTP.Username, MailConfig.SMTP.Password)
+	dialer := gomail.NewDialer(mailConfig.SMTP.Address, mailConfig.SMTP.Port, mailConfig.SMTP.Username, mailConfig.SMTP.Password)
 
 	if err := dialer.DialAndSend(mail); err != nil {
 		dms3libs.LogFatal(err.Error())

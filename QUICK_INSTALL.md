@@ -82,10 +82,10 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
    [Servers.0]
       User = "richbl"
       DeviceName = "main.local"
-      SSHPassword = ""      # using SSH certifcate
+      SSHPassword = ""      # using SSH certificate
       RemoteAdminPassword = "PASSWORD"
       Port = 22
-      Platform = "LinuxAMD64"
+      Platform = "linuxAMD64"
    ```
 
    An example of a **DMS<sup>3</sup>Client** smart client device (SDC):
@@ -94,10 +94,10 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
    [Clients.0]
       User = "pi"
       DeviceName = "picam-alpha.local"
-      SSHPassword = ""        # using SSH certifcate
+      SSHPassword = ""        # using SSH certificate
       RemoteAdminPassword = "PASSWORD"
       Port = 22
-      Platform = "LinuxArm7"
+      Platform = "linuxArm7"
    ```
 
    A device configuration must be filled out for each device that will participate in the **DMS<sup>3</sup>** network environment.

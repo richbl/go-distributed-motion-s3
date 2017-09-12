@@ -29,8 +29,8 @@ func GetPIDCount(application string) int {
 
 }
 
-// GetPIDList returns application PIDs (0 if no process)
-func GetPIDList(application string) (int, []int) {
+// getPIDList returns application PIDs (0 if no process)
+func getPIDList(application string) (int, []int) {
 
 	pidCount := GetPIDCount(application)
 
@@ -56,7 +56,7 @@ func GetPIDList(application string) (int, []int) {
 // GetPID returns the application PID (0 if no process)
 func GetPID(application string) int {
 
-	pidCount, pidList := GetPIDList(application)
+	pidCount, pidList := getPIDList(application)
 
 	switch pidCount {
 	case 0, 1:

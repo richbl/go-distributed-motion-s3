@@ -15,7 +15,7 @@ func Init() {
 
 	dms3libs.SetLogFileLocation(ServerConfig.Logging)
 	dms3libs.CreateLogger(ServerConfig.Logging)
-	SetMediaLocation(ServerConfig)
+	setMediaLocation(ServerConfig)
 
 	StartServer(ServerConfig.Server.Port)
 

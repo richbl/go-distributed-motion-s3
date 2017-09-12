@@ -43,9 +43,9 @@ type structUserProxy struct {
 	MacsToFind []string
 }
 
-// SetMediaLocation sets the location where audio files are located for motion detection
+// setMediaLocation sets the location where audio files are located for motion detection
 // application start/stop
-func SetMediaLocation(config *structSettings) {
+func setMediaLocation(config *structSettings) {
 
 	if config.Audio.PlayMotionStart == "" || !dms3libs.IsFile(config.Audio.PlayMotionStart) {
 		config.Audio.PlayMotionStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
