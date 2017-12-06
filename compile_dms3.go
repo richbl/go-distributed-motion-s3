@@ -25,6 +25,9 @@ func main() {
 	//
 	dms3compile.CopyMediaFiles(releaseDir)
 
+	// copy dms3dashboard html files into release folder
+	dms3build.CopyDashboardFiles()
+
 	// copy TOML files into release folder
 	//
 	dms3compile.CopyConfigFiles(releaseDir)

@@ -2,6 +2,7 @@ package dms3client
 
 import (
 	"go-distributed-motion-s3/dms3libs"
+<<<<<<< Updated upstream
 	"log"
 	"os"
 
@@ -10,6 +11,15 @@ import (
 
 // ClientConfig contains dms3Client configuration settings read from TOML file
 var ClientConfig *structSettings
+=======
+	"time"
+)
+
+var startTime time.Time
+
+// clientConfig contains dms3Client configuration settings read from TOML file
+var clientConfig *structSettings
+>>>>>>> Stashed changes
 
 // client-side configuration parameters
 type structSettings struct {

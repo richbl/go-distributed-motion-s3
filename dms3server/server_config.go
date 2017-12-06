@@ -5,12 +5,18 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+<<<<<<< Updated upstream
 
 	"github.com/BurntSushi/toml"
+=======
+	"time"
+>>>>>>> Stashed changes
 )
 
-// ServerConfig contains dms3Server configuration settings read from TOML file
-var ServerConfig *structSettings
+var startTime time.Time
+
+// serverConfig contains dms3Server configuration settings read from TOML file
+var serverConfig *structSettings
 
 // server-side configuration parameters
 type structSettings struct {

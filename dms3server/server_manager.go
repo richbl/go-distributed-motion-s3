@@ -39,6 +39,7 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 
 		if ServerConfig.PlayAudio == 1 {
 
+<<<<<<< Updated upstream
 			switch state {
 			case dms3libs.Start:
 				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStart)
@@ -46,6 +47,15 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 				dms3libs.PlayAudio(ServerConfig.AudioMotionDetectorStop)
 			}
 
+=======
+	if serverConfig.Audio.Enable {
+
+		switch state {
+		case dms3libs.Start:
+			dms3libs.PlayAudio(serverConfig.Audio.PlayMotionStart)
+		case dms3libs.Stop:
+			dms3libs.PlayAudio(serverConfig.Audio.PlayMotionStop)
+>>>>>>> Stashed changes
 		}
 	}
 
@@ -59,8 +69,13 @@ func checkIntervalExpired() bool {
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 	curTime := dms3libs.GetCurTime()
 
+<<<<<<< Updated upstream
 	if (curTime - checkIntervalTimestamp) >= ServerConfig.CheckInterval {
 		checkIntervalTimestamp = curTime
+=======
+	if time.Since(checkIntervalTimestamp).Seconds() >= float64(serverConfig.Server.CheckInterval) {
+		checkIntervalTimestamp = time.Now()
+>>>>>>> Stashed changes
 		return true
 	}
 
@@ -75,8 +90,13 @@ func timeInRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
+<<<<<<< Updated upstream
 	if ServerConfig.ScanForTime {
 		return calcDataRange()
+=======
+	if serverConfig.AlwaysOn.Enable {
+		return calcTimeRange()
+>>>>>>> Stashed changes
 	}
 
 	return false
@@ -92,8 +112,13 @@ func calcDataRange() bool {
 
 	curTime := dms3libs.To24H(time.Now())
 
+<<<<<<< Updated upstream
 	startTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[0])
 	endTime := dms3libs.Format24H(ServerConfig.AlwaysOnRange[1])
+=======
+	startTime := dms3libs.Format24H(serverConfig.AlwaysOn.TimeRange[0])
+	endTime := dms3libs.Format24H(serverConfig.AlwaysOn.TimeRange[1])
+>>>>>>> Stashed changes
 
 	if startTime > endTime {
 		return curTime >= startTime || curTime < endTime
@@ -109,7 +134,12 @@ func calcDataRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
+<<<<<<< Updated upstream
 	dms3libs.PingHosts(ServerConfig.IPBase, ServerConfig.IPRange)
 	return dms3libs.FindMacs(ServerConfig.MacsToFind)
+=======
+	dms3libs.PingHosts(serverConfig.UserProxy.IPBase, serverConfig.UserProxy.IPRange)
+	return dms3libs.FindMacs(serverConfig.UserProxy.MacsToFind)
+>>>>>>> Stashed changes
 
 }

@@ -2,7 +2,9 @@ package dms3libs
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
+	"os/user"
 	"path/filepath"
 	"strings"
 )
@@ -103,5 +105,34 @@ func CopyDir(srcDir string, destDir string) {
 		}
 
 	}
+
+}
+
+// CountFilesInDir counts the files in the dir passed in
+func CountFilesInDir(srcDir string) int {
+
+	var files []os.FileInfo
+	var err error
+
+	if files, err = ioutil.ReadDir(srcDir); err != nil {
+		CheckErr(err)
+		return 0
+	}
+
+	return len(files)
+
+}
+
+// GetUserDir returns the current user's home folder
+func GetUserDir() string {
+
+	user, err := user.Current()
+
+	if err != nil {
+		CheckErr(err)
+		return ""
+	}
+
+	return user.HomeDir
 
 }

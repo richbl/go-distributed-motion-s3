@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/ico" sizes="96x96" href="assets/img/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>{{.Title}}</title>
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Bootstrap core CSS     -->
+    <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <!--  Paper Dashboard core CSS    -->
+    <link type="text/css" rel="stylesheet" href="assets/css/paper-dashboard.css">
+
+    <!--  Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,300" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="assets/css/icomoon-icons.css">
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="main-panel">
+
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">{{.Title}}</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="content">
+                <div class="container-fluid">
+
+                    {{range $index, $_ := .Clients}}
+                    
+                        {{if eq (ModVal $index 4) 0}} <div class="row"> {{end}}
+
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big {{iconStatus $index}} text-center">
+                                                <i class={{iconType $index}}></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>{{.Hostname}}</p>
+                                                <p1>{{.Environment}}</p1>
+                                                </br>
+                                                <p1>{{.Kernel}}</p1>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <hr>
+                                        <div class="stats">
+                                            <i class="icon-stopwatch"></i> Uptime: {{.Uptime}}
+                                            <br>
+                                            
+                                            {{ if eq $index 0 }}
+                                                <i class="icon-display"></i> Clients: {{clientCount}}
+                                            {{else}}
+                                                <i class="icon-eye"></i> Events: {{.EventCount}} 
+                                            {{end}}
+
+                                            <br>
+                                            <i class="icon-loop2"></i> Update: {{FormatDateTime .LastReport}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{if eq (ModVal $index 4) 3}}</div>{{end}} 
+                        
+                    {{end}}
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+</body>
+
+</html>

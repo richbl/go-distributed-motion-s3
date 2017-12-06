@@ -47,12 +47,28 @@ func StripRet(value []byte) []byte {
 
 }
 
+<<<<<<< Updated upstream
 // GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
 func GetCurTime() int {
 
 	curTime, _ := strconv.Atoi(To24H(time.Now()))
 	return curTime
 
+=======
+// SetUptime sets the uptime for the application process
+func SetUptime(startTime *time.Time) {
+	*startTime = time.Now()
+}
+
+// Uptime returns uptime for the application process
+func Uptime(startTime time.Time) string {
+	return fmtDuration(time.Since(startTime))
+}
+
+// SecondsSince returns seconds passed since value passed
+func SecondsSince(value time.Time) uint32 {
+	return uint32(time.Since(value).Seconds())
+>>>>>>> Stashed changes
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
@@ -65,8 +81,9 @@ func Format24H(time string) string {
 	return rightPadToLen(time, "0", 6)
 }
 
-func rightPadToLen(s string, padStr string, pLen int) string {
-	return s + strings.Repeat(padStr, pLen-len(s))
+// FormatDateTime formats time to "date at time"
+func FormatDateTime(value time.Time) string {
+	return value.Format("2006-01-02 at 15:04:05")
 }
 
 // CheckErr does simple error management (no logging dependencies)
@@ -75,4 +92,28 @@ func CheckErr(err error) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+}
+
+// ModVal returns the remainder of number/val passed in
+func ModVal(number int, val int) int {
+	return number % val
+}
+
+// rightPadToLen pads a string to pLen places with padStr
+func rightPadToLen(s string, padStr string, pLen int) string {
+	return s + strings.Repeat(padStr, pLen-len(s))
+}
+
+// fmtDuration formats a duration value to show days/hours/minutes/seconds
+func fmtDuration(d time.Duration) string {
+
+	days := (d / time.Hour) / 24
+	d -= days * (time.Hour * 24)
+	hours := d / time.Hour
+	d -= hours * time.Hour
+	minutes := d / time.Minute
+	d -= minutes * time.Minute
+	seconds := d / time.Second
+
+	return fmt.Sprintf("%03dd:%02dh:%02dm:%02ds", days, hours, minutes, seconds)
 }
