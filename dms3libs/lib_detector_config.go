@@ -17,14 +17,24 @@ func (s structMotionDetector) State() MotionDetectorState {
 }
 
 // SetState sets the motion detector application state
-func (s *structMotionDetector) SetState(state MotionDetectorState) {
-	s.state = state
+func (s *structMotionDetector) SetState(state MotionDetectorState) bool {
+
+	switch state {
+	case Start, Stop:
+		{
+			s.state = state
+			return true
+		}
+	default:
+		return false
+	}
+
 }
 
 // states of the motion detector application
 const (
-	Start MotionDetectorState = iota
-	Stop
+	Stop MotionDetectorState = iota
+	Start
 )
 
 type structMotionDetector struct {

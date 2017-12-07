@@ -14,13 +14,6 @@ func Init() {
 	dms3libs.SetUptime(&startTime)
 
 	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-<<<<<<< Updated upstream
-	LoadServerConfig("/etc/distributed-motion-s3/dms3server/dms3server.toml")
-
-	cfg := ServerConfig.Logging
-	dms3libs.CreateLogger(cfg.LogLevel, cfg.LogDevice, cfg.LogLocation, cfg.LogFilename)
-	StartServer(ServerConfig.ServerPort)
-=======
 	dms3libs.LoadComponentConfig(&serverConfig, "/etc/distributed-motion-s3/dms3server/dms3server.toml")
 
 	dms3libs.SetLogFileLocation(serverConfig.Logging)
@@ -29,7 +22,6 @@ func Init() {
 
 	dms3dash.InitDashboardServer(configDashboardServerMetrics())
 	startServer(serverConfig.Server.Port)
->>>>>>> Stashed changes
 
 }
 
@@ -60,7 +52,6 @@ func startServer(serverPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on
 // dms3client connect
-//
 func serverLoop(listener net.Listener) {
 
 	for {
@@ -80,12 +71,7 @@ func serverLoop(listener net.Listener) {
 func processClient(conn net.Conn) {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	state := DetermineMotionDetectorState()
 
-<<<<<<< Updated upstream
-	if _, err := conn.Write([]byte(strconv.Itoa(int(state)))); err != nil {
-		dms3libs.LogInfo(err.Error())
-=======
 	dms3dash.SendDashboardRequest(conn)
 	sendMotionDetectorState(conn)
 
@@ -103,7 +89,6 @@ func sendMotionDetectorState(conn net.Conn) {
 		dms3libs.LogFatal(err.Error())
 	} else {
 		dms3libs.LogInfo("Sent motion detector state as: " + state)
->>>>>>> Stashed changes
 	}
 
 }

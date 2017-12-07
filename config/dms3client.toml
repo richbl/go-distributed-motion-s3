@@ -1,16 +1,17 @@
 # Distributed-Motion-S3 (DMS3) CLIENT configuration file
 # TOML 0.4.0
 
-# CheckInterval is the interval (in seconds) for checking the dms server
-CheckInterval = 10
+[Server]
+	# IP is the address on which the dms server is running
+	IP = "10.10.10.9"
 
-# ServerIP is the address on which the dms server is running
-ServerIP = "localhost"
+	# Port is the port on which the dms server is running
+	Port = 1965
 
-# ServerPort is the port on which the dms server is running
-ServerPort = 1965
+	# CheckInterval is the interval (in seconds) for checking the dms server
+	CheckInterval = 15
 
-	[logging]
+[Logging]
 	# LogLevel sets the log levels for application logging using the following table:
 	#
 	#	0 - OFF, no logging
@@ -18,7 +19,7 @@ ServerPort = 1965
 	#	2 - INFO, report informational events
 	#  4 - DEBUG, report debugging events
 	#
-	LogLevel = 1
+	LogLevel = 2
 
 	# LogDevice determines to what device logging should be set using the following table:
 	#

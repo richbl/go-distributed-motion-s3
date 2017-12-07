@@ -8,15 +8,21 @@ import (
 
 func TestCreateLogger(t *testing.T) {
 
-	testLog := "lib_log_test.log"
-	dms3libs.CreateLogger(4, 1, dms3libs.GetPackageDir(), testLog)
+	logger := dms3libs.StructLogging{
+		LogLevel:    2,
+		LogDevice:   1,
+		LogFilename: "lib_log_test.log",
+		LogLocation: dms3libs.GetPackageDir(),
+	}
 
-	if !dms3libs.IsFile(testLog) {
-		t.Error("Log file", testLog, "not created")
+	dms3libs.CreateLogger(&logger)
+
+	if !dms3libs.IsFile(logger.LogFilename) {
+		t.Error("Log file", logger.LogFilename, "not created")
 	} else {
-		t.Log("Log file", testLog, "created")
-		os.Remove(testLog)
-		t.Log("Log file", testLog, "removed")
+		t.Log("Log file", logger.LogFilename, "created")
+		os.Remove(logger.LogFilename)
+		t.Log("Log file", logger.LogFilename, "removed")
 	}
 
 }

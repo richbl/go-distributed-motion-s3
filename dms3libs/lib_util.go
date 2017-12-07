@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -47,14 +46,6 @@ func StripRet(value []byte) []byte {
 
 }
 
-<<<<<<< Updated upstream
-// GetCurTime returns the current time as int (in 24-hour format, e.g., 231305)
-func GetCurTime() int {
-
-	curTime, _ := strconv.Atoi(To24H(time.Now()))
-	return curTime
-
-=======
 // SetUptime sets the uptime for the application process
 func SetUptime(startTime *time.Time) {
 	*startTime = time.Now()
@@ -68,7 +59,6 @@ func Uptime(startTime time.Time) string {
 // SecondsSince returns seconds passed since value passed
 func SecondsSince(value time.Time) uint32 {
 	return uint32(time.Since(value).Seconds())
->>>>>>> Stashed changes
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
@@ -88,10 +78,12 @@ func FormatDateTime(value time.Time) string {
 
 // CheckErr does simple error management (no logging dependencies)
 func CheckErr(err error) {
+
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+
 }
 
 // ModVal returns the remainder of number/val passed in

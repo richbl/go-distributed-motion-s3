@@ -31,6 +31,7 @@ func PingHosts(ipBase string, ipRange []int) {
 // (e.g., mac1 | mac2 | mac3)
 //
 func FindMacs(macsToFind []string) bool {
+
 	macListRegex := ""
 
 	for i := 0; i < len(macsToFind); i++ {

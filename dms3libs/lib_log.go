@@ -6,18 +6,21 @@ import (
 	"path/filepath"
 )
 
+// global logging objects
 var (
-	// Fatal is the global logger for fatal error alerts
-	Fatal *log.Logger
-
-	// Info is the global logger for informational alerts
-	Info *log.Logger
-
-	// Debug is the global logger for debugger alerts
-	Debug *log.Logger
-
+	Fatal        *log.Logger
+	Info         *log.Logger
+	Debug        *log.Logger
 	loggingLevel int
 )
+
+// StructLogging is used for dms3 logging
+type StructLogging struct {
+	LogLevel    int
+	LogDevice   int
+	LogFilename string
+	LogLocation string
+}
 
 func init() {
 
@@ -29,22 +32,22 @@ func init() {
 }
 
 // CreateLogger creates an application log file (1) or redirects to STDOUT (2) based on logDevice
-func CreateLogger(logLevel int, logDevice int, logLocation string, logFilename string) {
+func CreateLogger(logger *StructLogging) {
 
 	var (
 		f   *os.File
 		err error
 	)
 
-	if logLevel > 0 {
-		loggingLevel = logLevel
+	if logger.LogLevel > 0 {
+		loggingLevel = logger.LogLevel
 
-		switch logDevice {
+		switch logger.LogDevice {
 		case 0:
 			f = os.Stdout
 		case 1:
 			{
-				if f, err = os.OpenFile(filepath.Join(logLocation, logFilename), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); err != nil {
+				if f, err = os.OpenFile(filepath.Join(logger.LogLocation, logger.LogFilename), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); err != nil {
 					log.Fatalln(err)
 				}
 			}
@@ -65,6 +68,8 @@ func LogFatal(msg string) {
 		Fatal.Fatalln(msg)
 	}
 
+	os.Exit(1)
+
 }
 
 // LogInfo generates an informational log message based on loggingLevel
@@ -79,7 +84,7 @@ func LogInfo(msg string) {
 // LogDebug generates a debug log message based on loggingLevel
 func LogDebug(msg string) {
 
-	if loggingLevel == 4 {
+	if loggingLevel >= 4 {
 		Debug.Println(msg)
 	}
 

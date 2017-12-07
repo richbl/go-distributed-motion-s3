@@ -2,15 +2,8 @@ package dms3server
 
 import (
 	"go-distributed-motion-s3/dms3libs"
-	"log"
-	"os"
 	"path/filepath"
-<<<<<<< Updated upstream
-
-	"github.com/BurntSushi/toml"
-=======
 	"time"
->>>>>>> Stashed changes
 )
 
 var startTime time.Time
@@ -20,52 +13,48 @@ var serverConfig *structSettings
 
 // server-side configuration parameters
 type structSettings struct {
-	CheckInterval            int
-	ServerPort               int
-	PlayAudio                int
-	AudioMotionDetectorStart string
-	AudioMotionDetectorStop  string
-	ScanForTime              bool
-	AlwaysOnRange            []string
-	IPBase                   string
-	IPRange                  []int
-	MacsToFind               []string
-	Logging                  *dms3libs.StructLogging
+	Server    *structServer
+	Audio     *structAudio
+	AlwaysOn  *structAlwaysOn
+	UserProxy *structUserProxy
+	Logging   *dms3libs.StructLogging
 }
 
-// LoadServerConfig loads a TOML configuration file and parses entries into parameter values
-func LoadServerConfig(configFile string) {
-
-	if _, err := os.Stat(configFile); os.IsNotExist(err) {
-		log.Fatalln(configFile + " structConfig file not found")
-	} else if err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	if _, err := toml.DecodeFile(configFile, &ServerConfig); err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	setLogLocation(ServerConfig)
-	setMediaLocation(ServerConfig)
-
+// server details
+type structServer struct {
+	Port          int
+	CheckInterval int
 }
 
-func setLogLocation(config *structSettings) {
-
-	if config.Logging.LogLocation == "" || !dms3libs.IsFile(config.Logging.LogLocation) {
-		config.Logging.LogLocation = dms3libs.GetPackageDir()
-	}
-
+// audio parameters used when the motion detector application starts/stops
+type structAudio struct {
+	Enable          bool
+	PlayMotionStart string
+	PlayMotionStop  string
 }
 
+// Always On feature parameters (enable the motion detector application based on time of day)
+type structAlwaysOn struct {
+	Enable    bool
+	TimeRange []string
+}
+
+// User proxy parameters (representing the user's existence on the LAN)
+type structUserProxy struct {
+	IPBase     string
+	IPRange    []int
+	MacsToFind []string
+}
+
+// setMediaLocation sets the location where audio files are located for motion detection
+// application start/stop
 func setMediaLocation(config *structSettings) {
 
-	if config.AudioMotionDetectorStart == "" || !dms3libs.IsFile(config.AudioMotionDetectorStart) {
-		config.AudioMotionDetectorStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
+	if config.Audio.PlayMotionStart == "" || !dms3libs.IsFile(config.Audio.PlayMotionStart) {
+		config.Audio.PlayMotionStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
 	}
 
-	if config.AudioMotionDetectorStop == "" || !dms3libs.IsFile(config.AudioMotionDetectorStop) {
-		config.AudioMotionDetectorStop = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_stop.wav")
+	if config.Audio.PlayMotionStop == "" || !dms3libs.IsFile(config.Audio.PlayMotionStop) {
+		config.Audio.PlayMotionStop = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_stop.wav")
 	}
 }

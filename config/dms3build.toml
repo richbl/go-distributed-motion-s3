@@ -3,43 +3,35 @@
 
 [Clients]
 
-#    [Clients.0]
-#       User = "pi"
-#       DeviceName = "picam-alpha.local"
-#       SSHPassword = ""        # using SSH certificate
-#       RemoteAdminPassword = "acm44655!!"
-#       Port = 22
-#       Platform = "linuxArm7"
+   [Clients.0]
+      User = "pi"
+      DeviceName = "picam-alpha.local"
+      SSHPassword = ""        # using SSH certificate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "linuxArm7"
 
-#    [Clients.1]
-#       User = "pi"
-#       DeviceName = "picam-beta.local"
-#       SSHPassword = ""      # using SSH certificate
-#       RemoteAdminPassword = "acm44655!!"
-#       Port = 22
-#       Platform = "linuxArm7"
+   [Clients.1]
+      User = "pi"
+      DeviceName = "picam-beta.local"
+      SSHPassword = ""      # using SSH certificate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "linuxArm7"
 
-#    [Clients.2]
-#       User = "pi"
-#       DeviceName = "picam-gamma.local"
-#       SSHPassword = ""      # using SSH certificate
-#       RemoteAdminPassword = "acm44655!!"
-#       Port = 22
-#       Platform = "linuxArm6"
+   [Clients.2]
+      User = "pi"
+      DeviceName = "picam-gamma.local"
+      SSHPassword = ""      # using SSH certificate
+      RemoteAdminPassword = "PASSWORD"
+      Port = 22
+      Platform = "linuxArm6"
 
-#    [Clients.3]
-#       User = "richbl"
-#       DeviceName = "main.local"
-#       SSHPassword = ""      # using SSH certificate
-#       RemoteAdminPassword = "acm44655!!"
-#       Port = 22
-#       Platform = "linuxAMD64"
-
-   [Clients.4]
+   [Clients.3]
       User = "richbl"
-      DeviceName = "localhost"
-      SSHPassword = "acm44655!!"      # using SSH certificate
-      RemoteAdminPassword = "acm44655!!"
+      DeviceName = "main.local"
+      SSHPassword = ""      # using SSH certificate
+      RemoteAdminPassword = "PASSWORD"
       Port = 22
       Platform = "linuxAMD64"
 
@@ -47,8 +39,8 @@
 
    [Servers.0]
       User = "richbl"
-      DeviceName = "localhost"
-      SSHPassword = "acm44655!!"      # using SSH certificate
-      RemoteAdminPassword = "acm44655!!"
+      DeviceName = "main.local"
+      SSHPassword = ""      # using SSH certificate
+      RemoteAdminPassword = "PASSWORD"
       Port = 22
       Platform = "linuxAMD64"
