@@ -1,9 +1,3 @@
-package main
-
-import (
-	"go-distributed-motion-s3/dms3build"
-)
-
 // compiles dms3 components into platform-specific Go binary executables and copies configuration
 // and media files into a dms3_release folder
 //
@@ -11,6 +5,12 @@ import (
 // installation on dms3client(s) and dms3server(s) device platforms (see install_dms3.go for
 // details)
 //
+package main
+
+import (
+	"go-distributed-motion-s3/dms3build"
+)
+
 func main() {
 
 	// build platform-specific components into release folder

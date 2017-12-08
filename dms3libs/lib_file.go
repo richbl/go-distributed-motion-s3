@@ -1,21 +1,21 @@
+// Package dms3libs file provides file services for dms3 device components
+//
 package dms3libs
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
-	"os/user"
 	"path/filepath"
 )
 
-// IsFile returns true/false on existence of file passed in
+// IsFile returns true/false on existence of file/folder passed in
 func IsFile(filename string) bool {
 
-	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return false
+	if _, err := os.Stat(filename); !os.IsNotExist(err) {
+		return true
 	}
 
-	return true
+	return false
 
 }
 
@@ -112,31 +112,20 @@ func CopyDir(srcDir string, destDir string) {
 
 }
 
-// CountFilesInDir counts the files in the dir passed in
+// CountFilesInDir recursively counts the files in the dir passed in
 func CountFilesInDir(srcDir string) int {
 
-	var files []os.FileInfo
-	var err error
+	fileCount := 0
+	dirTree := WalkDir(srcDir)
 
-	if files, err = ioutil.ReadDir(srcDir); err != nil {
-		CheckErr(err)
-		return 0
+	for _, dirType := range dirTree {
+
+		if dirType == 1 {
+			fileCount++
+		}
+
 	}
 
-	return len(files)
-
-}
-
-// GetUserDir returns the current user's home folder
-func GetUserDir() string {
-
-	user, err := user.Current()
-
-	if err != nil {
-		CheckErr(err)
-		return ""
-	}
-
-	return user.HomeDir
+	return fileCount
 
 }

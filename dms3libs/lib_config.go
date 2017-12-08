@@ -1,8 +1,11 @@
+// Package dms3libs configuration structures and variables
+//
 package dms3libs
 
 import (
 	"log"
 	"os"
+	"path"
 
 	"github.com/BurntSushi/toml"
 )
@@ -48,8 +51,22 @@ func LoadComponentConfig(structConfig interface{}, configFile string) {
 // SetLogFileLocation sets the location of the log file based on TOML configuration
 func SetLogFileLocation(config *StructLogging) {
 
-	if config.LogLocation == "" || !IsFile(config.LogLocation) {
-		config.LogLocation = GetPackageDir()
+	projectDir := path.Dir(GetPackageDir())
+	fail := false
+
+	// if no config location set, attempt to set to development project folder
+	if config.LogLocation == "" {
+		if IsFile(projectDir) {
+			config.LogLocation = projectDir
+		} else {
+			fail = true
+		}
+	} else if !IsFile(config.LogLocation) {
+		fail = true
+	}
+
+	if fail {
+		log.Fatalln("unable to set log location... check TOML configuration file")
 	}
 
 }

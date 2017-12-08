@@ -1,3 +1,5 @@
+// Package dms3libs log provides logging services for dms3 device components
+//
 package dms3libs
 
 import (

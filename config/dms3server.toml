@@ -14,20 +14,20 @@
 	#
 	Enable = true
 
-	# PlayMotionStart is the audio file played when the motion detector application is
-	# activated
-	# By default, the value is "" (empty string), which sets to the path of the local /media folder
-	# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_start.wav)...
-	# any other path will be used if valid, else set to local folder
+	# PlayMotionStart is the audio file played when the motion detector application is activated
+	# By default, the value is "" (empty string), which gets set to the path of the release /media
+	# folder and filename (e.g., /etc/distributed-motion-s3/dms3server/media/motion_start.wav)
+	# Any other filepath/filename will be used if valid, else set to local development folder
+	#
 	# Ignored if Audio.Enable == false
 	#
 	PlayMotionStart = ""
 
-	# PlayMotionStop is the audio file played when the motion detector application is
-	# activated
-	# By default, the value is "" (empty string), which sets to the path of the local /media folder
-	# and default file (e.g., /etc/distributed-motion-s3/dms3server/media/motion_stop.wav)...
-	# any other path will be used if valid, else set to local folder
+	# PlayMotionStart is the audio file played when the motion detector application is activated
+	# By default, the value is "" (empty string), which gets set to the path of the release /media
+	# folder and filename (e.g., /etc/distributed-motion-s3/dms3server/media/motion_stop.wav)
+	# Any other filepath/filename will be used if valid, else set to local development folder
+	#
 	# Ignored if Audio.Enable == false
 	#
 	PlayMotionStop = ""
@@ -38,6 +38,7 @@
 
 	# TimeRange is the start and end times (24-hour format) for motion to always be enabled,
 	# regardless of absence/existence of user proxy device(s) on the LAN
+	#
 	# Ignored if AlwaysOn.Enable == false
 	#
 	TimeRange = ["2300", "0400"]
@@ -75,11 +76,13 @@
 	LogDevice = 0
 
 	# LogFilename is the logging filename
+	#
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
 	LogFilename = "dms3server.log"
 
-	# LogLocation is the location of logfile (absolute path)
+	# LogLocation is the location of logfile (absolute path; must have r/w permissions)
+	#
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
 	LogLocation = "/var/log/dms3"

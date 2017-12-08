@@ -1,3 +1,5 @@
+// Package dms3client connector initializes the dms3client device component
+//
 package dms3client
 
 import (
@@ -5,22 +7,23 @@ import (
 	"go-distributed-motion-s3/dms3dashboard"
 	"go-distributed-motion-s3/dms3libs"
 	"net"
+	"path/filepath"
 	"strconv"
 	"time"
 )
 
 // Init configs the library, configuration, and dashboard for dms3client
-func Init() {
+func Init(configPath string) {
 
 	dms3libs.SetUptime(&startTime)
 
-	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	dms3libs.LoadComponentConfig(&clientConfig, "/etc/distributed-motion-s3/dms3client/dms3client.toml")
+	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs/dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, "dms3client/dms3client.toml"))
 
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)
 
-	dms3dash.InitDashboardClient(configDashboardClientMetrics())
+	dms3dash.InitDashboardClient(configPath, configDashboardClientMetrics())
 	StartClient(clientConfig.Server.IP, clientConfig.Server.Port)
 
 }
@@ -56,6 +59,7 @@ func StartClient(ServerIP string, ServerPort int) {
 
 // processClientRequest reads from the connection and processes dashboard and motion detector
 // application state
+//
 func processClientRequest(conn net.Conn) {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())

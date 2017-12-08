@@ -1,3 +1,5 @@
+// Package dms3libs util provides utility services for dms3 device components
+//
 package dms3libs
 
 import (

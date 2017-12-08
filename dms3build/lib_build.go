@@ -1,3 +1,5 @@
+// Package dms3build library
+//
 package dms3build
 
 import (

@@ -1,10 +1,3 @@
-package main
-
-import (
-	"go-distributed-motion-s3/dms3build"
-	"go-distributed-motion-s3/dms3libs"
-)
-
 // installs dms3 components (dms3client, dms3server, and dms3mail) and supporting configuration,
 // service daemons, and media files onto the specified dms3 device component platforms (see
 // dms3build.toml for a list of platforms to install onto)
@@ -12,6 +5,16 @@ import (
 // this installer depends on a local dms3_release folder created through dms3 compilation (see
 // compile_dms3.go for details)
 //
+package main
+
+import (
+	"go-distributed-motion-s3/dms3build"
+	"go-distributed-motion-s3/dms3libs"
+)
+
+// TODO update tests
+// TODO update docs
+
 func main() {
 
 	// sets release path to dms3_release folder

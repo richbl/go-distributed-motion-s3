@@ -1,3 +1,6 @@
+// Package dms3server manager processes dms3server device component messages received by
+// dms3client device components
+//
 package dms3server
 
 import (

@@ -1,3 +1,6 @@
+// Package dms3libs detector provides motion detector application services for dms3
+// device components
+//
 package dms3libs
 
 // MotionDetector is the motion detector application run on the clients

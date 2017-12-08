@@ -1,3 +1,5 @@
+// Package dms3server connector initializes the dms3server device component
+//
 package dms3server
 
 import (
@@ -5,22 +7,24 @@ import (
 	"go-distributed-motion-s3/dms3dashboard"
 	"go-distributed-motion-s3/dms3libs"
 	"net"
+	"path/filepath"
 	"strconv"
 )
 
 // Init configs the library and configuration for dms3server
-func Init() {
+func Init(configPath string) {
 
 	dms3libs.SetUptime(&startTime)
 
-	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	dms3libs.LoadComponentConfig(&serverConfig, "/etc/distributed-motion-s3/dms3server/dms3server.toml")
+	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs/dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&serverConfig, filepath.Join(configPath, "dms3server/dms3server.toml"))
 
 	dms3libs.SetLogFileLocation(serverConfig.Logging)
 	dms3libs.CreateLogger(serverConfig.Logging)
-	setMediaLocation(serverConfig)
 
-	dms3dash.InitDashboardServer(configDashboardServerMetrics())
+	setMediaLocation(configPath, serverConfig)
+
+	dms3dash.InitDashboardServer(configPath, configDashboardServerMetrics())
 	startServer(serverConfig.Server.Port)
 
 }
@@ -52,6 +56,7 @@ func startServer(serverPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on
 // dms3client connect
+//
 func serverLoop(listener net.Listener) {
 
 	for {

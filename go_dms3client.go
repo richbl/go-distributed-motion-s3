@@ -1,3 +1,5 @@
+// Package main go_dms3client initializes a dms3client device component
+//
 package main
 
 import (
@@ -5,5 +7,5 @@ import (
 )
 
 func main() {
-	dms3client.Init()
+	dms3client.Init("/etc/distributed-motion-s3")
 }

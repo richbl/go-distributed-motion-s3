@@ -1,7 +1,11 @@
+// Package dms3server configuration structures and variables
+//
 package dms3server
 
 import (
 	"go-distributed-motion-s3/dms3libs"
+	"log"
+	"path"
 	"path/filepath"
 	"time"
 )
@@ -47,14 +51,56 @@ type structUserProxy struct {
 }
 
 // setMediaLocation sets the location where audio files are located for motion detection
-// application start/stop
-func setMediaLocation(config *structSettings) {
+// application start/stop events
+//
+func setMediaLocation(configPath string, config *structSettings) {
 
-	if config.Audio.PlayMotionStart == "" || !dms3libs.IsFile(config.Audio.PlayMotionStart) {
-		config.Audio.PlayMotionStart = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_start.wav")
+	type mediaPath struct {
+		configLocation *string
+		mediaLocation  string
 	}
 
-	if config.Audio.PlayMotionStop == "" || !dms3libs.IsFile(config.Audio.PlayMotionStop) {
-		config.Audio.PlayMotionStop = filepath.Join(dms3libs.GetPackageDir(), "/media/motion_stop.wav")
+	media := []mediaPath{
+		{
+			&config.Audio.PlayMotionStart,
+			"/dms3server/media/motion_start.wav",
+		},
+		{
+			&config.Audio.PlayMotionStop,
+			"/dms3server/media/motion_stop.wav",
+		},
 	}
+
+	fail := false
+
+	for i := range media {
+
+		relPath := filepath.Join(configPath, media[i].mediaLocation)
+		devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), media[i].mediaLocation)
+
+		if !dms3libs.IsFile(*media[i].configLocation) {
+
+			// if no location set, set to release folder, else set to development folder
+			if *media[i].configLocation == "" {
+
+				if dms3libs.IsFile(relPath) {
+					*media[i].configLocation = relPath
+				} else if dms3libs.IsFile(devPath) {
+					*media[i].configLocation = devPath
+				} else {
+					fail = true
+				}
+
+			} else {
+				fail = true
+			}
+
+			if fail {
+				log.Fatalln("unable to set media location... check TOML configuration file")
+			}
+
+		}
+
+	}
+
 }

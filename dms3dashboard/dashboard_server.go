@@ -1,4 +1,5 @@
-// Package dms3dash implements a dms3server-based metrics dashboard for all dms3clients
+// Package dms3dash server implements a dms3server-based metrics dashboard for all dms3clients
+//
 package dms3dash
 
 import (
@@ -7,26 +8,22 @@ import (
 	"fmt"
 	"go-distributed-motion-s3/dms3libs"
 	"html/template"
+	"log"
 	"net"
 	"net/http"
+	"path"
 	"path/filepath"
 	"time"
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
-func InitDashboardServer(dm *DeviceMetrics) {
+func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, "/etc/distributed-motion-s3/dms3dashboard/dms3dashboard.toml")
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
 
 	if dashboardConfig.Server.Enable == true {
-
-		// TODO dashboard.html not found
-		// TODO css file not found
-
-		// TODO image files could be in multiple folders (need to recurse)
-		//
-		dashboardConfig.Server.setDashboardFileLocation()
+		dashboardConfig.Server.setDashboardFileLocation(configPath)
 		dashboardData = new(deviceData)
 		dm.appendServerMetrics()
 		go dashboardConfig.Server.startDashboard()
@@ -46,10 +43,32 @@ func SendDashboardRequest(conn net.Conn) {
 }
 
 // setDashboardFileLocation sets the location of the HTML file used when displaying the dashboard
-func (dash *serverKeyValues) setDashboardFileLocation() {
+func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
-	if dash.FileLocation == "" || !dms3libs.IsFile(dash.FileLocation) {
-		dash.FileLocation = filepath.Join(dms3libs.GetPackageDir(), dash.Filename)
+	relPath := filepath.Join(configPath, "dms3dashboard")
+	devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), "dms3dashboard")
+	fail := false
+
+	if !dms3libs.IsFile(filepath.Join(dash.FileLocation, dash.Filename)) {
+
+		// if no location set, set to release folder, else set to development folder
+		if dash.FileLocation == "" {
+
+			if dms3libs.IsFile(filepath.Join(relPath, dash.Filename)) {
+				dash.FileLocation = relPath
+			} else if dms3libs.IsFile(filepath.Join(devPath, dash.Filename)) {
+				dash.FileLocation = devPath
+			} else {
+				fail = true
+			}
+
+		} else {
+			fail = true
+		}
+
+		if fail {
+			log.Fatalln("unable to set dashboard location... check TOML configuration file")
+		}
 	}
 
 }
@@ -65,9 +84,8 @@ func (dash *serverKeyValues) startDashboard() {
 		"clientCount":    clientCount,
 	}
 
-	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(dash.FileLocation))
+	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(filepath.Join(dash.FileLocation, dash.Filename)))
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("dms3dashboard/assets"))))
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		dashboardData = &deviceData{
@@ -127,6 +145,7 @@ func (dash *serverKeyValues) receiveDashboardData(conn net.Conn) {
 
 // appendClientMetrics adds new clients to the dashboard list, or updates existing client
 // metrics, where Hostname is the unique key
+//
 func (dm *DeviceMetrics) appendClientMetrics() {
 
 	for i := range dashboardData.Clients {
@@ -164,6 +183,7 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 // iconStatus is an HTML template function that returns the CSS string representing icon color,
 // depending on the last time the client reported status to the server, relative to the client's
 // CheckInterval
+//
 func iconStatus(index int) string {
 
 	seconds := dms3libs.SecondsSince(dashboardData.Clients[index].LastReport)
@@ -200,6 +220,7 @@ func iconType(index int) string {
 
 // clientCount is an HTML template function that returns the current count of dms3clients
 // reporting to the server
+//
 func clientCount() int {
 	return len(dashboardData.Clients) - 1
 }

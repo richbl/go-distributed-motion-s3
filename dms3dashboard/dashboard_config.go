@@ -1,4 +1,5 @@
-// Package dms3dash implements a dms3server-based metrics dashboard for all dms3clients
+// Package dms3dash dashboard configuration structures and variables
+//
 package dms3dash
 
 import "time"
@@ -33,9 +34,6 @@ type deviceData struct {
 }
 
 // DeviceMetrics represents device data presented on the dashboard
-
-// TODO break this down
-//
 type DeviceMetrics struct {
 	Hostname      string
 	Environment   string

@@ -1,4 +1,5 @@
-// Package dms3dash implements a dms3server-based metrics dashboard for all dms3clients
+// Package dms3dash client implements a dms3server-based metrics dashboard for all dms3clients
+//
 package dms3dash
 
 import (
@@ -6,6 +7,7 @@ import (
 	"encoding/gob"
 	"go-distributed-motion-s3/dms3libs"
 	"net"
+	"path/filepath"
 	"time"
 )
 
@@ -13,10 +15,11 @@ var dashboardClientMetrics *DeviceMetrics
 
 // InitDashboardClient loads configuration and assigns the dashboard client profile (sets
 //	static client metrics)
-func InitDashboardClient(dm *DeviceMetrics) {
+//
+func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, "/etc/distributed-motion-s3/dms3dashboard/dms3dashboard.toml")
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
 
 	dashboardClientMetrics = &DeviceMetrics{
 		Hostname:      dms3libs.DeviceHostname(),
@@ -39,6 +42,7 @@ func ReceiveDashboardRequest(conn net.Conn) {
 
 // receiveDashboardEnableState parses the server dashboard state notification, returning true
 // if the dashboard state is enabled
+//
 func receiveDashboardEnableState(conn net.Conn) bool {
 
 	buf := make([]byte, 16)

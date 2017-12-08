@@ -1,3 +1,5 @@
+// Package dms3mail configuration structures and variables
+//
 package dms3mail
 
 import (

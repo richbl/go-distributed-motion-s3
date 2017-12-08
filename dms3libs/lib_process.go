@@ -1,3 +1,5 @@
+// Package dms3libs process provides process-related services for dms3 device components
+//
 package dms3libs
 
 import (

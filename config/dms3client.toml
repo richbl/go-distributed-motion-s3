@@ -31,11 +31,13 @@
 	LogDevice = 0
 
 	# LogFilename is the logging filename
+	#
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
 	LogFilename = "dms3client.log"
 
-	# LogLocation is the location of logfile (absolute path)
+	# LogLocation is the location of logfile (absolute path; must have r/w permissions)
+	#
 	# Ignored if LogLevel == 0 or LogDevice == 0
 	#
 	LogLocation = "/var/log/dms3"

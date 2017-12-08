@@ -1,3 +1,5 @@
+// Package dms3libs OS provides operating system information services for dms3 device components
+//
 package dms3libs
 
 import (

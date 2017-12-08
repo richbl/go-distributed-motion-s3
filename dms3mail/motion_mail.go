@@ -1,9 +1,12 @@
+// Package dms3mail implements a mailer service for dms3clients
+//
 package dms3mail
 
 import (
 	"flag"
 	"go-distributed-motion-s3/dms3libs"
 	"path"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -20,10 +23,10 @@ type structEventDetails struct {
 }
 
 // Init configs the library and configuration for dms3mail
-func Init() {
+func Init(configPath string) {
 
-	dms3libs.LoadLibConfig("/etc/distributed-motion-s3/dms3libs/dms3libs.toml")
-	dms3libs.LoadComponentConfig(&mailConfig, "/etc/distributed-motion-s3/dms3mail/dms3mail.toml")
+	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs/dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&mailConfig, filepath.Join(configPath, "dms3mail/dms3mail.toml"))
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
