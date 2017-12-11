@@ -14,6 +14,7 @@ func main() {
 
 	binaryInstallDir := "/usr/local/bin/"
 	configInstallDir := "/etc/distributed-motion-s3"
+	logDir := "/var/log/dms3"
 
 	// stop existing upstart service (if running)
 	dms3libs.RunCommand("service dms3server stop")
@@ -22,6 +23,9 @@ func main() {
 	dms3libs.CopyFile("dms3_release/go_dms3server", filepath.Join(binaryInstallDir, "go_dms3server"))
 	_, err := dms3libs.RunCommand("chmod +x " + filepath.Join(binaryInstallDir, "go_dms3server"))
 	dms3libs.CheckErr(err)
+
+	// create log folder
+	dms3libs.MkDir(logDir)
 
 	// copy configuration files into configInstallDir
 	dms3libs.MkDir(configInstallDir)

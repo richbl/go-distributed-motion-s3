@@ -24,7 +24,7 @@ func Init(configPath string) {
 	dms3libs.CreateLogger(clientConfig.Logging)
 
 	dms3dash.InitDashboardClient(configPath, configDashboardClientMetrics())
-	StartClient(clientConfig.Server.IP, clientConfig.Server.Port)
+	startClient(clientConfig.Server.IP, clientConfig.Server.Port)
 
 }
 
@@ -41,8 +41,8 @@ func configDashboardClientMetrics() *dms3dash.DeviceMetrics {
 
 }
 
-// StartClient periodically attempts to connect to the server (based on CheckInterval)
-func StartClient(ServerIP string, ServerPort int) {
+// startClient periodically attempts to connect to the server (based on CheckInterval)
+func startClient(ServerIP string, ServerPort int) {
 
 	for {
 		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {

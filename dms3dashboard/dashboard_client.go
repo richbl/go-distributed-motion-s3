@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"go-distributed-motion-s3/dms3libs"
+	"log"
 	"net"
 	"path/filepath"
 	"time"
@@ -27,7 +28,10 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 		Kernel:        dms3libs.DeviceKernel(),
 		CheckInterval: dm.CheckInterval,
 		StartTime:     dm.StartTime,
+		Type:          dm.Type,
 	}
+
+	dashboardClientMetrics.checkImagesFolder()
 
 }
 
@@ -36,6 +40,26 @@ func ReceiveDashboardRequest(conn net.Conn) {
 
 	if receiveDashboardEnableState(conn) == true {
 		sendDashboardData(conn)
+	}
+
+}
+
+// checkImagesFolder confirms the location of the motion-triggered image/movie files managed by
+// the motion detector application (if installed), and used in displaying client metrics in the
+// dashboard
+//
+func (dash *DeviceMetrics) checkImagesFolder() {
+
+	if dms3libs.IsFile(dashboardConfig.Client.ImagesFolder) {
+		dashboardClientMetrics.ShowEventCount = true
+	} else {
+
+		if dashboardConfig.Client.ImagesFolder == "" {
+			dashboardClientMetrics.ShowEventCount = false
+		} else {
+			log.Fatalln("unable to find motion detector application images folder... check TOML configuration file")
+		}
+
 	}
 
 }
@@ -64,7 +88,10 @@ func sendDashboardData(conn net.Conn) {
 	// update client metrics
 	dashboardClientMetrics.LastReport = time.Now()
 	dashboardClientMetrics.Uptime = dms3libs.Uptime(dashboardClientMetrics.StartTime)
-	dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)
+
+	if dashboardClientMetrics.ShowEventCount {
+		dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)
+	}
 
 	// gob encoding of client metrics
 	encBuf := new(bytes.Buffer)

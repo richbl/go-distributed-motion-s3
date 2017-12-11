@@ -35,15 +35,16 @@ type deviceData struct {
 
 // DeviceMetrics represents device data presented on the dashboard
 type DeviceMetrics struct {
-	Hostname      string
-	Environment   string
-	Kernel        string
-	LastReport    time.Time
-	StartTime     time.Time
-	Uptime        string
-	EventCount    int
-	CheckInterval int
-	Type          dashboardType
+	Hostname       string
+	Environment    string
+	Kernel         string
+	LastReport     time.Time
+	StartTime      time.Time
+	Uptime         string
+	CheckInterval  int
+	ShowEventCount bool
+	EventCount     int
+	Type           dashboardType
 }
 
 // dashboardType defines the dashboard device type

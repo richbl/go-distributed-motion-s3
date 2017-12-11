@@ -69,12 +69,22 @@
                                             
                                             {{ if eq $index 0 }}
                                                 <i class="icon-display"></i> Clients: {{clientCount}}
+                                                <br>
                                             {{else}}
-                                                <i class="icon-eye"></i> Events: {{.EventCount}} 
+
+                                                {{ if showEventCount $index }}
+                                                    <i class="icon-eye"></i> Events: {{.EventCount}}
+                                                    <br>
+                                                {{ end }}
+
                                             {{end}}
 
-                                            <br>
                                             <i class="icon-loop2"></i> Update: {{FormatDateTime .LastReport}}
+
+                                            {{ if (and (ne $index 0) (eq (showEventCount $index) false)) }}
+                                                <br><br>
+                                            {{ end }}
+
                                         </div>
                                     </div>
                                 </div>

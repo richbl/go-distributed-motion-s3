@@ -24,9 +24,9 @@
 	# ImagesFolder is the location of where the motion detection application stores its
 	# motion-triggered image/movie files on the client (e.g., should match the target_dir parameter
 	# used in the Motion application)
-	# 
-	# Used in determining client event metrics, and presented through the dashboard
+	# Used in determining the client "events" metrics, presented through the dashboard
 	#
+	# If the value is "" (empty string), this value is disabled (not reported) on the dashboard
 	# Ignored if [Server] Enable == false
 	#
-	ImagesFolder = "/home/richbl/motion_pics"
+	ImagesFolder = "/home/pi/motion_pics"

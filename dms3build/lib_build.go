@@ -88,7 +88,7 @@ func CopyDashboardFiles() {
 	fmt.Print("Copying dms3dashboard file (HTML) into dms3_release folder... ")
 	dms3libs.CopyFile("dms3dashboard/dashboard.html", filepath.Join("dms3_release", "dms3dashboard/dashboard.html"))
 	fmt.Print("Copying dms3dashboard assets into dms3_release folder... ")
-	dms3libs.CopyDir("dms3dashboard/assets", filepath.Join("dms3_release", "dms3dashboard/assets"))
+	dms3libs.CopyDir("dms3dashboard/assets", filepath.Join("dms3_release", "dms3dashboard"))
 	fmt.Println("Success")
 	fmt.Println()
 

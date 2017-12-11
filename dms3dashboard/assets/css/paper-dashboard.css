@@ -40,18 +40,18 @@ p1 {
 }
 
 .icon-success {
-    fill: #7AC29A;
-    color: #7AC29A;
+    fill: #4caf50;
+    color: #4caf50;
 }
 
 .icon-warning {
-    fill: #F3BB45;
-    color: #F3BB45;
+    fill: #ff9800;
+    color: #ff9800;
 }
 
 .icon-danger {
-    fill: #EB5E28;
-    color: #EB5E28;
+    fill: #f44336;
+    color: #f44336;
 }
 
 

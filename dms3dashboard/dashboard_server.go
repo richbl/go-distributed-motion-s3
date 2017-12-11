@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"path"
 	"path/filepath"
+	"sort"
+	"strings"
 	"time"
 )
 
@@ -26,7 +28,7 @@ func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 		dashboardConfig.Server.setDashboardFileLocation(configPath)
 		dashboardData = new(deviceData)
 		dm.appendServerMetrics()
-		go dashboardConfig.Server.startDashboard()
+		go dashboardConfig.Server.startDashboard(configPath)
 	}
 
 }
@@ -74,7 +76,7 @@ func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 }
 
 // startDashboard intializes and starts an HTTP server, serving the client dash on the server
-func (dash *serverKeyValues) startDashboard() {
+func (dash *serverKeyValues) startDashboard(configPath string) {
 
 	funcs := template.FuncMap{
 		"ModVal":         dms3libs.ModVal,
@@ -82,10 +84,11 @@ func (dash *serverKeyValues) startDashboard() {
 		"iconStatus":     iconStatus,
 		"iconType":       iconType,
 		"clientCount":    clientCount,
+		"showEventCount": showEventCount,
 	}
 
 	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(filepath.Join(dash.FileLocation, dash.Filename)))
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("dms3dashboard/assets"))))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(configPath, "dms3dashboard/assets")))))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		dashboardData = &deviceData{
@@ -137,7 +140,6 @@ func (dash *serverKeyValues) receiveDashboardData(conn net.Conn) {
 		// gob decoding of client metrics
 		decBuf := bytes.NewBuffer(buf[:n])
 		err = gob.NewDecoder(decBuf).Decode(newClientMetrics)
-
 		newClientMetrics.appendClientMetrics()
 	}
 
@@ -164,6 +166,17 @@ func (dm *DeviceMetrics) appendClientMetrics() {
 	}
 
 	dashboardData.Clients = append(dashboardData.Clients, *dm)
+
+	// resort clients alphabetically
+	sort.Slice(dashboardData.Clients, func(i, j int) bool {
+		switch strings.Compare(dashboardData.Clients[i].Hostname, dashboardData.Clients[j].Hostname) {
+		case -1:
+			return true
+		case 1:
+			return false
+		}
+		return dashboardData.Clients[i].Hostname > dashboardData.Clients[j].Hostname
+	})
 
 }
 
@@ -223,4 +236,9 @@ func iconType(index int) string {
 //
 func clientCount() int {
 	return len(dashboardData.Clients) - 1
+}
+
+// showEventCount is an HTML template function that returns whether to display client event count
+func showEventCount(index int) bool {
+	return dashboardData.Clients[index].ShowEventCount
 }
