@@ -8,7 +8,7 @@
 ![dms3_dashboard](https://user-images.githubusercontent.com/10182110/33868591-bb0e2608-deb8-11e7-802b-3f30a71683fd.png
 )
 
-Ever wonder if your surveillance cameras are operational, in need of updates, or a even a reboot? The new **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** and provide regularly-updated information for all DMS<sup>3</sup>Client components with device metrics including:
+Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The new **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** and provide regularly-updated information for all DMS<sup>3</sup>Client components with device metrics including:
 
 - Hostname
 - Hardware platform and operating system
