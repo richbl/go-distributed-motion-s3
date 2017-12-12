@@ -8,7 +8,7 @@
 ![dms3_dashboard](https://user-images.githubusercontent.com/10182110/33868591-bb0e2608-deb8-11e7-802b-3f30a71683fd.png
 )
 
-Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The new **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** and provide regularly-updated information for all DMS<sup>3</sup>Client components with device metrics including:
+Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The new **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** component and provide regularly-updated information for all **DMS<sup>3</sup>Client** components with device metrics including:
 
 - Hostname
 - Hardware platform and operating system
@@ -155,7 +155,7 @@ If that user proxy MAC "leaves" and is no longer found on the network, it's assu
 
 Alternatively, the *Always On* feature uses time-of-day to enable/disable the surveillance system. **DMS<sup>3</sup>Server** will look at the time range specified, and if the current time falls between the time range, the motion detection application of all client devices will be started. Once the current time falls outside of the specified time range, the motion detection application for each device client is then stopped.
 
-> Note that **DMS<sup>3</sup>Server** *only signals to participating device clients* the current state of the video surveillance system. Each device client is ultimately responsible for starting/stopping its local instance of a motion detection application
+> Note that **DMS<sup>3</sup>Server** *only signals to participating device clients* the current state of the video surveillance system. Each device client is ultimately responsible for starting/stopping its local instance of the installed motion detection application
 
 ### **DMS<sup>3</sup>Client** Operation
 
