@@ -213,7 +213,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
 ### Running Components as Executables
 
-1. On the server, run **DMS<sup>3</sup>Server** by typing `./go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
+1. On the server, run **DMS<sup>3</sup>Server** by typing `go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of server logging output is displayed below:
 
@@ -228,7 +228,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
    In this example, logging is set to the INFO level and is reporting that **DMS<sup>3</sup>Server** is sending out to all participating **DMS<sup>3</sup>Client** components a motion detector state of 0 (disabled).
 
-1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `./go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
+1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
 
    An example of client logging output is displayed below:
 
