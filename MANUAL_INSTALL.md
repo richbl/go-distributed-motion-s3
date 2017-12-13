@@ -32,7 +32,7 @@ git clone https://github.com/richbl/go-distributed-motion-s3
 
 ## 2. Compile **DMS<sup>3</sup>**
 
-The **DMS<sup>3</sup>** project sources must first be compiled into binary executables before installation. To compile all components of the **DMS<sup>3</sup>** project, run `compile_dms3` (i.e., `./compile_dms3`). 
+The **DMS<sup>3</sup>** project sources must first be compiled into binary executables before installation. To compile all components of the **DMS<sup>3</sup>** project, run `compile_dms3` (i.e., `go run compile_dms3.go`). 
 
 The result of a successful **DMS<sup>3</sup>** project compile is the creation of a `dms_release` folder. The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 
@@ -276,7 +276,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
 ### Running Components as Executables
 
-1. On the server, run **DMS<sup>3</sup>Server** by typing `./go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
+1. On the server, run **DMS<sup>3</sup>Server** by typing `go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of server logging output is displayed below:
 
@@ -291,7 +291,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
    In this example, logging is set to the INFO level and is reporting that **DMS<sup>3</sup>Server** is sending out to all participating **DMS<sup>3</sup>Client** components a motion detector state of 0 (disabled).
 
-1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `./go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
+1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
 
    An example of client logging output is displayed below:
 
