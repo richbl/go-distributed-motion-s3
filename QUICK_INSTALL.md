@@ -2,7 +2,7 @@
 
 This procedure describes how to use the `dms3build` build process found in this project to install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**.
 
-For details on how to manually install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md) documentation. This document also provides much greater technical depth in describing the **DMS<sup>3</sup>** installation process.
+For details on how to manually install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md) documentation. This document also provides much greater technical depth in describing the **DMS<sup>3</sup>** installation process.
 
 ## Installation Overview
 
