@@ -164,15 +164,14 @@ func InstallClientComponents(releasePath string) {
 		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3client"), filepath.Join("dms3_release", "dms3client"))
 		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
 		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3dashboard"), filepath.Join("dms3_release", "dms3dashboard"))
+
+		remoteMkDir(ssh, filepath.Join("dms3_release", "dms3dashboard"))
+		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3dashboard"), "dms3dashboard.toml"), filepath.Join(filepath.Join("dms3_release", "dms3dashboard"), "dms3dashboard.toml"))
 
 		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "go_dms3client"), filepath.Join("dms3_release", "go_dms3client"))
 		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "go_dms3mail"), filepath.Join("dms3_release", "go_dms3mail"))
 		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "dms3client_remote_installer"), "dms3client_remote_installer")
 		remoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
-
-		// copy systemd service file (for manual installation)
-		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3client"), "dms3client.service"), "dms3client.service")
 
 		// run client installer, then remove on completion
 		remoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
@@ -209,9 +208,6 @@ func InstallServerComponents(releasePath string) {
 		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "go_dms3server"), filepath.Join("dms3_release", "go_dms3server"))
 		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "dms3server_remote_installer"), "dms3server_remote_installer")
 		remoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
-
-		// copy systemd service file (for manual installation)
-		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3server"), "dms3server.service"), "dms3server.service")
 
 		// run server installer, then remove on completion
 		remoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
