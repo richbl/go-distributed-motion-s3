@@ -33,9 +33,13 @@ func Init(configPath string) {
 func configDashboardServerMetrics() *dms3dash.DeviceMetrics {
 
 	dm := &dms3dash.DeviceMetrics{
-		CheckInterval: serverConfig.Server.CheckInterval,
-		StartTime:     startTime,
-		Type:          dms3dash.Server,
+		Platform: dms3dash.DevicePlatform{
+			Type: dms3dash.Client,
+		},
+		Period: dms3dash.DeviceTime{
+			StartTime:     startTime,
+			CheckInterval: serverConfig.Server.CheckInterval,
+		},
 	}
 
 	return dm

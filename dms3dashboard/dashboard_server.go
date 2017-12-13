@@ -107,8 +107,8 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 // updateServerMetrics updates dynamic dashboard data of the server
 func (dd *deviceData) updateServerMetrics() {
 
-	dd.Clients[0].LastReport = time.Now()
-	dd.Clients[0].Uptime = dms3libs.Uptime(dd.Clients[0].StartTime)
+	dd.Clients[0].Period.LastReport = time.Now()
+	dd.Clients[0].Period.Uptime = dms3libs.Uptime(dd.Clients[0].Period.StartTime)
 
 }
 
@@ -152,12 +152,12 @@ func (dm *DeviceMetrics) appendClientMetrics() {
 
 	for i := range dashboardData.Clients {
 
-		if dashboardData.Clients[i].Type == Client {
+		if dashboardData.Clients[i].Platform.Type == Client {
 
-			if dashboardData.Clients[i].Hostname == dm.Hostname {
+			if dashboardData.Clients[i].Platform.Hostname == dm.Platform.Hostname {
 				dashboardData.Clients[i].EventCount = dm.EventCount
-				dashboardData.Clients[i].LastReport = dm.LastReport
-				dashboardData.Clients[i].Uptime = dm.Uptime
+				dashboardData.Clients[i].Period.LastReport = dm.Period.LastReport
+				dashboardData.Clients[i].Period.Uptime = dm.Period.Uptime
 				return
 			}
 
@@ -169,13 +169,13 @@ func (dm *DeviceMetrics) appendClientMetrics() {
 
 	// resort clients alphabetically
 	sort.Slice(dashboardData.Clients, func(i, j int) bool {
-		switch strings.Compare(dashboardData.Clients[i].Hostname, dashboardData.Clients[j].Hostname) {
+		switch strings.Compare(dashboardData.Clients[i].Platform.Hostname, dashboardData.Clients[j].Platform.Hostname) {
 		case -1:
 			return true
 		case 1:
 			return false
 		}
-		return dashboardData.Clients[i].Hostname > dashboardData.Clients[j].Hostname
+		return dashboardData.Clients[i].Platform.Hostname > dashboardData.Clients[j].Platform.Hostname
 	})
 
 }
@@ -185,9 +185,10 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 
 	serverData := new(DeviceMetrics)
 	*serverData = *dm
-	serverData.Hostname = dms3libs.DeviceHostname()
-	serverData.Environment = dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform()
-	serverData.Kernel = dms3libs.DeviceKernel()
+	serverData.Platform.Type = Server
+	serverData.Platform.Hostname = dms3libs.DeviceHostname()
+	serverData.Platform.Environment = dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform()
+	serverData.Platform.Kernel = dms3libs.DeviceKernel()
 
 	dashboardData.Clients = append(dashboardData.Clients, *serverData)
 
@@ -199,8 +200,8 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 //
 func iconStatus(index int) string {
 
-	seconds := dms3libs.SecondsSince(dashboardData.Clients[index].LastReport)
-	interval := dashboardData.Clients[index].CheckInterval
+	seconds := dms3libs.SecondsSince(dashboardData.Clients[index].Period.LastReport)
+	interval := dashboardData.Clients[index].Period.CheckInterval
 	warningLimit := uint32((interval * 2))
 	dangerLimit := uint32((interval * 4))
 
@@ -220,7 +221,7 @@ func iconStatus(index int) string {
 // iconType is an HTML template function that returns an icon based on device type
 func iconType(index int) string {
 
-	switch dashboardData.Clients[index].Type {
+	switch dashboardData.Clients[index].Platform.Type {
 	case Client:
 		return "icon-raspberry-pi"
 	case Server:

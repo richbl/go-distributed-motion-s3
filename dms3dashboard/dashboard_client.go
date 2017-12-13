@@ -23,12 +23,16 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
 
 	dashboardClientMetrics = &DeviceMetrics{
-		Hostname:      dms3libs.DeviceHostname(),
-		Environment:   dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform(),
-		Kernel:        dms3libs.DeviceKernel(),
-		CheckInterval: dm.CheckInterval,
-		StartTime:     dm.StartTime,
-		Type:          dm.Type,
+		Platform: DevicePlatform{
+			Type:        dm.Platform.Type,
+			Hostname:    dms3libs.DeviceHostname(),
+			Environment: dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform(),
+			Kernel:      dms3libs.DeviceKernel(),
+		},
+		Period: DeviceTime{
+			StartTime:     dm.Period.StartTime,
+			CheckInterval: dm.Period.CheckInterval,
+		},
 	}
 
 	dashboardClientMetrics.checkImagesFolder()
@@ -86,8 +90,8 @@ func receiveDashboardEnableState(conn net.Conn) bool {
 func sendDashboardData(conn net.Conn) {
 
 	// update client metrics
-	dashboardClientMetrics.LastReport = time.Now()
-	dashboardClientMetrics.Uptime = dms3libs.Uptime(dashboardClientMetrics.StartTime)
+	dashboardClientMetrics.Period.LastReport = time.Now()
+	dashboardClientMetrics.Period.Uptime = dms3libs.Uptime(dashboardClientMetrics.Period.StartTime)
 
 	if dashboardClientMetrics.ShowEventCount {
 		dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)

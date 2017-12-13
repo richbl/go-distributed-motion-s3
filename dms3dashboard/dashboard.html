@@ -54,17 +54,17 @@
                                         </div>
                                         <div class="col-xs-7">
                                             <div class="numbers">
-                                                <p>{{.Hostname}}</p>
-                                                <p1>{{.Environment}}</p1>
+                                                <p>{{.Platform.Hostname}}</p>
+                                                <p1>{{.Platform.Environment}}</p1>
                                                 </br>
-                                                <p1>{{.Kernel}}</p1>
+                                                <p1>{{.Platform.Kernel}}</p1>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="footer">
                                         <hr>
                                         <div class="stats">
-                                            <i class="icon-stopwatch"></i> Uptime: {{.Uptime}}
+                                            <i class="icon-stopwatch"></i> Uptime: {{.Period.Uptime}}
                                             <br>
                                             
                                             {{ if eq $index 0 }}
@@ -79,7 +79,7 @@
 
                                             {{end}}
 
-                                            <i class="icon-loop2"></i> Update: {{FormatDateTime .LastReport}}
+                                            <i class="icon-loop2"></i> Update: {{FormatDateTime .Period.LastReport}}
 
                                             {{ if (and (ne $index 0) (eq (showEventCount $index) false)) }}
                                                 <br><br>

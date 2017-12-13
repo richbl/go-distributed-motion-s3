@@ -12,9 +12,6 @@ import (
 	"go-distributed-motion-s3/dms3libs"
 )
 
-// TODO update tests
-// TODO update docs
-
 func main() {
 
 	// sets release path to dms3_release folder
