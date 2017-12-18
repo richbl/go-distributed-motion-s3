@@ -27,7 +27,7 @@ func TestLoadComponentConfig(t *testing.T) {
 	configPath := dms3libs.GetPackageDir()
 
 	dms3libs.LoadComponentConfig(&testSettings, filepath.Join(configPath, "../../config/dms3server.toml"))
-	t.Log("component configuration loaded succesfully")
+	t.Log("component configuration loaded successfully")
 
 }
 
@@ -50,6 +50,6 @@ func TestSetLogFileLocation(t *testing.T) {
 	testSettings := new(dms3libs.StructLogging)
 	testSettings.LogLocation = ""
 	dms3libs.SetLogFileLocation(testSettings)
-	t.Log("log location set to", testSettings.LogLocation, "succesfully")
+	t.Log("log location set to", testSettings.LogLocation, "successfully")
 
 }
