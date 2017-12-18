@@ -43,13 +43,13 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 
 	dms3libs.MotionDetector.SetState(state)
 
-	if serverConfig.Audio.Enable {
+	if ServerConfig.Audio.Enable {
 
 		switch state {
 		case dms3libs.Start:
-			dms3libs.PlayAudio(serverConfig.Audio.PlayMotionStart)
+			dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStart)
 		case dms3libs.Stop:
-			dms3libs.PlayAudio(serverConfig.Audio.PlayMotionStop)
+			dms3libs.PlayAudio(ServerConfig.Audio.PlayMotionStop)
 		}
 
 	}
@@ -63,7 +63,7 @@ func checkIntervalExpired() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if time.Since(checkIntervalTimestamp).Seconds() >= float64(serverConfig.Server.CheckInterval) {
+	if time.Since(checkIntervalTimestamp).Seconds() >= float64(ServerConfig.Server.CheckInterval) {
 		checkIntervalTimestamp = time.Now()
 		return true
 	}
@@ -79,7 +79,7 @@ func timeInRange() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
 
-	if serverConfig.AlwaysOn.Enable {
+	if ServerConfig.AlwaysOn.Enable {
 		return calcTimeRange()
 	}
 
@@ -96,8 +96,8 @@ func calcTimeRange() bool {
 
 	curTime := dms3libs.To24H(time.Now())
 
-	startTime := dms3libs.Format24H(serverConfig.AlwaysOn.TimeRange[0])
-	endTime := dms3libs.Format24H(serverConfig.AlwaysOn.TimeRange[1])
+	startTime := dms3libs.Format24H(ServerConfig.AlwaysOn.TimeRange[0])
+	endTime := dms3libs.Format24H(ServerConfig.AlwaysOn.TimeRange[1])
 
 	if startTime > endTime {
 		return (curTime >= startTime) || (curTime < endTime)
@@ -113,7 +113,7 @@ func calcTimeRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(dms3libs.GetFunctionName())
-	dms3libs.PingHosts(serverConfig.UserProxy.IPBase, serverConfig.UserProxy.IPRange)
-	return dms3libs.FindMacs(serverConfig.UserProxy.MacsToFind)
+	dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
+	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 
 }

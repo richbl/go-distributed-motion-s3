@@ -12,8 +12,8 @@ import (
 
 var startTime time.Time
 
-// serverConfig contains dms3Server configuration settings read from TOML file
-var serverConfig *structSettings
+// ServerConfig contains dms3Server configuration settings read from TOML file
+var ServerConfig *structSettings
 
 // server-side configuration parameters
 type structSettings struct {

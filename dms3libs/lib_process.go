@@ -31,30 +31,6 @@ func GetPIDCount(application string) int {
 
 }
 
-// getPIDList returns application PIDs (0 if no process)
-func getPIDList(application string) (int, []int) {
-
-	pidCount := GetPIDCount(application)
-
-	switch pidCount {
-	case 0: // no process running
-		return 0, []int{0}
-	default: // one or more processes running
-		{
-			res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x " + application)
-			strPIDs := strings.Split(string(StripRet(res)), "\n")
-
-			PIDs := []int{}
-			for _, i := range strPIDs {
-				pid, _ := strconv.Atoi(i)
-				PIDs = append(PIDs, pid)
-			}
-			return pidCount, PIDs
-		}
-	}
-
-}
-
 // GetPID returns the application PID (0 if no process)
 func GetPID(application string) int {
 
@@ -113,6 +89,30 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 		{
 			LogInfo("Unanticipated motion detector state: ignored")
 			return false
+		}
+	}
+
+}
+
+// getPIDList returns application PIDs (0 if no process)
+func getPIDList(application string) (int, []int) {
+
+	pidCount := GetPIDCount(application)
+
+	switch pidCount {
+	case 0: // no process running
+		return 0, []int{0}
+	default: // one or more processes running
+		{
+			res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x " + application)
+			strPIDs := strings.Split(string(StripRet(res)), "\n")
+
+			PIDs := []int{}
+			for _, i := range strPIDs {
+				pid, _ := strconv.Atoi(i)
+				PIDs = append(PIDs, pid)
+			}
+			return pidCount, PIDs
 		}
 	}
 

@@ -3,6 +3,7 @@ package dms3libs_test
 import (
 	"go-distributed-motion-s3/dms3libs"
 	"go-distributed-motion-s3/dms3server"
+	"path/filepath"
 	"testing"
 )
 
@@ -25,10 +26,12 @@ func TestPlayAudio(t *testing.T) {
 
 func TestAudioConfig(t *testing.T) {
 
-	dms3libs.LoadComponentConfig(&dms3server.serverConfig, "../../config/dms3server.toml")
+	configPath := dms3libs.GetPackageDir()
 
-	mediaFileStart := dms3server.serverConfig.Audio.PlayMotionStart
-	mediaFileStop := dms3server.serverConfig.Audio.PlayMotionStop
+	dms3libs.LoadComponentConfig(&dms3server.ServerConfig, filepath.Join(configPath, "../../config/dms3server.toml"))
+
+	mediaFileStart := dms3server.ServerConfig.Audio.PlayMotionStart
+	mediaFileStop := dms3server.ServerConfig.Audio.PlayMotionStop
 
 	if mediaFileStart == "" {
 		mediaFileStart = "../../dms3server/media/motion_start.wav"

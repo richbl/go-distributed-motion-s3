@@ -78,6 +78,11 @@ func FormatDateTime(value time.Time) string {
 	return value.Format("2006-01-02 at 15:04:05")
 }
 
+// ModVal returns the remainder of number/val passed in
+func ModVal(number int, val int) int {
+	return number % val
+}
+
 // CheckErr does simple error management (no logging dependencies)
 func CheckErr(err error) {
 
@@ -86,11 +91,6 @@ func CheckErr(err error) {
 		os.Exit(1)
 	}
 
-}
-
-// ModVal returns the remainder of number/val passed in
-func ModVal(number int, val int) int {
-	return number % val
 }
 
 // rightPadToLen pads a string to pLen places with padStr
