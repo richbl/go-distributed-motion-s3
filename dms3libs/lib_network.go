@@ -45,7 +45,7 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -E '" + macListRegex + "'")
+	res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'")
 
 	if err != nil {
 		LogInfo(LibConfig.SysCommands["ARP"] + " command code: " + err.Error())
