@@ -51,7 +51,7 @@ Here's a list of some of the more outstanding features of **DMS<sup>3</sup>**:
 
 ### Motion Detection Application Support
 
-While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and determining when to enable or disable the surveillance system. *It alone does not manage the processing of video stream data*. That complex, real-time task is left to motion detection libraries/applications which can be integrated into **DMS<sup>3</sup>**.
+While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and determining when to enable or disable the surveillance system, *it alone does not manage the processing of video stream data*. That complex, real-time task is left to motion detection libraries/applications which can be integrated into **DMS<sup>3</sup>**.
 
 - Support for the [Motion](https://motion-project.github.io/ "Motion") motion detector software package
 
@@ -59,7 +59,7 @@ While **DMS<sup>3</sup>** is primarily responsible for sensing user proxies and 
 
 - Support for the [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") Library [planned]
 
-  - [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") support is highly anticipated, but still experimental, though the current codebase cleanly abstracts away any specific motion detection application dependencies, so it should be a very straightforward integration
+  - [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") support is highly anticipated, but still experimental, though the current codebase cleanly abstracts away any specific motion detection application dependencies so it should be a very straightforward integration
 
 ### **DMS<sup>3</sup>Client** & **DMS<sup>3</sup>Server** Features
 
