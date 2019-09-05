@@ -31,7 +31,7 @@ The new **DMS<sup>3</sup>Dashboard** component is written using [Go's HTML templ
 - [Creative Tim's Paper Dashboard Theme](https://github.com/creativetimofficial/paper-dashboard)
 - Fonts provided by [Icomoon](https://icomoon.io/)
 
-> Note that the **DMS<sup>3</sup>Dashboard** version of the Paper Dashboard design is heavily modified (primarily reduced in size and resources, and JS removed), and the original [Themify](https://themify.me/themify-icons) fonts replaced with [Icomoon](https://icomoon.io/) fonts, among other design changes. To demo the unadulternated Paper Dashboard template in action, [see Creative Tim's excellent live preview here](http://demos.creative-tim.com/paper-dashboard/dashboard.html).
+> Note that the **DMS<sup>3</sup>Dashboard** version of the Paper Dashboard design is heavily modified (primarily reduced in size and resources, and JS removed), and the original [Themify](https://themify.me/themify-icons) fonts replaced with [Icomoon](https://icomoon.io/) fonts, among other design changes. To demo the unadulternated Paper Dashboard template in action, [see Creative Tim's excellent live preview here](https://demos.creative-tim.com/paper-dashboard/examples/dashboard.html).
 
 ## 1. What Is DMS<sup>3</sup>?
 
