@@ -3,8 +3,9 @@
 package dms3client
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"time"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 var startTime time.Time

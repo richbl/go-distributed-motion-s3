@@ -8,8 +8,8 @@
 package main
 
 import (
-	"go-distributed-motion-s3/dms3build"
-	"go-distributed-motion-s3/dms3libs"
+	"github.com/richbl/go-distributed-motion-s3/dms3build"
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func main() {

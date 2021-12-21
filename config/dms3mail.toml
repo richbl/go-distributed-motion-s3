@@ -1,5 +1,5 @@
 # Distributed-Motion-S3 (DMS3) MAIL configuration file
-# TOML 0.4.0
+# TOML 1.0.0
 
 [Email]
 	# EmailFrom is the email sender

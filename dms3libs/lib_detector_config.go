@@ -3,7 +3,7 @@
 //
 package dms3libs
 
-// MotionDetector is the motion detector application run on the clients
+// MotionDetector is the motion detector application running on the clients (e.g., motion)
 var MotionDetector = structMotionDetector{
 	command: "motion",
 	state:   Stop,

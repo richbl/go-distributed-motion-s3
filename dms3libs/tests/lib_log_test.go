@@ -1,9 +1,10 @@
 package dms3libs_test
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"os"
 	"testing"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func TestCreateLogger(t *testing.T) {

@@ -3,7 +3,9 @@
 package dms3libs
 
 import (
+	"errors"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 )
@@ -11,11 +13,8 @@ import (
 // IsFile returns true/false on existence of file/folder passed in
 func IsFile(filename string) bool {
 
-	if _, err := os.Stat(filename); !os.IsNotExist(err) {
-		return true
-	}
-
-	return false
+	_, error := os.Stat(filename)
+	return (!errors.Is(error, fs.ErrNotExist))
 
 }
 
@@ -31,8 +30,8 @@ func MkDir(newPath string) {
 func RmDir(dir string) {
 
 	if IsFile(dir) {
-		err := os.RemoveAll(dir)
-		CheckErr(err)
+		error := os.RemoveAll(dir)
+		CheckErr(error)
 	}
 
 }
@@ -41,7 +40,7 @@ func RmDir(dir string) {
 func WalkDir(dirname string) map[string]int {
 
 	fileList := map[string]int{}
-	error := filepath.Walk(dirname, func(path string, f os.FileInfo, err error) error {
+	error := filepath.WalkDir(dirname, func(path string, f os.DirEntry, err error) error {
 
 		// exclude root directory
 		if f.IsDir() && f.Name() == dirname {

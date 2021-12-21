@@ -41,7 +41,7 @@ type DeviceMetrics struct {
 	EventCount     int
 }
 
-// DevicePlatform represents the physical device plattform environment
+// DevicePlatform represents the physical device platform environment
 type DevicePlatform struct {
 	Type        dashboardType
 	Hostname    string

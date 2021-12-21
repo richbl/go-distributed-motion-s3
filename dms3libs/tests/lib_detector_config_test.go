@@ -1,26 +1,15 @@
 package dms3libs_test
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"testing"
-)
 
-func init() {
-	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
-}
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
+)
 
 func TestCommand(t *testing.T) {
 
-	if dms3libs.MotionDetector.Command() != "motion" {
-		t.Error("command failed")
-	}
-
-}
-
-func TestSetState(t *testing.T) {
-
-	if !dms3libs.MotionDetector.SetState(dms3libs.Start) {
-		t.Error("command failed")
+	if dms3libs.MotionDetector.Command() == "" {
+		t.Error("function failed")
 	}
 
 }
@@ -30,7 +19,15 @@ func TestState(t *testing.T) {
 	dms3libs.MotionDetector.SetState(dms3libs.Start)
 
 	if dms3libs.MotionDetector.State() != dms3libs.Start {
-		t.Error("command failed")
+		t.Error("function failed")
+	}
+
+}
+
+func TestSetState(t *testing.T) {
+
+	if !dms3libs.MotionDetector.SetState(dms3libs.Start) {
+		t.Error("function failed")
 	}
 
 }

@@ -1,8 +1,9 @@
 package dms3libs_test
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"testing"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func init() {
@@ -24,7 +25,7 @@ func TestRunCommand(t *testing.T) {
 func TestIsRunning(t *testing.T) {
 
 	// ACTION: set to known active process
-	testApplication := "gocode"
+	testApplication := "gopls"
 
 	if !dms3libs.IsRunning(testApplication) {
 		t.Error(testApplication + " command not running")
@@ -32,24 +33,13 @@ func TestIsRunning(t *testing.T) {
 
 }
 
-func TestGetPIDCount(t *testing.T) {
+func TestGetPIDCount2(t *testing.T) {
 
 	// ACTION: set to known active process
-	testApplication := "gocode"
+	testApplication := "gopls"
 
-	if dms3libs.GetPIDCount(testApplication) < 1 {
-		t.Error("command failed")
-	}
-
-}
-
-func TestGetPID(t *testing.T) {
-
-	// ACTION: set to known active process
-	testApplication := "gocode"
-
-	if dms3libs.GetPID(testApplication) == 0 {
-		t.Error("command failed")
+	if dms3libs.GetPIDCount2(testApplication) < 1 {
+		t.Error("function failed")
 	}
 
 }
@@ -57,7 +47,7 @@ func TestGetPID(t *testing.T) {
 func TestStartStopApplication(t *testing.T) {
 
 	// ACTION: set to known installed application configured to run as service
-	// NOTE: should be run with root permissions (if running as daemon)
+	// NOTE: assumes motion program (https://motion-project.github.io/) is installed
 	//
 	testApplication := "motion"
 

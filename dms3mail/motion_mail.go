@@ -4,13 +4,13 @@ package dms3mail
 
 import (
 	"flag"
-	"go-distributed-motion-s3/dms3libs"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 	"gopkg.in/gomail.v2"
 )
 

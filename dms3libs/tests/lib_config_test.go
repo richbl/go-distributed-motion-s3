@@ -1,12 +1,19 @@
 package dms3libs_test
 
 import (
-	"go-distributed-motion-s3/dms3libs"
+	"path/filepath"
 	"testing"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
-func init() {
-	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
+func TestLoadLibConfig(t *testing.T) {
+
+	libsLocation := "../../config/dms3libs.toml"
+
+	dms3libs.LoadLibConfig(libsLocation)
+	t.Log("libs configuration file loaded from", libsLocation, "successfully")
+
 }
 
 func TestConfiguration(t *testing.T) {
@@ -20,5 +27,36 @@ func TestConfiguration(t *testing.T) {
 		}
 
 	}
+
+}
+
+func TestLoadComponentConfig(t *testing.T) {
+
+	type structServer struct {
+		Port          int
+		CheckInterval int
+		Logging       *dms3libs.StructLogging
+	}
+
+	type structSettings struct {
+		Server *structServer
+	}
+
+	testSettings := new(structSettings)
+	configPath := dms3libs.GetPackageDir()
+	configLocation := "../../config/dms3server.toml"
+
+	dms3libs.LoadComponentConfig(&testSettings, filepath.Join(configPath, configLocation))
+	t.Log("component configuration file loaded from", configLocation, "successfully")
+
+}
+
+func TestSetLogFileLocation(t *testing.T) {
+
+	testSettings := new(dms3libs.StructLogging)
+	testSettings.LogLocation = ""
+
+	dms3libs.SetLogFileLocation(testSettings)
+	t.Log("log location set to", testSettings.LogLocation, "successfully")
 
 }

@@ -1,15 +1,16 @@
-// Package dms3dash client implements a dms3server-based metrics dashboard for all dms3clients
+// Package dms3dash client implements client services for a dms3server-based metrics dashboard
 //
 package dms3dash
 
 import (
 	"bytes"
 	"encoding/gob"
-	"go-distributed-motion-s3/dms3libs"
 	"log"
 	"net"
 	"path/filepath"
 	"time"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 var dashboardClientMetrics *DeviceMetrics
@@ -42,7 +43,7 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 // ReceiveDashboardRequest receives server requests and returns data
 func ReceiveDashboardRequest(conn net.Conn) {
 
-	if receiveDashboardEnableState(conn) == true {
+	if receiveDashboardEnableState(conn) {
 		sendDashboardData(conn)
 	}
 

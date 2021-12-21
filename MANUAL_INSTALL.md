@@ -26,13 +26,13 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
 
 Use the `clone or download` button on the [Github project main page](https://github.com/richbl/go-distributed-motion-s3), and clone the project locally using git:
 
-```
+```text
 git clone https://github.com/richbl/go-distributed-motion-s3
 ```
 
 ## 2. Compile **DMS<sup>3</sup>**
 
-The **DMS<sup>3</sup>** project sources must first be compiled into binary executables before installation. To compile all components of the **DMS<sup>3</sup>** project, run `compile_dms3` (i.e., `go run compile_dms3.go`). 
+The **DMS<sup>3</sup>** project sources must first be compiled into binary executables before installation. To compile all components of the **DMS<sup>3</sup>** project, run `compile_dms3` (i.e., `go run compile_dms3.go`).
 
 The result of a successful **DMS<sup>3</sup>** project compile is the creation of a `dms_release` folder. The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 
@@ -71,23 +71,23 @@ The result of a successful **DMS<sup>3</sup>** project compile is the creation o
    ├── linux_amd64
    │   ├── dms3client_remote_installer
    │   ├── dms3server_remote_installer
-   │   ├── go_dms3client
-   │   ├── go_dms3mail
-   │   ├── go_dms3server
+   │   ├── dms3client
+   │   ├── dms3mail
+   │   ├── dms3server
    │   └── install_dms3
    ├── linux_arm6
    │   ├── dms3client_remote_installer
    │   ├── dms3server_remote_installer
-   │   ├── go_dms3client
-   │   ├── go_dms3mail
-   │   ├── go_dms3server
+   │   ├── dms3client
+   │   ├── dms3mail
+   │   ├── dms3server
    │   └── install_dms3
    └── linux_arm7
        ├── dms3client_remote_installer
        ├── dms3server_remote_installer
-       ├── go_dms3client
-       ├── go_dms3mail
-       ├── go_dms3server
+       ├── dms3client
+       ├── dms3mail
+       ├── dms3server
        └── install_dms3
 
 ```
@@ -173,7 +173,7 @@ In most cases when using [Motion](https://motion-project.github.io/), `lib_detec
 
 Each **DMS<sup>3</sup>** component is organized into four component elements:
 
-- A compiled [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`)
+- A compiled [Go](https://golang.org/ "Go") executable (e.g., `dms3client`)
 - A component configuration file (using the [TOML](https://en.wikipedia.org/wiki/TOML "TOML") configuration file format)
 - An optional [`systemd`](https://en.wikipedia.org/wiki/Systemd) daemon service file (e.g., `dms3client.service`)
 - An optional component log file, runtime-generated based on component configuration
@@ -182,8 +182,8 @@ For proper operation, each component element must be copied into the following l
 
 | Component Element | Default Location | Configurable Location? |
 | :------------- | :------------- | :------------- |
-| [Go](https://golang.org/ "Go") executable (e.g., `go_dms3client`) | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
-| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `go_dms3client.go`)
+| [Go](https://golang.org/ "Go") executable (e.g., `dms3client`) | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
+| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `dms3client.go`)
 | Optional: daemon service file (e.g., `dms3client.service`) | `/etc/systemd/system` | No (platform-dependent)
 | Optional: log file (e.g., `dms3client.log`), runtime-generated | `/var/log/dms3` | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)
 
@@ -193,9 +193,9 @@ The **DMS<sup>3</sup>** server component, **DMS<sup>3</sup>Server**, is responsi
 
 To install **DMS<sup>3</sup>Server**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3server` from the `dms3_release` folder into a location on the remote server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-1. Copy the `dms3server`, `dms3dashboard`, and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3server`, `/etc/distributed-motion-s3/dms3dashboard`, and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `go_dms3server.go`
-1. Confirm that the user running `go_dms3server` has proper permissions to create a log file (`dms3server.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3server.toml`
+1. Copy the [Go](https://golang.org/ "Go") executable `dms3server` from the `dms3_release` folder into a location on the remote server reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
+1. Copy the `dms3server`, `dms3dashboard`, and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3server`, `/etc/distributed-motion-s3/dms3dashboard`, and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `dms3server.go`
+1. Confirm that the user running `dms3server` has proper permissions to create a log file (`dms3server.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3server.toml`
 1. Optionally, install the daemon service file (e.g., `dms3server.service`) into `/etc/systemd/system`
 
 ### **DMS<sup>3</sup>Client** Installation
@@ -204,9 +204,9 @@ The **DMS<sup>3</sup>** distributed client component, **DMS<sup>3</sup>Client**,
 
 To install **DMS<sup>3</sup>Client**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3client` in the `dms3_release` folder into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-1. Copy the `dms3client`, `dms3dashboard`, and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3client`, `/etc/distributed-motion-s3/dms3dashboard`, and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `go_dms3client.go`
-1. Confirm that the user running `go_dms3client` has proper permissions to create a log file (`dms3client.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3client.toml`
+1. Copy the [Go](https://golang.org/ "Go") executable `dms3client` in the `dms3_release` folder into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
+1. Copy the `dms3client`, `dms3dashboard`, and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3client`, `/etc/distributed-motion-s3/dms3dashboard`, and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `dms3client.go`
+1. Confirm that the user running `dms3client` has proper permissions to create a log file (`dms3client.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3client.toml`
 1. Optionally, install the daemon service file (e.g., `dms3client.service`) into `/etc/systemd/system`
 
 A **DMS<sup>3</sup>Client** component must be installed and running on all of the smart device clients (SDCs) participating in  **DMS<sup>3</sup>**.
@@ -217,9 +217,9 @@ If a  smart device client (SDC) is running the [Motion](https://motion-project.g
 
 To install **DMS<sup>3</sup>Mail**:
 
-1. Copy the [Go](https://golang.org/ "Go") executable `go_dms3mail` from the `dms3_release` folder into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
-1. Copy both the `dms3mail` and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3mail` and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `go_dms3mail.go`
-1. Confirm that the user running `go_dms3mail` has proper permissions to create a log file (`dms3mail.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3mail.toml`
+1. Copy the [Go](https://golang.org/ "Go") executable `dms3mail` from the `dms3_release` folder into a location on a smart device client (SDC) reachable by the [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") environment variable (e.g., `/usr/local/bin`)
+1. Copy both the `dms3mail` and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3mail` and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `dms3mail.go`
+1. Confirm that the user running `dms3mail` has proper permissions to create a log file (`dms3mail.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3mail.toml`
 
 ## 5. Confirm the Installation of a Motion Detection Application on All SDCs
 
@@ -251,7 +251,7 @@ Without an operational motion detection application running on the configured **
 The syntax for these [Motion](https://motion-project.github.io/) commands are:
 
 ```shell
-<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
+<on_picture_save|on_movie_end> <absolute path to dms3mail> -pixels=%D -filename=%f -camera=%t
 ```
 
 These commands are saved in the [Motion](https://motion-project.github.io/) configuration file called `motion.conf` (located in `/etc/motion`).
@@ -263,7 +263,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
    The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
    ```shell
-   sudo sh -c "echo 'on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+   sudo sh -c "echo 'on_picture_save /usr/local/bin/dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
    ```
 
 1. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
@@ -286,7 +286,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
 ### Running Components as Executables
 
-1. On the server, run **DMS<sup>3</sup>Server** by typing `go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
+1. On the server, run **DMS<sup>3</sup>Server** by typing `dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of server logging output is displayed below:
 
@@ -301,7 +301,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
    In this example, logging is set to the INFO level and is reporting that **DMS<sup>3</sup>Server** is sending out to all participating **DMS<sup>3</sup>Client** components a motion detector state of 0 (disabled).
 
-1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
+1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of client logging output is displayed below:
 
@@ -321,7 +321,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 1. Configure the **DMS<sup>3</sup>Server** component to run as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
 
    Running the **DMS<sup>3</sup>Server** component as a [`systemd`](https://en.wikipedia.org/wiki/Systemd) service is preferred, as this service can be configured to run at machine startup, recover from failures, etc.
-   
+
    > As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the **DMS<sup>3</sup>** project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3server.service`, located in the `dms3_release` folder at `dms3_release/dms3server`.
 
 1. Configure **DMS<sup>3</sup>Client** components to run as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
@@ -360,7 +360,7 @@ Where `<*>` is a Go test file. The unit test results will be displayed as each t
 
 ## Appendix A: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)
 
-Less smart device clients (LSDCs), such as IP cameras and webcams require special consideration in **DMS<sup>3</sup>**. 
+Less smart device clients (LSDCs), such as IP cameras and webcams require special consideration in **DMS<sup>3</sup>**.
 
 While smart device clients (SDCs) have both a camera device and a means for running a motion detection application on the same host, LSDCs typically just have a camera device, with limited or no means for processing video streams locally.
 
@@ -392,7 +392,7 @@ In the example file below, a portion of a `motion.conf` file is listed, showing 
   thread /home/user/security/motion_config/cam_basement.conf
   thread /home/user/security/motion_config/cam_garage.conf
   thread /home/user/security/motion_config/cam_driveway.conf
-  on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t
+  on_picture_save /usr/local/bin/dms3mail -pixels=%D -filename=%f -camera=%t
   ```
 
 Once configured, these devices, while technically still LSDCs, are now managed through a single SDC in the context of **DMS<sup>3</sup>**.

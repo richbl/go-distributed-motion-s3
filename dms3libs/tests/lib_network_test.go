@@ -1,9 +1,10 @@
 package dms3libs_test
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"os/exec"
 	"testing"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func init() {
@@ -23,12 +24,13 @@ func TestPingHosts(t *testing.T) {
 func TestFindMacs(t *testing.T) {
 
 	// ACTION: set active network interface (e.g., eth0)
-	curInterface := "wlp2s0"
+	curInterface := "wlp9s0"
 
 	var localMAC []string
 
 	// determine local MAC address for testing
 	cmd := dms3libs.LibConfig.SysCommands["CAT"] + " /sys/class/net/" + curInterface + "/address"
+
 	if res, err := exec.Command("bash", "-c", cmd).Output(); err != nil {
 		t.Error("Unable to determine local MAC address for testing")
 	} else {

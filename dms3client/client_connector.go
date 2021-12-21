@@ -4,12 +4,13 @@ package dms3client
 
 import (
 	"fmt"
-	"go-distributed-motion-s3/dms3dashboard"
-	"go-distributed-motion-s3/dms3libs"
 	"net"
 	"path/filepath"
 	"strconv"
 	"time"
+
+	dms3dash "github.com/richbl/go-distributed-motion-s3/dms3dashboard"
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 // Init configs the library, configuration, and dashboard for dms3client

@@ -7,9 +7,7 @@
 //
 package main
 
-import (
-	"go-distributed-motion-s3/dms3build"
-)
+import "github.com/richbl/go-distributed-motion-s3/dms3build"
 
 func main() {
 

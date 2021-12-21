@@ -6,8 +6,9 @@
 package main
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"path/filepath"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func main() {
@@ -16,12 +17,13 @@ func main() {
 	configInstallDir := "/etc/distributed-motion-s3"
 	logDir := "/var/log/dms3"
 
-	// stop existing upstart service (if running)
-	dms3libs.RunCommand("service dms3server stop")
+	// stop existing service (if running)
+	_, err := dms3libs.RunCommand("service dms3server stop")
+	dms3libs.CheckErr(err)
 
 	// move binary files into binaryInstallDir
-	dms3libs.CopyFile("dms3_release/go_dms3server", filepath.Join(binaryInstallDir, "go_dms3server"))
-	_, err := dms3libs.RunCommand("chmod +x " + filepath.Join(binaryInstallDir, "go_dms3server"))
+	dms3libs.CopyFile("dms3_release/dms3server", filepath.Join(binaryInstallDir, "dms3server"))
+	_, err = dms3libs.RunCommand("chmod +x " + filepath.Join(binaryInstallDir, "dms3server"))
 	dms3libs.CheckErr(err)
 
 	// create log folder
@@ -34,7 +36,8 @@ func main() {
 	dms3libs.CopyDir("dms3_release/dms3libs", configInstallDir)
 	dms3libs.RmDir("dms3_release")
 
-	// restart upstart service
-	dms3libs.RunCommand("service dms3server start")
+	// restart service
+	_, err = dms3libs.RunCommand("service dms3server start")
+	dms3libs.CheckErr(err)
 
 }

@@ -73,23 +73,23 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
    ├── linux_amd64
    │   ├── dms3client_remote_installer
    │   ├── dms3server_remote_installer
-   │   ├── go_dms3client
-   │   ├── go_dms3mail
-   │   ├── go_dms3server
+   │   ├── dms3client
+   │   ├── dms3mail
+   │   ├── dms3server
    │   └── install_dms3
    ├── linux_arm6
    │   ├── dms3client_remote_installer
    │   ├── dms3server_remote_installer
-   │   ├── go_dms3client
-   │   ├── go_dms3mail
-   │   ├── go_dms3server
+   │   ├── dms3client
+   │   ├── dms3mail
+   │   ├── dms3server
    │   └── install_dms3
    └── linux_arm7
        ├── dms3client_remote_installer
        ├── dms3server_remote_installer
-       ├── go_dms3client
-       ├── go_dms3mail
-       ├── go_dms3server
+       ├── dms3client
+       ├── dms3mail
+       ├── dms3server
        └── install_dms3
 
 ```
@@ -106,7 +106,7 @@ All **DMS<sup>3</sup>** components are configured through an associated text-bas
    | DMS<sup>3</sup>Dashboard | dms3_release/dms3dashboard/dms3dashboard.toml |
    | DMS<sup>3</sup>Mail | dms3_release/dms3mail/dms3mail.toml |
 
-> For details about the configuration options available in each TOML file, see the *Configure DMS3 Components* section in [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md). 
+> For details about the configuration options available in each TOML file, see the *Configure DMS3 Components* section in [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md).
 
 The one TOML file not directly associated with a specific **DMS<sup>3</sup>** component is the `dms3build.toml` file, which is responsible for configuring the **DMS<sup>3</sup>** build process. Details for configuring this special TOML file are presented below.
 
@@ -186,7 +186,7 @@ Without an operational motion detection application running on the configured **
 The syntax for these [Motion](https://motion-project.github.io/) commands are:
 
 ```shell
-<on_picture_save|on_movie_end> <absolute path to go_dms3mail> -pixels=%D -filename=%f -camera=%t
+<on_picture_save|on_movie_end> <absolute path to dms3mail> -pixels=%D -filename=%f -camera=%t
 ```
 
 These commands are saved in the [Motion](https://motion-project.github.io/) configuration file called `motion.conf` (located in `/etc/motion`).
@@ -198,7 +198,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
    The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
    ```shell
-   sudo sh -c "echo 'on_picture_save /usr/local/bin/go_dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+   sudo sh -c "echo 'on_picture_save /usr/local/bin/dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
    ```
 
 1. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
@@ -221,7 +221,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
 ### Running Components as Executables
 
-1. On the server, run **DMS<sup>3</sup>Server** by typing `go_dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
+1. On the server, run **DMS<sup>3</sup>Server** by typing `dms3server`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of server logging output is displayed below:
 
@@ -236,7 +236,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
    In this example, logging is set to the INFO level and is reporting that **DMS<sup>3</sup>Server** is sending out to all participating **DMS<sup>3</sup>Client** components a motion detector state of 0 (disabled).
 
-1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `go_dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file. 
+1. On each of the smart clients, run **DMS<sup>3</sup>Client** by typing `dms3client`. The component should now be started, and if configured, generating logging information either to the display or to a log file.
 
    An example of client logging output is displayed below:
 
@@ -256,7 +256,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 1. Configure the **DMS<sup>3</sup>Server** component to run as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
 
    Running the **DMS<sup>3</sup>Server** component as a [`systemd`](https://en.wikipedia.org/wiki/Systemd) service is preferred, as this service can be configured to run at machine startup, recover from failures, etc.
-   
+
    > As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the **DMS<sup>3</sup>** project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3server.service`, located in the `dms3_release` folder at `dms3_release/dms3server`.
 
 1. Configure **DMS<sup>3</sup>Client** components to run as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")

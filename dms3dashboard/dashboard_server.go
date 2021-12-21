@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"go-distributed-motion-s3/dms3libs"
 	"html/template"
 	"log"
 	"net"
@@ -16,6 +15,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
@@ -24,7 +25,7 @@ func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 	dashboardConfig = new(tomlTables)
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
 
-	if dashboardConfig.Server.Enable == true {
+	if dashboardConfig.Server.Enable {
 		dashboardConfig.Server.setDashboardFileLocation(configPath)
 		dashboardData = new(deviceData)
 		dm.appendServerMetrics()
@@ -38,7 +39,7 @@ func SendDashboardRequest(conn net.Conn) {
 
 	dashboardConfig.Server.sendDashboardEnableState(conn)
 
-	if dashboardConfig.Server.Enable == true {
+	if dashboardConfig.Server.Enable {
 		dashboardConfig.Server.receiveDashboardData(conn)
 	}
 
@@ -75,7 +76,7 @@ func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
 }
 
-// startDashboard intializes and starts an HTTP server, serving the client dash on the server
+// startDashboard initializes and starts an HTTP server, serving the client dash on the server
 func (dash *serverKeyValues) startDashboard(configPath string) {
 
 	funcs := template.FuncMap{
@@ -97,11 +98,17 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 		}
 
 		dashboardData.updateServerMetrics()
-		tmpl.Execute(w, dashboardData)
+
+		if err := tmpl.Execute(w, dashboardData); err != nil {
+			dms3libs.LogFatal(err.Error())
+		}
 
 	})
 
-	http.ListenAndServe(":"+fmt.Sprint(dash.Port), nil)
+	if err := http.ListenAndServe(":"+fmt.Sprint(dash.Port), nil); err != nil {
+		dms3libs.LogFatal(err.Error())
+	}
+
 }
 
 // updateServerMetrics updates dynamic dashboard data of the server
@@ -139,7 +146,11 @@ func (dash *serverKeyValues) receiveDashboardData(conn net.Conn) {
 	} else {
 		// gob decoding of client metrics
 		decBuf := bytes.NewBuffer(buf[:n])
-		err = gob.NewDecoder(decBuf).Decode(newClientMetrics)
+
+		if err := gob.NewDecoder(decBuf).Decode(newClientMetrics); err != nil {
+			dms3libs.LogFatal(err.Error())
+		}
+
 		newClientMetrics.appendClientMetrics()
 	}
 

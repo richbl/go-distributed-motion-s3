@@ -1,11 +1,14 @@
 # Distributed-Motion-S3 (DMS3) LIBS configuration file
-# TOML 0.4.0
+# TOML 1.0.0
 
 # SysCommands provide a location mapping of required system commands
 [SysCommands]
-	APLAY = "/usr/bin/aplay" 
-	ARP   = "/usr/sbin/arp"
-	CAT   = "/bin/cat"
-	GREP  = "/bin/grep"
-	PGREP = "/usr/bin/pgrep"
-	PING  = "/bin/ping"
+	APLAY = "/usr/bin/aplay"
+	ARP = "/usr/sbin/arp"  		# deprecated: more efficient 'ip' command used
+	CAT = "/usr/bin/cat"
+	GREP = "/usr/bin/grep"
+	IP = "/usr/sbin/ip"
+	PGREP = "/usr/bin/pgrep"	# deprecated: more efficient 'pidof' command used
+	PIDOF = "/usr/bin/pidof"
+	PING = "/usr/bin/ping"
+	WC = "/usr/bin/wc"

@@ -19,57 +19,7 @@ func RunCommand(cmd string) (res []byte, err error) {
 
 // IsRunning checks if application is currently running (has PID > 0)
 func IsRunning(application string) bool {
-	return (GetPID(application) > 0)
-}
-
-// GetPIDCount returns the count of application PIDs
-func GetPIDCount(application string) int {
-
-	res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x -c " + application)
-	count, _ := strconv.Atoi(string(StripRet(res)))
-	return count
-
-}
-
-// getPIDList returns application PIDs (0 if no process)
-func getPIDList(application string) (int, []int) {
-
-	pidCount := GetPIDCount(application)
-
-	switch pidCount {
-	case 0: // no process running
-		return 0, []int{0}
-	default: // one or more processes running
-		{
-			res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x " + application)
-			strPIDs := strings.Split(string(StripRet(res)), "\n")
-
-			PIDs := []int{}
-			for _, i := range strPIDs {
-				pid, _ := strconv.Atoi(i)
-				PIDs = append(PIDs, pid)
-			}
-			return pidCount, PIDs
-		}
-	}
-
-}
-
-// GetPID returns the application PID (0 if no process)
-func GetPID(application string) int {
-
-	pidCount, pidList := getPIDList(application)
-
-	switch pidCount {
-	case 0, 1:
-		return pidList[0]
-	default: // >1 processes running
-		{
-			Fatal.Fatalln("multiple instances of " + application + " process running")
-			return 0
-		}
-	}
-
+	return (getPID(application) > 0)
 }
 
 // StartStopApplication enable/disables the application passed in
@@ -98,16 +48,16 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 			}
 
 			// find application process and kill it
-			appPID := GetPID(application)
-			proc, err := os.FindProcess(appPID)
+			appPID := getPID(application)
 
-			if err != nil {
+			if proc, err := os.FindProcess(appPID); err == nil {
+				CheckErr(proc.Kill())
+				return true
+			} else {
 				LogInfo("unable to find PID")
 				return false
 			}
 
-			proc.Kill()
-			return true
 		}
 	default:
 		{
@@ -117,3 +67,64 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 	}
 
 }
+
+// getPIDList returns application PIDs (0 if no process)
+func getPIDList(application string) (int, []int) {
+
+	pidCount := getPIDCount(application)
+
+	switch pidCount {
+	case 0: // no process running
+		return 0, []int{0}
+	default: // one or more processes running
+		{
+			res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x " + application)
+			strPIDs := strings.Split(string(StripRet(res)), "\n")
+
+			PIDs := []int{}
+			for _, i := range strPIDs {
+				pid, _ := strconv.Atoi(i)
+				PIDs = append(PIDs, pid)
+			}
+			return pidCount, PIDs
+		}
+	}
+
+}
+
+// getPIDCount returns the count of application PIDs
+func getPIDCount(application string) int {
+
+	res, _ := RunCommand(LibConfig.SysCommands["PGREP"] + " -x -c " + application)
+	count, _ := strconv.Atoi(string(StripRet(res)))
+	return count
+
+}
+
+// getPIDCount returns the count of application PIDs
+func GetPIDCount2(application string) int {
+
+	res, _ := RunCommand("pidof " + application + "| wc -w")
+	count, _ := strconv.Atoi(string(StripRet(res)))
+	return count
+
+}
+
+// getPID returns the application PID (0 if no process)
+func getPID(application string) int {
+
+	pidCount, pidList := getPIDList(application)
+
+	switch pidCount {
+	case 0, 1:
+		return pidList[0]
+	default: // >1 processes running
+		{
+			Fatal.Fatalln("multiple instances of " + application + " process running")
+			return 0
+		}
+	}
+
+}
+
+// BUGBUG: what PID services do we need? All are scoped to this package ONLY

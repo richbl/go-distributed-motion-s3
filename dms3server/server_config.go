@@ -3,17 +3,18 @@
 package dms3server
 
 import (
-	"go-distributed-motion-s3/dms3libs"
 	"log"
 	"path"
 	"path/filepath"
 	"time"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 var startTime time.Time
 
-// serverConfig contains dms3Server configuration settings read from TOML file
-var serverConfig *structSettings
+// ServerConfig contains dms3Server configuration settings read from TOML file
+var ServerConfig *structSettings
 
 // server-side configuration parameters
 type structSettings struct {

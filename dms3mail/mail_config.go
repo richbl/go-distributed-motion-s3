@@ -2,9 +2,7 @@
 //
 package dms3mail
 
-import (
-	"go-distributed-motion-s3/dms3libs"
-)
+import "github.com/richbl/go-distributed-motion-s3/dms3libs"
 
 // mailConfig contains dms3mail configuration settings read from TOML file
 var mailConfig *structSettings

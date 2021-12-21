@@ -1,3 +1,6 @@
+# Distributed-Motion-S3 (DMS3) Dashboard configuration file
+# TOML 1.0.0
+
 [Server]
 	# Enables (true) or disables (false) the DMS3 dashboard running over HTTP on the server
 	Enable = true
