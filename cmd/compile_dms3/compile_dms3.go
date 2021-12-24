@@ -7,12 +7,19 @@
 //
 package main
 
-import "github.com/richbl/go-distributed-motion-s3/dms3build"
+import (
+	"github.com/richbl/go-distributed-motion-s3/dms3build"
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
+)
 
 func main() {
 
-	// build platform-specific components into release folder
+	dms3libs.LoadLibConfig("config/dms3libs.toml")
+
+	// create release folder
 	dms3build.BuildReleaseFolder()
+
+	// build platform-specific components into release folder
 	dms3build.BuildComponents()
 
 	// copy service daemons into release folder
