@@ -1,7 +1,7 @@
 // this script will be copied to the dms3 device component platform, executed, and
 // then deleted automatically
 //
-// NOTE: must be run with admin privileges
+// NOTE: must be run with admin privileges on the remote device
 //
 package main
 
