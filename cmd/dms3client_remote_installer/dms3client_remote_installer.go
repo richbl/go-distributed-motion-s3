@@ -18,16 +18,16 @@ func main() {
 	logDir := "/var/log/dms3"
 
 	// stop existing service (if running)
-	_, err := dms3libs.RunCommand("service dms3client stop")
+	_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["SERVICE"] + " dms3client stop")
 	dms3libs.CheckErr(err)
 
 	// move binary files into binaryInstallDir
 	dms3libs.CopyFile("dms3_release/dms3client", filepath.Join(binaryInstallDir, "dms3client"))
-	_, err = dms3libs.RunCommand("chmod +x " + filepath.Join(binaryInstallDir, "dms3client"))
+	_, err = dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["CHMOD"] + " +x " + filepath.Join(binaryInstallDir, "dms3client"))
 	dms3libs.CheckErr(err)
 
 	dms3libs.CopyFile("dms3_release/dms3mail", filepath.Join(binaryInstallDir, "dms3mail"))
-	_, err = dms3libs.RunCommand("chmod +x " + filepath.Join(binaryInstallDir, "dms3mail"))
+	_, err = dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["CHMOD"] + " +x " + filepath.Join(binaryInstallDir, "dms3mail"))
 	dms3libs.CheckErr(err)
 
 	// create log folder
@@ -42,7 +42,7 @@ func main() {
 	dms3libs.RmDir("dms3_release")
 
 	// restart service
-	_, err = dms3libs.RunCommand("service dms3client start")
+	_, err = dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["SERVICE"] + " dms3client start")
 	dms3libs.CheckErr(err)
 
 }

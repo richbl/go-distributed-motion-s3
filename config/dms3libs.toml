@@ -4,11 +4,15 @@
 # SysCommands provide a location mapping of required system commands
 [SysCommands]
 	APLAY = "/usr/bin/aplay"
-	ARP = "/usr/sbin/arp"  		# deprecated: more efficient 'ip' command used
+	ARP = "/usr/sbin/arp"  		# deprecated: 'ip' command used instead
+	BASH = "/usr/bin/bash"
 	CAT = "/usr/bin/cat"
+	CHMOD = "/usr/bin/chmod"
+	ENV = "/usr/bin/env"
 	GREP = "/usr/bin/grep"
 	IP = "/usr/sbin/ip"
-	PGREP = "/usr/bin/pgrep"	# deprecated: more efficient 'pidof' command used
-	PIDOF = "/usr/bin/pidof"
+	PGREP = "/usr/bin/pgrep"
 	PING = "/usr/bin/ping"
+	PKILL = "/usr/bin/pkill"
+	SERVICE = "/usr/sbin/service"
 	WC = "/usr/bin/wc"

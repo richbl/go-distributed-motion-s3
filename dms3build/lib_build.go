@@ -49,7 +49,7 @@ func BuildComponents() {
 		for jtr := range components {
 
 			if components[jtr].compile {
-				_, err := dms3libs.RunCommand("env " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].dirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
+				_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].dirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
 				dms3libs.CheckErr(err)
 			}
 

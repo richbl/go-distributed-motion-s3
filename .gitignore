@@ -18,3 +18,6 @@ debug
 
 # vscode config folder
 .vscode/
+
+# markdownlint exceptions file
+.markdownlint.json

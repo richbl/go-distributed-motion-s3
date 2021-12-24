@@ -31,7 +31,7 @@ func TestFindMacs(t *testing.T) {
 	// determine local MAC address for testing
 	cmd := dms3libs.LibConfig.SysCommands["CAT"] + " /sys/class/net/" + curInterface + "/address"
 
-	if res, err := exec.Command("bash", "-c", cmd).Output(); err != nil {
+	if res, err := exec.Command(dms3libs.LibConfig.SysCommands["BASH"], "-c", cmd).Output(); err != nil {
 		t.Error("Unable to determine local MAC address for testing")
 	} else {
 		localMAC = append(localMAC, string(res))

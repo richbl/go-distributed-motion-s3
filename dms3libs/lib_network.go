@@ -45,13 +45,12 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	res, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'")
-
-	if err != nil {
+	if res, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
 		LogInfo(LibConfig.SysCommands["IP"] + " command code: " + err.Error())
+		return false
+	} else {
+		return (len(string(res)) > 0)
 	}
-
-	return (len(string(res)) > 0)
 
 }
 
@@ -71,12 +70,11 @@ func FindMacsOld(macsToFind []string) bool {
 
 	}
 
-	res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'")
-
-	if err != nil {
+	if res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
 		LogInfo(LibConfig.SysCommands["ARP"] + " command code: " + err.Error())
+		return false
+	} else {
+		return (len(string(res)) > 0)
 	}
-
-	return (len(string(res)) > 0)
 
 }

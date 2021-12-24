@@ -12,12 +12,12 @@ func init() {
 
 func TestRunCommand(t *testing.T) {
 
-	testCommand := "ls"
+	testCommand := dms3libs.LibConfig.SysCommands["ARP"]
 
 	if res, err := dms3libs.RunCommand(testCommand); err != nil {
-		t.Error("command " + testCommand + " failed")
+		t.Error("Command " + testCommand + " failed")
 	} else if len(res) == 0 {
-		t.Error("output from command " + testCommand + " failed")
+		t.Error("Output from command " + testCommand + " failed")
 	}
 
 }
@@ -29,17 +29,6 @@ func TestIsRunning(t *testing.T) {
 
 	if !dms3libs.IsRunning(testApplication) {
 		t.Error(testApplication + " command not running")
-	}
-
-}
-
-func TestGetPIDCount2(t *testing.T) {
-
-	// ACTION: set to known active process
-	testApplication := "gopls"
-
-	if dms3libs.GetPIDCount2(testApplication) < 1 {
-		t.Error("function failed")
 	}
 
 }

@@ -75,15 +75,15 @@ func (dash *DeviceMetrics) checkImagesFolder() {
 func receiveDashboardEnableState(conn net.Conn) bool {
 
 	buf := make([]byte, 16)
-	n, err := conn.Read(buf)
 
-	if err != nil {
+	if n, err := conn.Read(buf); err != nil {
 		dms3libs.LogFatal(err.Error())
+		return false
+	} else {
+		val := string(buf[:n])
+		dms3libs.LogInfo("Received dashboard enable state as: " + val)
+		return (val == "1")
 	}
-
-	val := string(buf[:n])
-	dms3libs.LogInfo("Received dashboard enable state as: " + val)
-	return (val == "1")
 
 }
 
