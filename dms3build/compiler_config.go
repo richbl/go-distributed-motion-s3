@@ -6,7 +6,7 @@ package dms3build
 type structComponent struct {
 	srcName        string // component source filename
 	exeName        string // compiled filename
-	dirName        string // location for compiled component in release folder
+	dirName        string // location for components in release folder
 	configFilename string // relevant config (TOML) file
 	compile        bool   // whether component should be compiled
 }

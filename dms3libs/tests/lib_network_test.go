@@ -2,13 +2,14 @@ package dms3libs_test
 
 import (
 	"os/exec"
+	"path/filepath"
 	"testing"
 
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func init() {
-	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
+	dms3libs.LoadLibConfig(filepath.Join("..", "..", "config", "dms3libs.toml"))
 }
 
 func TestPingHosts(t *testing.T) {

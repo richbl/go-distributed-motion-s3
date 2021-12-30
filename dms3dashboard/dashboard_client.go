@@ -21,7 +21,7 @@ var dashboardClientMetrics *DeviceMetrics
 func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
 
 	dashboardClientMetrics = &DeviceMetrics{
 		Platform: DevicePlatform{

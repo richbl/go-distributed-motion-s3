@@ -8,13 +8,15 @@
 package main
 
 import (
+	"path/filepath"
+
 	"github.com/richbl/go-distributed-motion-s3/dms3build"
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func main() {
 
-	dms3libs.LoadLibConfig("config/dms3libs.toml")
+	dms3libs.LoadLibConfig(filepath.Join("config", "dms3libs.toml"))
 
 	// create release folder
 	dms3build.BuildReleaseFolder()

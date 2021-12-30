@@ -19,24 +19,20 @@ func BuildReleaseFolder() {
 	dms3libs.RmDir("dms3_release")
 
 	for platformType := range BuildEnv {
-		fmt.Print("Creating release folder for " + BuildEnv[platformType].dirName + " platform... ")
-		dms3libs.MkDir(filepath.Join("dms3_release", BuildEnv[platformType].dirName))
-		fmt.Println("Success")
+		fmt.Println("Creating release folder for " + BuildEnv[platformType].dirName + " platform...")
+		dms3libs.MkDir(filepath.Join("dms3_release", "cmd", BuildEnv[platformType].dirName))
 	}
 
 	for itr := range components {
-		fmt.Print("Creating release folder for " + components[itr].exeName + " component... ")
+		fmt.Println("Creating release folder for " + components[itr].exeName + " component...")
 		dirName := components[itr].dirName
 
 		if components[itr].dirName == "dms3server" {
 			dirName = filepath.Join(dirName, "media")
 		}
 
-		dms3libs.MkDir(filepath.Join("dms3_release", dirName))
-		fmt.Println("Success")
+		dms3libs.MkDir(filepath.Join("dms3_release", "config", dirName))
 	}
-
-	fmt.Println()
 
 }
 
@@ -44,95 +40,76 @@ func BuildReleaseFolder() {
 func BuildComponents() {
 
 	for platformType := range BuildEnv {
-		fmt.Print("Building dms3 components for " + BuildEnv[platformType].dirName + " platform... ")
+		fmt.Println("Building dms3 components for " + BuildEnv[platformType].dirName + " platform...")
 
 		for jtr := range components {
 
 			if components[jtr].compile {
-				_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", BuildEnv[platformType].dirName) + "/" + components[jtr].exeName + " " + components[jtr].srcName)
-				dms3libs.CheckErr(err)
+
+				// dms3 installer (install_dms3) is only built once (natively on linuxAMD64) into dms3_release root
+				if components[jtr].exeName == "install_dms3" {
+
+					if platformType == linuxAMD64 {
+						_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", "cmd", components[jtr].exeName) + " " + components[jtr].srcName)
+						dms3libs.CheckErr(err)
+					}
+
+				} else {
+					_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", "cmd", BuildEnv[platformType].dirName, components[jtr].exeName) + " " + components[jtr].srcName)
+					dms3libs.CheckErr(err)
+				}
+
 			}
 
 		}
 
-		fmt.Println("Success")
 	}
-
-	fmt.Println()
 
 }
 
 // CopyServiceDaemons copies daemons into release folder
 func CopyServiceDaemons() {
 
-	fmt.Print("Copying dms3 service daemons into dms3_release folder... ")
-	dms3libs.CopyFile("dms3client/daemons/systemd/dms3client.service", filepath.Join("dms3_release", "dms3client/dms3client.service"))
-	dms3libs.CopyFile("dms3server/daemons/systemd/dms3server.service", filepath.Join("dms3_release", "dms3server/dms3server.service"))
-	fmt.Println("Success")
-	fmt.Println()
+	fmt.Println("Copying dms3 service daemons into dms3_release folder...")
+
+	dms3libs.CopyFile(filepath.Join("dms3client", "daemons", "systemd", "dms3client.service"), filepath.Join("dms3_release", "config", "dms3client", "dms3client.service"))
+	dms3libs.CopyFile(filepath.Join("dms3server", "daemons", "systemd", "dms3server.service"), filepath.Join("dms3_release", "config", "dms3server", "dms3server.service"))
+
 }
 
 // CopyMediaFiles copies dms3server media files into release folder
 func CopyMediaFiles() {
 
-	fmt.Print("Copying dms3server media files (WAV) into dms3_release folder... ")
-	dms3libs.CopyFile("dms3server/media/motion_start.wav", filepath.Join("dms3_release", "dms3server/media/motion_start.wav"))
-	dms3libs.CopyFile("dms3server/media/motion_stop.wav", filepath.Join("dms3_release", "dms3server/media/motion_stop.wav"))
-	fmt.Println("Success")
-	fmt.Println()
+	fmt.Println("Copying dms3server media files (WAV) into dms3_release folder...")
+
+	dms3libs.CopyFile(filepath.Join("dms3server", "media", "motion_start.wav"), filepath.Join("dms3_release", "config", "dms3server", "media", "motion_start.wav"))
+	dms3libs.CopyFile(filepath.Join("dms3server", "media", "motion_stop.wav"), filepath.Join("dms3_release", "config", "dms3server", "media", "motion_stop.wav"))
 
 }
 
 // CopyDashboardFiles copies the dms3dashboard html file into release folder
 func CopyDashboardFiles() {
 
-	fmt.Print("Copying dms3dashboard file (HTML) into dms3_release folder... ")
-	dms3libs.CopyFile("dms3dashboard/dashboard.html", filepath.Join("dms3_release", "dms3dashboard/dashboard.html"))
-	fmt.Println("Success")
+	fmt.Println("Copying dms3dashboard file (HTML) into dms3_release folder...")
+	dms3libs.CopyFile(filepath.Join("dms3dashboard", "dashboard.html"), filepath.Join("dms3_release", "config", "dms3dashboard", "dashboard.html"))
 
-	fmt.Print("Copying dms3dashboard assets into dms3_release folder... ")
-	dms3libs.CopyDir("dms3dashboard/assets", filepath.Join("dms3_release", "dms3dashboard"))
-	fmt.Println("Success")
-	fmt.Println()
+	fmt.Println("Copying dms3dashboard assets into dms3_release folder...")
+	dms3libs.CopyDir(filepath.Join("dms3dashboard", "assets"), filepath.Join("dms3_release", "config", "dms3dashboard"))
 
 }
 
-// CopyConfigFiles copies dms3server media files into release folder
+// CopyConfigFiles copies config files into release folder
 func CopyConfigFiles() {
 
-	fmt.Print("Copying dms3 component config files (TOML) into dms3_release folder... ")
+	fmt.Println("Copying dms3 component config files (TOML) into dms3_release folder...")
 
 	for itr := range components {
 
 		if components[itr].configFilename != "" {
-			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join("dms3_release", components[itr].dirName+"/"+components[itr].configFilename))
+			dms3libs.CopyFile(filepath.Join("config", components[itr].configFilename), filepath.Join("dms3_release", "config", components[itr].dirName, components[itr].configFilename))
 		}
 
 	}
-
-	fmt.Println("Success")
-	fmt.Println()
-
-}
-
-// ReleasePath sets the installer release path based on whether called from source project or
-// from a binary release folder
-//
-func ReleasePath() map[string]string {
-
-	paths := make(map[string]string)
-
-	if isRunningRelease() {
-		base := filepath.Dir(filepath.Dir(execFilePath()))
-		paths["configFolder"] = filepath.Join(base, "dms3_release/dms3build")
-		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
-	} else {
-		base, _ := os.Getwd()
-		paths["configFolder"] = filepath.Join(base, "config")
-		paths["releaseFolder"] = filepath.Join(base, "dms3_release")
-	}
-
-	return paths
 
 }
 
@@ -152,6 +129,8 @@ func InstallClientComponents(releasePath string) {
 
 	var ssh *easyssh.MakeConfig
 
+	fmt.Println("Installing dms3client components onto remote device(s) identified in dms3build.toml...")
+
 	for _, client := range BuildConfig.Clients {
 
 		ssh = &easyssh.MakeConfig{
@@ -163,23 +142,20 @@ func InstallClientComponents(releasePath string) {
 
 		// copy dms3 release folder components to remote device platform
 		remoteMkDir(ssh, "dms3_release")
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3client"), filepath.Join("dms3_release", "config", "dms3client"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3libs"), filepath.Join("dms3_release", "config", "dms3libs"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3mail"), filepath.Join("dms3_release", "config", "dms3mail"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3dashboard"), filepath.Join("dms3_release", "config", "dms3dashboard"))
 
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3client"), filepath.Join("dms3_release", "dms3client"))
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
-
-		remoteMkDir(ssh, filepath.Join("dms3_release", "dms3dashboard"))
-		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "dms3dashboard"), "dms3dashboard.toml"), filepath.Join(filepath.Join("dms3_release", "dms3dashboard"), "dms3dashboard.toml"))
-
-		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "dms3client"), filepath.Join("dms3_release", "dms3client"))
-		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "dms3mail"), filepath.Join("dms3_release", "dms3mail"))
-		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[client.Platform].dirName), "dms3client_remote_installer"), "dms3client_remote_installer")
-		remoteRunCommand(ssh, "chmod +x dms3client_remote_installer")
+		// copy dms3 release file components to remote device platform
+		remoteMkDir(ssh, filepath.Join("dms3_release", "cmd"))
+		remoteCopyFile(ssh, filepath.Join(releasePath, "cmd", BuildEnv[client.Platform].dirName, "dms3client"), filepath.Join("dms3_release", "cmd", "dms3client"))
+		remoteCopyFile(ssh, filepath.Join(releasePath, "cmd", BuildEnv[client.Platform].dirName, "dms3mail"), filepath.Join("dms3_release", "cmd", "dms3mail"))
+		remoteCopyFile(ssh, filepath.Join(releasePath, "cmd", BuildEnv[client.Platform].dirName, "dms3client_remote_installer"), "dms3client_remote_installer")
 
 		// run client installer, then remove on completion
-		remoteRunCommand(ssh, "echo '"+client.RemoteAdminPassword+"' | sudo -S ./dms3client_remote_installer")
+		remoteRunCommand(ssh, "echo "+client.RemoteAdminPassword+" | sudo -S "+"."+string(filepath.Separator)+"dms3client_remote_installer")
 		remoteRunCommand(ssh, "rm dms3client_remote_installer")
-		fmt.Println("")
 
 	}
 
@@ -192,6 +168,8 @@ func InstallServerComponents(releasePath string) {
 
 	var ssh *easyssh.MakeConfig
 
+	fmt.Println("Installing dms3server components onto remote device(s) identified in dms3build.toml...")
+
 	for _, server := range BuildConfig.Servers {
 
 		ssh = &easyssh.MakeConfig{
@@ -203,36 +181,31 @@ func InstallServerComponents(releasePath string) {
 
 		// copy dms3 release folder components to remote device platform
 		remoteMkDir(ssh, "dms3_release")
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3server"), filepath.Join("dms3_release", "config", "dms3server"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3libs"), filepath.Join("dms3_release", "config", "dms3libs"))
+		remoteCopyDir(ssh, filepath.Join(releasePath, "config", "dms3dashboard"), filepath.Join("dms3_release", "config", "dms3dashboard"))
 
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3server"), filepath.Join("dms3_release", "dms3server"))
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3libs"), filepath.Join("dms3_release", "dms3libs"))
-		remoteCopyDir(ssh, filepath.Join(releasePath, "dms3dashboard"), filepath.Join("dms3_release", "dms3dashboard"))
-
-		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "dms3server"), filepath.Join("dms3_release", "dms3server"))
-		remoteCopyDir(ssh, filepath.Join(filepath.Join(releasePath, BuildEnv[server.Platform].dirName), "dms3server_remote_installer"), "dms3server_remote_installer")
-		remoteRunCommand(ssh, "chmod +x dms3server_remote_installer")
+		remoteMkDir(ssh, filepath.Join("dms3_release", "cmd"))
+		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "cmd", BuildEnv[server.Platform].dirName), "dms3server"), filepath.Join("dms3_release", "cmd", "dms3server"))
+		remoteCopyFile(ssh, filepath.Join(filepath.Join(releasePath, "cmd", BuildEnv[server.Platform].dirName), "dms3server_remote_installer"), "dms3server_remote_installer")
 
 		// run server installer, then remove on completion
-		remoteRunCommand(ssh, "echo '"+server.RemoteAdminPassword+"' | sudo -S ./dms3server_remote_installer")
+		remoteRunCommand(ssh, "echo "+server.RemoteAdminPassword+" | sudo -S "+"."+string(filepath.Separator)+"dms3server_remote_installer")
 		remoteRunCommand(ssh, "rm dms3server_remote_installer")
-		fmt.Println("")
-
 	}
 
 }
 
 // remoteMkDir creates a new folder over SSH with permissions passed in
 func remoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
-
-	_, _, _, err := ssh.Run("mkdir -p "+newPath, 5)
-	dms3libs.CheckErr(err)
-
+	remoteRunCommand(ssh, "mkdir -p "+newPath)
 }
 
 // remoteCopyDir copies a directory over SSH from srcDir to destDir
 func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 
-	fmt.Print("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "... ")
+	fmt.Println("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "...")
+
 	dirTree := dms3libs.WalkDir(srcDir)
 
 	// create directory tree...
@@ -245,50 +218,38 @@ func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 	}
 
 	// ...then copy files into directory tree
-	for dirName, dirType := range dirTree {
+	for fileName, dirType := range dirTree {
 
 		if dirType == 1 {
-			remoteCopyFile(ssh, dirName, destDir+dirName[len(srcDir):])
+			remoteCopyFile(ssh, fileName, destDir+fileName[len(srcDir):])
 		}
 
 	}
-
-	fmt.Println("Success")
 
 }
 
 // remoteRunCommand runs a command via the SSH protocol
 func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 
-	fmt.Print("Running command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "... ")
+	fmt.Println("Running remote command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "...")
+
 	_, _, _, err := ssh.Run(command, 5)
 	dms3libs.CheckErr(err)
-	fmt.Println("Success")
 
 }
 
-// remoteCopyFile copies a file from src to a remote dest using SCP
+// remoteCopyFile copies a file from src to a remote dest file using SCP
 func remoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
 
-	fmt.Print("Copying file " + srcFile + " to " + destFile + " on " + ssh.User + "@" + ssh.Server + "... ")
-	err := ssh.Scp(srcFile, destFile)
+	fmt.Println("Copying file " + srcFile + " to " + ssh.User + "@" + ssh.Server + ":" + destFile + "...")
+
+	srcAttrib, err := os.Stat(srcFile)
 	dms3libs.CheckErr(err)
-	fmt.Println("Success")
 
-}
+	err = ssh.Scp(srcFile, destFile)
+	dms3libs.CheckErr(err)
 
-// execFilePath returns the absolute path to the project root (default: go-distributed-motion-s3)
-func execFilePath() string {
-
-	ex, _ := os.Executable()
-	return filepath.Dir(ex)
-
-}
-
-// isRunningRelease checks if the executable was called from the dms3_release folder
-func isRunningRelease() bool {
-
-	dir, _ := filepath.Abs(execFilePath())
-	return filepath.Base(filepath.Dir(dir)) == "dms3_release"
+	// ssh.Scp() does not set file attribs, so reset them on remote device
+	remoteRunCommand(ssh, "chmod 0"+strconv.FormatUint(uint64(srcAttrib.Mode()), 8)+" "+destFile)
 
 }

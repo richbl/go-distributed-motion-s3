@@ -78,6 +78,12 @@ func CopyFile(src string, dest string) {
 	err = destFile.Sync()
 	CheckErr(err)
 
+	srcAttrib, err := os.Stat(src)
+	CheckErr(err)
+
+	err = os.Chmod(dest, srcAttrib.Mode())
+	CheckErr(err)
+
 }
 
 // CopyDir copies a directory from srcDir to destDir

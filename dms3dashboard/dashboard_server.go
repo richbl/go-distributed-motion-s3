@@ -23,7 +23,7 @@ import (
 func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard/dms3dashboard.toml"))
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
 
 	if dashboardConfig.Server.Enable {
 		dashboardConfig.Server.setDashboardFileLocation(configPath)
@@ -89,7 +89,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 	}
 
 	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(filepath.Join(dash.FileLocation, dash.Filename)))
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(configPath, "dms3dashboard/assets")))))
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(configPath, "dms3dashboard", "assets")))))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 		dashboardData = &deviceData{
