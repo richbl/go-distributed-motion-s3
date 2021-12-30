@@ -53,7 +53,7 @@ func TestWalkDir(t *testing.T) {
 	newFile := "tmpFile"
 
 	dms3libs.MkDir(newDir)
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), "lib_audio_test.wav"), newDir+"/"+newFile)
+	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), "lib_audio_test.wav"), filepath.Join(newDir, newFile))
 
 	for _, dirType := range dms3libs.WalkDir(newDir) {
 
@@ -106,7 +106,7 @@ func TestCopyDir(t *testing.T) {
 func TestCountFilesInDir(t *testing.T) {
 
 	dms3libs.MkDir(filepath.Join(dms3libs.GetPackageDir(), "tmpDir"))
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), "lib_audio_test.wav"), filepath.Join(dms3libs.GetPackageDir(), "tmpDir/tmpFile"))
+	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), "lib_audio_test.wav"), filepath.Join(dms3libs.GetPackageDir(), "tmpDir", "tmpFile"))
 	currentDir := filepath.Join(dms3libs.GetPackageDir(), "tmpDir")
 
 	if dms3libs.CountFilesInDir(currentDir) != 1 {

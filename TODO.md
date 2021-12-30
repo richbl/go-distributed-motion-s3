@@ -6,6 +6,7 @@
 - Abstract away Linux OS dependencies (e.g., bash command)
 - Review low-level system calls (does golang provide new/updated wrappers)
 - Add README about MAC randomization on mobile devices (e.g., Android)
+- Replace easySSH package with more appropriate SCP library (easySSH does not maintain file execute attrib)
 
 ## COMPLETED
 
@@ -27,3 +28,4 @@
 - Dashboard server: wrap functions in error-handling
 
 - More efficient low-level OS calls used (e.g., ip neigh, pidof)
+- Rewrite of installer routines to fix easySSH filemode issues and simplify installation

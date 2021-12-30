@@ -8,23 +8,24 @@
 package main
 
 import (
+	"path/filepath"
+
 	"github.com/richbl/go-distributed-motion-s3/dms3build"
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
 func main() {
 
-	// sets release path to dms3_release folder
-	releasePath := dms3build.ReleasePath()
+	releasePath := "dms3_release"
 
 	// confirm existence of dms3_release folder based on releasePath
-	dms3build.ConfirmReleaseFolder(releasePath["releaseFolder"])
+	dms3build.ConfirmReleaseFolder(releasePath)
 
 	// read configuration in from dms3build TOML
-	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, releasePath["configFolder"]+"/dms3build.toml")
+	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, filepath.Join(releasePath, "config", "dms3build", "dms3build.toml"))
 
 	// install components onto device platforms
-	dms3build.InstallClientComponents(releasePath["releaseFolder"])
-	dms3build.InstallServerComponents(releasePath["releaseFolder"])
+	dms3build.InstallClientComponents(releasePath)
+	dms3build.InstallServerComponents(releasePath)
 
 }

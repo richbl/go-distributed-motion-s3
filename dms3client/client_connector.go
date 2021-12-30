@@ -18,8 +18,8 @@ func Init(configPath string) {
 
 	dms3libs.SetUptime(&startTime)
 
-	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs/dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, "dms3client/dms3client.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, "dms3client", "dms3client.toml"))
 
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)

@@ -7,12 +7,9 @@
 	ARP = "/usr/sbin/arp"  		# deprecated: 'ip' command used instead
 	BASH = "/usr/bin/bash"
 	CAT = "/usr/bin/cat"
-	CHMOD = "/usr/bin/chmod"
 	ENV = "/usr/bin/env"
 	GREP = "/usr/bin/grep"
 	IP = "/usr/sbin/ip"
 	PGREP = "/usr/bin/pgrep"
 	PING = "/usr/bin/ping"
 	PKILL = "/usr/bin/pkill"
-	SERVICE = "/usr/sbin/service"
-	WC = "/usr/bin/wc"

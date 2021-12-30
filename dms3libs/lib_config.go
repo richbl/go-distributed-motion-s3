@@ -39,15 +39,19 @@ func LoadLibConfig(configFile string) {
 func LoadComponentConfig(structConfig interface{}, configFile string) {
 
 	if _, error := os.Stat(configFile); error == nil {
+
 		if _, error := toml.DecodeFile(configFile, structConfig); error != nil {
 			log.Fatalln(error.Error())
 		}
+
 	} else {
+
 		if errors.Is(error, fs.ErrNotExist) {
 			log.Fatalln(configFile + " file not found")
 		} else {
 			log.Fatalln(error.Error())
 		}
+
 	}
 
 }

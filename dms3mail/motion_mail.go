@@ -25,8 +25,8 @@ type structEventDetails struct {
 // Init configs the library and configuration for dms3mail
 func Init(configPath string) {
 
-	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs/dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&mailConfig, filepath.Join(configPath, "dms3mail/dms3mail.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&mailConfig, filepath.Join(configPath, "dms3mail", "dms3mail.toml"))
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)

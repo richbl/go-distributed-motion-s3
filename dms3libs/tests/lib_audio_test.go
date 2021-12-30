@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	dms3libs.LoadLibConfig("../../config/dms3libs.toml")
+	dms3libs.LoadLibConfig(filepath.Join("..", "..", "config", "dms3libs.toml"))
 }
 
 func TestPlayAudio(t *testing.T) {
@@ -29,13 +29,13 @@ func TestAudioConfig(t *testing.T) {
 
 	configPath := dms3libs.GetPackageDir()
 
-	dms3libs.LoadComponentConfig(&dms3server.ServerConfig, filepath.Join(configPath, "../../config/dms3server.toml"))
+	dms3libs.LoadComponentConfig(&dms3server.ServerConfig, filepath.Join(configPath, "..", "..", "config", "dms3server.toml"))
 
 	mediaFileStart := dms3server.ServerConfig.Audio.PlayMotionStart
 	mediaFileStop := dms3server.ServerConfig.Audio.PlayMotionStop
 
 	if mediaFileStart == "" {
-		mediaFileStart = "../../dms3server/media/motion_start.wav"
+		mediaFileStart = filepath.Join("..", "..", "dms3server", "media", "motion_start.wav")
 	}
 
 	if dms3libs.IsFile(mediaFileStart) {
@@ -46,7 +46,7 @@ func TestAudioConfig(t *testing.T) {
 	}
 
 	if mediaFileStop == "" {
-		mediaFileStop = "../../dms3server/media/motion_stop.wav"
+		mediaFileStop = filepath.Join("..", "..", "dms3server", "media", "motion_stop.wav")
 	}
 
 	if dms3libs.IsFile(mediaFileStop) {
