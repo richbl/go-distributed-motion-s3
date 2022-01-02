@@ -3,13 +3,13 @@
 
 # SysCommands provide a location mapping of required system commands
 [SysCommands]
-	APLAY = "/usr/bin/aplay"
-	ARP = "/usr/sbin/arp"  		# deprecated: 'ip' command used instead
-	BASH = "/usr/bin/bash"
-	CAT = "/usr/bin/cat"
-	ENV = "/usr/bin/env"
-	GREP = "/usr/bin/grep"
-	IP = "/usr/sbin/ip"
-	PGREP = "/usr/bin/pgrep"
-	PING = "/usr/bin/ping"
-	PKILL = "/usr/bin/pkill"
+  APLAY = "/usr/bin/aplay"
+  ARP = "/usr/sbin/arp"      # deprecated: 'ip' command used instead
+  BASH = "/usr/bin/bash"
+  CAT = "/usr/bin/cat"
+  ENV = "/usr/bin/env"
+  GREP = "/usr/bin/grep"
+  IP = "/usr/sbin/ip"
+  PGREP = "/usr/bin/pgrep"
+  PING = "/usr/bin/ping"
+  PKILL = "/usr/bin/pkill"

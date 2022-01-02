@@ -2,34 +2,34 @@
 # TOML 1.0.0
 
 [Server]
-	# Enables (true) or disables (false) the DMS3 dashboard running over HTTP on the server
-	Enable = true
+  # Enables (true) or disables (false) the DMS3 dashboard running over HTTP on the server
+  Enable = true
 
-	# Port is the port on which to run the dashboard server
-	Port = 8081
+  # Port is the port on which to run the dashboard server
+  Port = 8081
 
-	# Filename of HTML dashboard template file
-	Filename = "dashboard.html"
+  # Filename of HTML dashboard template file
+  Filename = "dashboard.html"
 
-	# FileLocation is where the HTML dashboard template file is located
-	# By default, the value is "" (empty string), which sets to the path of the release dashboard 
-	# folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dashboard.html)
-	# Any other filepath/filename will be used if valid, else set to local development folder
-	#
-	# Ignored if Dashboard.Enable == false
-	#
-	FileLocation = ""
+  # FileLocation is where the HTML dashboard template file is located
+  # By default, the value is "" (empty string), which sets to the path of the release dashboard 
+  # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dashboard.html)
+  # Any other filepath/filename will be used if valid, else set to local development folder
+  #
+  # Ignored if Dashboard.Enable == false
+  #
+  FileLocation = ""
 
-	# Dashboard title
-	Title = "DMS3 Dashboard"
+  # Dashboard title
+  Title = "DMS3 Dashboard"
 
 [Client]
-	# ImagesFolder is the location of where the motion detection application stores its
-	# motion-triggered image/movie files on the client (e.g., should match the target_dir parameter
-	# used in the Motion application)
-	# Used in determining the client "events" metrics, presented through the dashboard
-	#
-	# If the value is "" (empty string), this value is disabled (not reported) on the dashboard
-	# Ignored if [Server] Enable == false
-	#
-	ImagesFolder = "/home/pi/motion_pics"
+  # ImagesFolder is the location of where the motion detection application stores its
+  # motion-triggered image/movie files on the client (e.g., should match the target_dir parameter
+  # used in the Motion application)
+  # Used in determining the client "events" metrics, presented through the dashboard
+  #
+  # If the value is "" (empty string), this value is disabled (not reported) on the dashboard
+  # Ignored if [Server] Enable == false
+  #
+  ImagesFolder = "/home/pi/motion_pics"

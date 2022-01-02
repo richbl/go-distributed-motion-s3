@@ -53,6 +53,7 @@ func startClient(ServerIP string, ServerPort int) {
 		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
 			dms3libs.LogInfo(err.Error())
 		} else {
+			dms3libs.LogInfo("client started")
 			dms3libs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
 			go processClientRequest(conn)
 		}

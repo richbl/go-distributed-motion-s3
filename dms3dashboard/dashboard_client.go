@@ -16,7 +16,7 @@ import (
 var dashboardClientMetrics *DeviceMetrics
 
 // InitDashboardClient loads configuration and assigns the dashboard client profile (sets
-//	static client metrics)
+//  static client metrics)
 //
 func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 

@@ -263,7 +263,10 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
    The easiest way to edit this file is to append the `on_picture_save` or `on_movie_end` command at the end of the `motion.conf` file. For example:
 
    ```shell
-   sudo sh -c "echo 'on_picture_save /usr/local/bin/dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
+   ##############################################################
+   # Run DMS3 Mail when image or movie generated
+   ##############################################################
+   echo 'on_picture_save /usr/local/bin/dms3mail -pixels=%D -filename=%f -camera=%t' >> /etc/motion/motion.conf"
    ```
 
 1. Restart [Motion](https://motion-project.github.io/) to have the update to `motion.conf` take effect
@@ -306,12 +309,12 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
    An example of client logging output is displayed below:
 
    ```shell
-   INFO: 2017/08/28 09:18:00 lib_log.go:79: OPEN connection from: 10.10.10.5:1965
+   INFO: 2017/08/28 09:18:00 lib_log.go:79: OPEN connection from: 10.10.10.5:49300
    INFO: 2017/08/28 09:18:00 lib_log.go:79: Received motion detector state as: 0
-   INFO: 2017/08/28 09:18:00 lib_log.go:79: CLOSE connection from: 10.10.10.5:1965
-   INFO: 2017/08/28 09:18:15 lib_log.go:79: OPEN connection from: 10.10.10.5:1965
+   INFO: 2017/08/28 09:18:00 lib_log.go:79: CLOSE connection from: 10.10.10.5:49300
+   INFO: 2017/08/28 09:18:15 lib_log.go:79: OPEN connection from: 10.10.10.5:49300
    INFO: 2017/08/28 09:18:15 lib_log.go:79: Received motion detector state as: 0
-   INFO: 2017/08/28 09:18:15 lib_log.go:79: CLOSE connection from: 10.10.10.5:1965
+   INFO: 2017/08/28 09:18:15 lib_log.go:79: CLOSE connection from: 10.10.10.5:49300
    ```
 
    In this example, logging is set to the INFO level and is reporting that **DMS<sup>3</sup>Client** is receiving from the **DMS<sup>3</sup>Server** component a motion detector state of 0 (disabled).

@@ -1,5 +1,6 @@
 // Package dms3dash server implements a dms3server-based metrics dashboard for all dms3clients
 //
+
 package dms3dash
 
 import (
@@ -59,7 +60,7 @@ func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
 			if dms3libs.IsFile(filepath.Join(relPath, dash.Filename)) {
 				dash.FileLocation = relPath
-			} else if dms3libs.IsFile(filepath.Join(devPath, dash.Filename)) {
+			} else if dms3libs.IsFile(filepath.Join(devPath, dash.Filename)) { // BUGBUG should this get removed?
 				dash.FileLocation = devPath
 			} else {
 				fail = true
@@ -122,7 +123,7 @@ func (dd *deviceData) updateServerMetrics() {
 // sendDashboardEnableState asks clients to send client info based on dashboard state
 func (dash *serverKeyValues) sendDashboardEnableState(conn net.Conn) {
 
-	state := "0"
+	state := "0" // BUGBUG rewrite into []byte
 
 	if dash.Enable {
 		state = "1"
@@ -133,6 +134,7 @@ func (dash *serverKeyValues) sendDashboardEnableState(conn net.Conn) {
 	} else {
 		dms3libs.LogInfo("Sent dashboard enable state as: " + state)
 	}
+
 }
 
 // receiveDashboardData receives and parses client dashboard metrics
@@ -163,15 +165,11 @@ func (dm *DeviceMetrics) appendClientMetrics() {
 
 	for i := range dashboardData.Clients {
 
-		if dashboardData.Clients[i].Platform.Type == Client {
-
-			if dashboardData.Clients[i].Platform.Hostname == dm.Platform.Hostname {
-				dashboardData.Clients[i].EventCount = dm.EventCount
-				dashboardData.Clients[i].Period.LastReport = dm.Period.LastReport
-				dashboardData.Clients[i].Period.Uptime = dm.Period.Uptime
-				return
-			}
-
+		if dashboardData.Clients[i].Platform.Hostname == dm.Platform.Hostname {
+			dashboardData.Clients[i].EventCount = dm.EventCount
+			dashboardData.Clients[i].Period.LastReport = dm.Period.LastReport
+			dashboardData.Clients[i].Period.Uptime = dm.Period.Uptime
+			return
 		}
 
 	}

@@ -2,42 +2,42 @@
 # TOML 1.0.0
 
 [Server]
-	# IP is the address on which the dms server is running
-	IP = "10.10.10.9"
+  # IP is the address on which the dms server is running
+  IP = "10.10.10.9"
 
-	# Port is the port on which the dms server is running
-	Port = 1965
+  # Port is the port on which the dms server is running
+  Port = 49300
 
-	# CheckInterval is the interval (in seconds) for checking the dms server
-	CheckInterval = 15
+  # CheckInterval is the interval (in seconds) for checking the dms server
+  CheckInterval = 15
 
 [Logging]
-	# LogLevel sets the log levels for application logging using the following table:
-	#
-	#	0 - OFF, no logging
-	#	1 - FATAL, report fatal events
-	#	2 - INFO, report informational events
-	#  4 - DEBUG, report debugging events
-	#
-	LogLevel = 2
+  # LogLevel sets the log levels for application logging using the following table:
+  #
+  #  0 - OFF, no logging
+  #  1 - FATAL, report fatal events
+  #  2 - INFO, report informational events
+  #  4 - DEBUG, report debugging events
+  #
+  LogLevel = 2
 
-	# LogDevice determines to what device logging should be set using the following table:
-	#
-	#	0 - STDOUT (terminal)
-	#	1 - log file
-	#
-	# Ignored if LogLevel == 0
-	#
-	LogDevice = 0
+  # LogDevice determines to what device logging should be set using the following table:
+  #
+  #  0 - STDOUT (terminal)
+  #  1 - log file
+  #
+  # Ignored if LogLevel == 0
+  #
+  LogDevice = 0
 
-	# LogFilename is the logging filename
-	#
-	# Ignored if LogLevel == 0 or LogDevice == 0
-	#
-	LogFilename = "dms3client.log"
+  # LogFilename is the logging filename
+  #
+  # Ignored if LogLevel == 0 or LogDevice == 0
+  #
+  LogFilename = "dms3client.log"
 
-	# LogLocation is the location of logfile (absolute path; must have r/w permissions)
-	#
-	# Ignored if LogLevel == 0 or LogDevice == 0
-	#
-	LogLocation = "/var/log/dms3"
+  # LogLocation is the location of logfile (absolute path; must have r/w permissions)
+  #
+  # Ignored if LogLevel == 0 or LogDevice == 0
+  #
+  LogLocation = "/var/log/dms3"

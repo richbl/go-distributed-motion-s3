@@ -4,7 +4,6 @@ package dms3libs
 
 import (
 	"os/exec"
-	"strconv"
 )
 
 // RunCommand is a simple wrapper for the exec.Command() call
@@ -18,12 +17,11 @@ func RunCommand(cmd string) (res []byte, err error) {
 // IsRunning checks if application is currently running (has PID > 0)
 func IsRunning(application string) bool {
 
-	if res, err := RunCommand(LibConfig.SysCommands["PGREP"] + " -c " + application); err != nil {
-		LogInfo("Failed to run '" + LibConfig.SysCommands["PGREP"] + " -c " + application + "': " + err.Error())
+	if _, err := RunCommand(LibConfig.SysCommands["PGREP"] + " -i " + application); err != nil {
+		LogInfo("Failed to run '" + LibConfig.SysCommands["PGREP"] + " -i " + application + "': " + err.Error())
 		return false
 	} else {
-		count, _ := strconv.Atoi(string(StripRet(res)))
-		return count > 0
+		return true
 	}
 
 }
@@ -54,7 +52,7 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 				return false // already stopped
 			}
 
-			if _, err := RunCommand(LibConfig.SysCommands["PKILL"] + " " + application); err == nil {
+			if _, err := RunCommand(LibConfig.SysCommands["PKILL"] + " -i " + application); err == nil {
 				return true
 			} else {
 				LogInfo("Failed to stop running process: " + application)

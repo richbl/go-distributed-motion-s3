@@ -45,11 +45,12 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	if res, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
-		LogInfo(LibConfig.SysCommands["IP"] + " command code: " + err.Error())
+	if _, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
+		LogInfo(LibConfig.SysCommands["IP"] + " command: no device mac address found")
 		return false
 	} else {
-		return (len(string(res)) > 0)
+		LogInfo(LibConfig.SysCommands["IP"] + " command: device mac address found")
+		return true
 	}
 
 }
