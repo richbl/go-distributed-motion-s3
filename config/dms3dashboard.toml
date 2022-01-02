@@ -2,6 +2,9 @@
 # TOML 1.0.0
 
 [Server]
+
+  # Configuration elements for DMS3 server
+
   # Enables (true) or disables (false) the DMS3 dashboard running over HTTP on the server
   Enable = true
 
@@ -24,6 +27,9 @@
   Title = "DMS3 Dashboard"
 
 [Client]
+
+  # Configuration elements for DMS3 client
+
   # ImagesFolder is the location of where the motion detection application stores its
   # motion-triggered image/movie files on the client (e.g., should match the target_dir parameter
   # used in the Motion application)
