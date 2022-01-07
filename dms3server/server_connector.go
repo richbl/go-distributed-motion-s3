@@ -5,6 +5,7 @@ package dms3server
 import (
 	"fmt"
 	"net"
+	"path"
 	"path/filepath"
 	"strconv"
 
@@ -13,6 +14,7 @@ import (
 )
 
 // Init configs the library and configuration for dms3server
+//
 func Init(configPath string) {
 
 	dms3libs.SetUptime(&startTime)
@@ -24,13 +26,18 @@ func Init(configPath string) {
 	dms3libs.CreateLogger(ServerConfig.Logging)
 
 	setMediaLocation(configPath, ServerConfig)
+	dms3dash.DashboardEnable = ServerConfig.Server.EnableDashboard
 
-	dms3dash.InitDashboardServer(configPath, configDashboardServerMetrics())
+	if dms3dash.DashboardEnable {
+		dms3dash.InitDashboardServer(configPath, configDashboardServerMetrics())
+	}
+
 	startServer(ServerConfig.Server.Port)
 
 }
 
 // configDashboardServerMetrics initializes the DeviceMetrics struct used by dms3dashboard
+//
 func configDashboardServerMetrics() *dms3dash.DeviceMetrics {
 
 	dm := &dms3dash.DeviceMetrics{
@@ -48,6 +55,7 @@ func configDashboardServerMetrics() *dms3dash.DeviceMetrics {
 }
 
 // startServer starts the TCP server
+//
 func startServer(serverPort int) {
 
 	if listener, error := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); error != nil {
@@ -79,9 +87,10 @@ func serverLoop(listener net.Listener) {
 }
 
 // processClient passes motion detector application state to all dms3client listeners
+//
 func processClient(conn net.Conn) {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	dms3dash.SendDashboardRequest(conn)
 	sendMotionDetectorState(conn)
@@ -92,6 +101,7 @@ func processClient(conn net.Conn) {
 }
 
 // sendMotionDetectorState sends detector state to clients
+//
 func sendMotionDetectorState(conn net.Conn) {
 
 	state := strconv.Itoa(int(DetermineMotionDetectorState()))
@@ -100,6 +110,62 @@ func sendMotionDetectorState(conn net.Conn) {
 		dms3libs.LogFatal(err.Error())
 	} else {
 		dms3libs.LogInfo("Sent motion detector state as: " + state)
+	}
+
+}
+
+// setMediaLocation sets the location where audio files are located for motion detection
+// application start/stop events
+//
+func setMediaLocation(configPath string, config *structSettings) {
+
+	type mediaPath struct {
+		configLocation *string
+		mediaLocation  string
+	}
+
+	media := []mediaPath{
+		{
+			&config.Audio.PlayMotionStart,
+			filepath.Join(string(filepath.Separator), "dms3server", "media", "motion_start.wav"),
+		},
+		{
+			&config.Audio.PlayMotionStop,
+
+			filepath.Join(string(filepath.Separator), "dms3server", "media", "motion_stop.wav"),
+		},
+	}
+
+	fail := false
+
+	for i := range media {
+
+		relPath := filepath.Join(configPath, media[i].mediaLocation)
+		devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), media[i].mediaLocation)
+
+		if !dms3libs.IsFile(*media[i].configLocation) {
+
+			// if no location set, set to release folder, else set to development folder
+			if *media[i].configLocation == "" {
+
+				if dms3libs.IsFile(relPath) {
+					*media[i].configLocation = relPath
+				} else if dms3libs.IsFile(devPath) {
+					*media[i].configLocation = devPath
+				} else {
+					fail = true
+				}
+
+			} else {
+				fail = true
+			}
+
+			if fail {
+				dms3libs.LogFatal("unable to set media location... check TOML configuration file")
+			}
+
+		}
+
 	}
 
 }

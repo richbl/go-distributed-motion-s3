@@ -1,6 +1,5 @@
 // Package dms3dash server implements a dms3server-based metrics dashboard for all dms3clients
 //
-
 package dms3dash
 
 import (
@@ -8,10 +7,8 @@ import (
 	"encoding/gob"
 	"fmt"
 	"html/template"
-	"log"
 	"net"
 	"net/http"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -21,36 +18,44 @@ import (
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
+//
 func InitDashboardServer(configPath string, dm *DeviceMetrics) {
+
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	dashboardConfig = new(tomlTables)
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
 
-	if dashboardConfig.Server.Enable {
-		dashboardConfig.Server.setDashboardFileLocation(configPath)
-		dashboardData = new(deviceData)
-		dm.appendServerMetrics()
-		go dashboardConfig.Server.startDashboard(configPath)
-	}
+	dashboardConfig.Server.setDashboardFileLocation(configPath)
+	dashboardData = new(deviceData)
+	dm.appendServerMetrics()
+
+	go dashboardConfig.Server.startDashboard(configPath)
 
 }
 
 // SendDashboardRequest manages dashboard requests and receipt of client device data
+//
 func SendDashboardRequest(conn net.Conn) {
 
-	dashboardConfig.Server.sendDashboardEnableState(conn)
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
-	if dashboardConfig.Server.Enable {
-		dashboardConfig.Server.receiveDashboardData(conn)
+	if DashboardEnable {
+		sendDashboardEnableState(conn, "1")
+		receiveDashboardData(conn)
+	} else {
+		sendDashboardEnableState(conn, "0")
 	}
 
 }
 
 // setDashboardFileLocation sets the location of the HTML file used when displaying the dashboard
+//
 func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
+
 	relPath := filepath.Join(configPath, "dms3dashboard")
-	devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), "dms3dashboard")
 	fail := false
 
 	if !dms3libs.IsFile(filepath.Join(dash.FileLocation, dash.Filename)) {
@@ -60,8 +65,6 @@ func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
 			if dms3libs.IsFile(filepath.Join(relPath, dash.Filename)) {
 				dash.FileLocation = relPath
-			} else if dms3libs.IsFile(filepath.Join(devPath, dash.Filename)) { // BUGBUG should this get removed?
-				dash.FileLocation = devPath
 			} else {
 				fail = true
 			}
@@ -71,14 +74,17 @@ func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 		}
 
 		if fail {
-			log.Fatalln("unable to set dashboard location... check TOML configuration file")
+			dms3libs.LogFatal("unable to set dashboard location... check TOML configuration file")
 		}
 	}
 
 }
 
 // startDashboard initializes and starts an HTTP server, serving the client dash on the server
+//
 func (dash *serverKeyValues) startDashboard(configPath string) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	funcs := template.FuncMap{
 		"ModVal":         dms3libs.ModVal,
@@ -95,7 +101,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 
 		dashboardData = &deviceData{
 			Title:   dash.Title,
-			Clients: dashboardData.Clients,
+			Devices: dashboardData.Devices,
 		}
 
 		dashboardData.updateServerMetrics()
@@ -112,85 +118,126 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 
 }
 
-// updateServerMetrics updates dynamic dashboard data of the server
+// updateServerMetrics updates dynamic dashboard data of the server, triggered
+// initially on dashboard start and subsequent webpage refreshes
+//
 func (dd *deviceData) updateServerMetrics() {
 
-	dd.Clients[0].Period.LastReport = time.Now()
-	dd.Clients[0].Period.Uptime = dms3libs.Uptime(dd.Clients[0].Period.StartTime)
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	for i := range dd.Devices {
+
+		if dd.Devices[i].Platform.Type == Server {
+			dd.Devices[i].Period.LastReport = time.Now()
+			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
+		} else {
+			// check for and remove dead (non-reporting) client devices
+			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
+			missingDeviceLimit := uint32((dd.Devices[i].Period.CheckInterval * dashboardConfig.Server.DeviceStatus.Missing))
+
+			if lastUpdate > missingDeviceLimit {
+				dms3libs.LogInfo("Non-reporting remote device timeout reached: removing " + dd.Devices[i].Platform.Hostname + " client")
+				dd.Devices = append(dd.Devices[:i], dd.Devices[i+1:]...)
+				break
+			}
+
+		}
+
+	}
 
 }
 
 // sendDashboardEnableState asks clients to send client info based on dashboard state
-func (dash *serverKeyValues) sendDashboardEnableState(conn net.Conn) {
+//
+func sendDashboardEnableState(conn net.Conn, enableState string) {
 
-	state := "0" // BUGBUG rewrite into []byte
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-	if dash.Enable {
-		state = "1"
-	}
-
-	if _, err := conn.Write([]byte(state)); err != nil {
+	if _, err := conn.Write([]byte(enableState)); err != nil {
 		dms3libs.LogFatal(err.Error())
 	} else {
-		dms3libs.LogInfo("Sent dashboard enable state as: " + state)
+		dms3libs.LogInfo("Sent dashboard enable state as: " + enableState)
 	}
 
 }
 
 // receiveDashboardData receives and parses client dashboard metrics
-func (dash *serverKeyValues) receiveDashboardData(conn net.Conn) {
+//
+func receiveDashboardData(conn net.Conn) {
 
-	newClientMetrics := new(DeviceMetrics)
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	updatedDeviceMetrics := new(DeviceMetrics)
 	buf := make([]byte, 1024)
 
 	if n, err := conn.Read(buf); err != nil {
 		dms3libs.LogFatal(err.Error())
 	} else {
-		// gob decoding of client metrics
-		decBuf := bytes.NewBuffer(buf[:n])
+		decBuf := bytes.NewBuffer(buf[:n]) // gob decoding of client metrics
 
-		if err := gob.NewDecoder(decBuf).Decode(newClientMetrics); err != nil {
+		if err := gob.NewDecoder(decBuf).Decode(updatedDeviceMetrics); err != nil {
 			dms3libs.LogFatal(err.Error())
 		}
 
-		newClientMetrics.appendClientMetrics()
+		updatedDeviceMetrics.updateDeviceMetrics()
 	}
 
 }
 
-// appendClientMetrics adds new clients to the dashboard list, or updates existing client
+// updateDeviceMetrics adds new devices to the dashboard list, or updates existing device
 // metrics, where Hostname is the unique key
 //
-func (dm *DeviceMetrics) appendClientMetrics() {
+func (udm *DeviceMetrics) updateDeviceMetrics() {
 
-	for i := range dashboardData.Clients {
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-		if dashboardData.Clients[i].Platform.Hostname == dm.Platform.Hostname {
-			dashboardData.Clients[i].EventCount = dm.EventCount
-			dashboardData.Clients[i].Period.LastReport = dm.Period.LastReport
-			dashboardData.Clients[i].Period.Uptime = dm.Period.Uptime
-			return
+	// scan for existing client device
+	for i := range dashboardData.Devices {
+
+		if dashboardData.Devices[i].Platform.Hostname == udm.Platform.Hostname {
+
+			if dashboardData.Devices[i].Platform.Type == Client {
+				dashboardData.Devices[i].EventCount = udm.EventCount
+				dashboardData.Devices[i].Period.LastReport = udm.Period.LastReport
+				dashboardData.Devices[i].Period.Uptime = udm.Period.Uptime
+				return
+			}
+
 		}
 
 	}
 
-	dashboardData.Clients = append(dashboardData.Clients, *dm)
+	// add new client device and (optionally) resort device order
+	dashboardData.Devices = append(dashboardData.Devices, *udm)
 
-	// resort clients alphabetically
-	sort.Slice(dashboardData.Clients, func(i, j int) bool {
-		switch strings.Compare(dashboardData.Clients[i].Platform.Hostname, dashboardData.Clients[j].Platform.Hostname) {
+	if dashboardConfig.Server.ReSort {
+		resortDashboardDevices()
+	}
+
+}
+
+// resortDashboardDevices re-sorts all dashboard devices alphabetically
+//
+func resortDashboardDevices() {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	sort.Slice(dashboardData.Devices, func(i, j int) bool {
+		switch strings.Compare(dashboardData.Devices[i].Platform.Hostname, dashboardData.Devices[j].Platform.Hostname) {
 		case -1:
 			return true
 		case 1:
 			return false
 		}
-		return dashboardData.Clients[i].Platform.Hostname > dashboardData.Clients[j].Platform.Hostname
+		return dashboardData.Devices[i].Platform.Hostname > dashboardData.Devices[j].Platform.Hostname
 	})
-
 }
 
-//  appendServerMetrics appends the server to the dashboard list
+// appendServerMetrics appends the server to the dashboard list
+//
 func (dm *DeviceMetrics) appendServerMetrics() {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	serverData := new(DeviceMetrics)
 	*serverData = *dm
@@ -199,7 +246,7 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 	serverData.Platform.Environment = dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform()
 	serverData.Platform.Kernel = dms3libs.DeviceKernel()
 
-	dashboardData.Clients = append(dashboardData.Clients, *serverData)
+	dashboardData.Devices = append(dashboardData.Devices, *serverData)
 
 }
 
@@ -209,17 +256,20 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 //
 func iconStatus(index int) string {
 
-	seconds := dms3libs.SecondsSince(dashboardData.Clients[index].Period.LastReport)
-	interval := dashboardData.Clients[index].Period.CheckInterval
-	warningLimit := uint32((interval * 2))
-	dangerLimit := uint32((interval * 4))
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	lastUpdate := dms3libs.SecondsSince(dashboardData.Devices[index].Period.LastReport)
+	checkInterval := dashboardData.Devices[index].Period.CheckInterval
+
+	warningLimit := uint32((checkInterval * dashboardConfig.Server.DeviceStatus.Caution))
+	dangerLimit := uint32((checkInterval * dashboardConfig.Server.DeviceStatus.Danger))
 
 	switch {
-	case seconds < warningLimit:
+	case lastUpdate < warningLimit:
 		return "icon-success"
-	case (seconds >= warningLimit) && (seconds < dangerLimit):
+	case (lastUpdate >= warningLimit) && (lastUpdate < dangerLimit):
 		return "icon-warning"
-	case seconds >= dangerLimit:
+	case lastUpdate >= dangerLimit:
 		return "icon-danger"
 	default:
 		return ""
@@ -228,9 +278,12 @@ func iconStatus(index int) string {
 }
 
 // iconType is an HTML template function that returns an icon based on device type
+//
 func iconType(index int) string {
 
-	switch dashboardData.Clients[index].Platform.Type {
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	switch dashboardData.Devices[index].Platform.Type {
 	case Client:
 		return "icon-raspberry-pi"
 	case Server:
@@ -245,10 +298,11 @@ func iconType(index int) string {
 // reporting to the server
 //
 func clientCount() int {
-	return len(dashboardData.Clients) - 1
+	return len(dashboardData.Devices) - 1
 }
 
 // showEventCount is an HTML template function that returns whether to display client event count
+//
 func showEventCount(index int) bool {
-	return dashboardData.Clients[index].ShowEventCount
+	return dashboardData.Devices[index].ShowEventCount
 }

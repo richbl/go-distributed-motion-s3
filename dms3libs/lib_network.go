@@ -3,6 +3,7 @@
 package dms3libs
 
 import (
+	"os/exec"
 	"strconv"
 	"sync"
 )
@@ -46,36 +47,18 @@ func FindMacs(macsToFind []string) bool {
 	}
 
 	if _, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
-		LogInfo(LibConfig.SysCommands["IP"] + " command: no device mac address found")
+
+		switch err.(type) {
+		case *exec.ExitError: // no ip found
+			LogInfo(LibConfig.SysCommands["IP"] + " command: no device mac address found")
+		default: // fatal command error
+			LogFatal("Failed to run '" + LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "': " + err.Error())
+		}
+
 		return false
 	} else {
 		LogInfo(LibConfig.SysCommands["IP"] + " command: device mac address found")
 		return true
-	}
-
-}
-
-// Deprecated: FindMacsOld uses 'arp' to find mac addressed passed in, returning true if any mac passed in is found
-// (e.g., mac1|mac2|mac3)
-//
-func FindMacsOld(macsToFind []string) bool {
-
-	macListRegex := ""
-
-	for i := 0; i < len(macsToFind); i++ {
-		macListRegex += macsToFind[i]
-
-		if i < len(macsToFind)-1 {
-			macListRegex += "|"
-		}
-
-	}
-
-	if res, err := RunCommand(LibConfig.SysCommands["ARP"] + " -n | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
-		LogInfo(LibConfig.SysCommands["ARP"] + " command code: " + err.Error())
-		return false
-	} else {
-		return (len(string(res)) > 0)
 	}
 
 }

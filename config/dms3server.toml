@@ -8,6 +8,9 @@
   # CheckInterval is the interval (in seconds) between local checks for change to motion_state
   CheckInterval = 15
 
+  # Enables (true) or disables (false) the DMS3 dashboard running over HTTP on this server
+  EnableDashboard = true
+
 [Audio]
   # Enables (true) or disables (false) the play-back of audio on motion detector application 
   # start/stop
@@ -61,7 +64,9 @@
   MacsToFind = ["24:da:9b:0d:53:8f", "f8:cf:c5:d2:bb:9e"]
 
 [Logging]
-  # LogLevel sets the log levels for application logging using the following table:
+  # LogLevel sets the log levels for application logging using the following table
+  #
+  # Note that DEBUG > INFO > FATAL, so DEBUG includes all log levels
   #
   #  0 - OFF, no logging
   #  1 - FATAL, report fatal events

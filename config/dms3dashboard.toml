@@ -4,9 +4,8 @@
 [Server]
 
   # Configuration elements for DMS3 server
-
-  # Enables (true) or disables (false) the DMS3 dashboard running over HTTP on the server
-  Enable = true
+  #
+  # These elements are ignored if Server.EnableDashboard == false (in dms3server.toml)
 
   # Port is the port on which to run the dashboard server
   Port = 8081
@@ -19,12 +18,34 @@
   # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dashboard.html)
   # Any other filepath/filename will be used if valid, else set to local development folder
   #
-  # Ignored if Dashboard.Enable == false
-  #
   FileLocation = ""
 
   # Dashboard title
   Title = "DMS3 Dashboard"
+
+  # Enables (true) or disables (false) the alphabetically re-sort of devices displayed in the
+  # dashboard template
+  #
+  ReSort = true
+
+  # Device status identifies the stages when a device is no longer reporting status updates
+  # to the dashboard server. Status health is represented graphically on the dashboard.
+  #
+  # Device status values are defined as a multiplier of Server.CheckInterval (default = 15 seconds)
+  # declared/defined in the dms3server.toml file.
+  #
+  # If the device check interval for the dashboard server is every 15 seconds (default), and
+  # the device status multiplier for caution (DeviceStatus.Caution) is 100 (default), then the
+  # dashboard server will report a device caution status (yellow device icon) after 1500
+  # seconds (25 minutes) of no status updates received from that device
+  #
+  # Device status will continue to progress through each of the stages identified below, or reset
+  # to a normal device status if device again reports in to the dashboard server
+  #
+  [Server.DeviceStatus]
+    Caution = 1    # represented as a yellow device icon on the dashboard
+    Danger = 3     # represented as a red device icon on the dashboard
+    Missing = 5000 # device to be removed from dashboard server
 
 [Client]
 
@@ -36,6 +57,5 @@
   # Used in determining the client "events" metrics, presented through the dashboard
   #
   # If the value is "" (empty string), this value is disabled (not reported) on the dashboard
-  # Ignored if [Server] Enable == false
   #
-  ImagesFolder = "/home/pi/motion_pics"
+  ImagesFolder = "/home/richbl/motion_pics"

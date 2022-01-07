@@ -7,6 +7,7 @@ import (
 )
 
 // RunCommand is a simple wrapper for the exec.Command() call
+//
 // NOTE: this call is blocking (non-threaded), and will return only after the command
 // completes
 //
@@ -15,10 +16,17 @@ func RunCommand(cmd string) (res []byte, err error) {
 }
 
 // IsRunning checks if application is currently running (has PID > 0)
+//
 func IsRunning(application string) bool {
 
 	if _, err := RunCommand(LibConfig.SysCommands["PGREP"] + " -i " + application); err != nil {
-		LogInfo("Failed to run '" + LibConfig.SysCommands["PGREP"] + " -i " + application + "': " + err.Error())
+
+		switch err.(type) {
+		case *exec.ExitError: // no process found
+			LogInfo("Process not found when running '" + LibConfig.SysCommands["PGREP"] + " -i " + application)
+		default: // fatal command error
+			LogFatal("Failed to run '" + LibConfig.SysCommands["PGREP"] + " -i " + application + "': " + err.Error())
+		}
 		return false
 	} else {
 		return true
@@ -27,6 +35,7 @@ func IsRunning(application string) bool {
 }
 
 // StartStopApplication enable/disables the application passed in
+//
 func StartStopApplication(state MotionDetectorState, application string) bool {
 
 	switch state {
@@ -55,8 +64,15 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 			if _, err := RunCommand(LibConfig.SysCommands["PKILL"] + " -i " + application); err == nil {
 				return true
 			} else {
-				LogInfo("Failed to stop running process: " + application)
+
+				switch err.(type) {
+				case *exec.ExitError: // no process matched
+					LogInfo("Process not found when running '" + LibConfig.SysCommands["PKILL"] + " -i " + application)
+				default: // fatal command error
+					LogFatal("Failed to run '" + LibConfig.SysCommands["PKILL"] + " -i " + application + "': " + err.Error())
+				}
 				return false
+
 			}
 		}
 	default:

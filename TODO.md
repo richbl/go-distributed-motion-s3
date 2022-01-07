@@ -42,3 +42,7 @@
 - Rewrite of installer routines to fix easySSH file mode issues and simplify installation
 
 - moved default dms3server listening port into dynamic port range
+
+- For dms3dashboard:
+  - Added configuration options for client icon status option timeouts (warning, danger, missing)
+  - Moved dashboard enable flat (dashboardEnable) from dashboard to server TOML

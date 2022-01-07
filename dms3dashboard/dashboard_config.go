@@ -4,6 +4,8 @@ package dms3dash
 
 import "time"
 
+var DashboardEnable bool
+
 var dashboardConfig *tomlTables
 var dashboardData *deviceData
 
@@ -20,17 +22,25 @@ type clientKeyValues struct {
 
 // serverKeyValues represents the k-v pairs in the TOML file
 type serverKeyValues struct {
-	Enable       bool
 	Port         int
 	Filename     string
 	FileLocation string
 	Title        string
+	ReSort       bool
+	DeviceStatus *serverDeviceStatus
 }
 
-// deviceData represents all client dashboard elements
+// serverDeviceStatus represents the device status cycle in the TOML file
+type serverDeviceStatus struct {
+	Caution int
+	Danger  int
+	Missing int
+}
+
+// deviceData represents dashboard elements from all devices
 type deviceData struct {
 	Title   string
-	Clients []DeviceMetrics
+	Devices []DeviceMetrics
 }
 
 // DeviceMetrics represents device data presented on the dashboard
@@ -43,7 +53,7 @@ type DeviceMetrics struct {
 
 // DevicePlatform represents the physical device platform environment
 type DevicePlatform struct {
-	Type        dashboardType
+	Type        dashboardDeviceType
 	Hostname    string
 	Environment string
 	Kernel      string
@@ -57,11 +67,11 @@ type DeviceTime struct {
 	LastReport    time.Time
 }
 
-// dashboardType defines the dashboard device type
-type dashboardType int
+// dashboardDeviceType defines the dashboard device type
+type dashboardDeviceType int
 
-// states of the motion detector application
+// types of DMS3 devices
 const (
-	Client dashboardType = iota
+	Client dashboardDeviceType = iota
 	Server
 )
