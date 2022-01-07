@@ -23,6 +23,7 @@ type structEventDetails struct {
 }
 
 // Init configs the library and configuration for dms3mail
+//
 func Init(configPath string) {
 
 	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
@@ -111,6 +112,7 @@ func getEventDetails(filename string) (eventNumber string, eventDate string) {
 }
 
 // createEmailBody performs a placeholder replacement in the email body with eventDetails elements
+//
 func createEmailBody(eventDetails *structEventDetails) string {
 
 	var replacements = map[string]string{

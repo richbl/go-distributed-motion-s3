@@ -5,7 +5,6 @@ package dms3dash
 import (
 	"bytes"
 	"encoding/gob"
-	"log"
 	"net"
 	"path/filepath"
 	"time"
@@ -19,6 +18,8 @@ var dashboardClientMetrics *DeviceMetrics
 //  static client metrics)
 //
 func InitDashboardClient(configPath string, dm *DeviceMetrics) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	dashboardConfig = new(tomlTables)
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
@@ -41,30 +42,13 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 }
 
 // ReceiveDashboardRequest receives server requests and returns data
+//
 func ReceiveDashboardRequest(conn net.Conn) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	if receiveDashboardEnableState(conn) {
 		sendDashboardData(conn)
-	}
-
-}
-
-// checkImagesFolder confirms the location of the motion-triggered image/movie files managed by
-// the motion detector application (if installed), and used in displaying client metrics in the
-// dashboard
-//
-func (dash *DeviceMetrics) checkImagesFolder() {
-
-	if dms3libs.IsFile(dashboardConfig.Client.ImagesFolder) {
-		dashboardClientMetrics.ShowEventCount = true
-	} else {
-
-		if dashboardConfig.Client.ImagesFolder == "" {
-			dashboardClientMetrics.ShowEventCount = false
-		} else {
-			log.Fatalln("unable to find motion detector application images folder... check TOML configuration file")
-		}
-
 	}
 
 }
@@ -73,6 +57,8 @@ func (dash *DeviceMetrics) checkImagesFolder() {
 // if the dashboard state is enabled
 //
 func receiveDashboardEnableState(conn net.Conn) bool {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	buf := make([]byte, 16)
 
@@ -88,7 +74,10 @@ func receiveDashboardEnableState(conn net.Conn) bool {
 }
 
 // sendDashboardData sends dashboard info to server
+//
 func sendDashboardData(conn net.Conn) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	// update client metrics
 	dashboardClientMetrics.Period.LastReport = time.Now()
@@ -109,6 +98,28 @@ func sendDashboardData(conn net.Conn) {
 		dms3libs.LogFatal(err.Error())
 	} else {
 		dms3libs.LogInfo("Sent client dashboard data")
+	}
+
+}
+
+// checkImagesFolder confirms the location of the motion-triggered image/movie files managed by
+// the motion detector application (if installed), and used in displaying client metrics in the
+// dashboard
+//
+func (dash *DeviceMetrics) checkImagesFolder() {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	if dms3libs.IsFile(dashboardConfig.Client.ImagesFolder) {
+		dashboardClientMetrics.ShowEventCount = true
+	} else {
+
+		if dashboardConfig.Client.ImagesFolder == "" {
+			dashboardClientMetrics.ShowEventCount = false
+		} else {
+			dms3libs.LogFatal("unable to find motion detector application images folder... check TOML configuration file")
+		}
+
 	}
 
 }

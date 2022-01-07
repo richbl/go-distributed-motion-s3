@@ -9,6 +9,7 @@ import (
 )
 
 // DeviceHostname returns the name of the local machine
+//
 func DeviceHostname() string {
 
 	name, err := os.Hostname()
@@ -18,16 +19,19 @@ func DeviceHostname() string {
 }
 
 // DeviceOS returns the operating system of the local machine
+//
 func DeviceOS() string {
 	return runtime.GOOS
 }
 
 // DevicePlatform returns the CPU architecture of the local machine
+//
 func DevicePlatform() string {
 	return runtime.GOARCH
 }
 
 // DeviceKernel returns the current kernel in use on the local machine
+//
 func DeviceKernel() string {
 
 	utsName, error := uname()
@@ -44,6 +48,7 @@ func DeviceKernel() string {
 }
 
 // uname returns the Utsname struct used to query system settings
+//
 func uname() (*syscall.Utsname, error) {
 
 	uts := &syscall.Utsname{}

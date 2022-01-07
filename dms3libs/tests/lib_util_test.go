@@ -1,6 +1,7 @@
 package dms3libs_test
 
 import (
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 
 func TestGetFunctionName(t *testing.T) {
 
-	val := dms3libs.GetFunctionName()
+	val := filepath.Base(dms3libs.GetFunctionName())
 
 	if val != "" {
 		t.Log("Success, function name is", val)

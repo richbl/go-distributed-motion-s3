@@ -12,7 +12,9 @@
   CheckInterval = 15
 
 [Logging]
-  # LogLevel sets the log levels for application logging using the following table:
+  # LogLevel sets the log levels for application logging using the following table
+  #
+  # Note that DEBUG > INFO > FATAL, so DEBUG includes all log levels
   #
   #  0 - OFF, no logging
   #  1 - FATAL, report fatal events

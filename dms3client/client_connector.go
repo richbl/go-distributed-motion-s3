@@ -14,7 +14,10 @@ import (
 )
 
 // Init configs the library, configuration, and dashboard for dms3client
+//
 func Init(configPath string) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	dms3libs.SetUptime(&startTime)
 
@@ -30,7 +33,10 @@ func Init(configPath string) {
 }
 
 // configDashboardClientMetrics initializes the DeviceMetrics struct used by dms3dashboard
+//
 func configDashboardClientMetrics() *dms3dash.DeviceMetrics {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	dm := &dms3dash.DeviceMetrics{
 		Platform: dms3dash.DevicePlatform{
@@ -47,7 +53,10 @@ func configDashboardClientMetrics() *dms3dash.DeviceMetrics {
 }
 
 // startClient periodically attempts to connect to the server (based on CheckInterval)
+//
 func startClient(ServerIP string, ServerPort int) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	for {
 		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
@@ -68,7 +77,7 @@ func startClient(ServerIP string, ServerPort int) {
 //
 func processClientRequest(conn net.Conn) {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	dms3dash.ReceiveDashboardRequest(conn)
 	receiveMotionDetectorState(conn)
@@ -79,7 +88,10 @@ func processClientRequest(conn net.Conn) {
 }
 
 // receiveMotionDetectorState receives motion detector state from the server
+//
 func receiveMotionDetectorState(conn net.Conn) {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	buf := make([]byte, 8)
 

@@ -13,6 +13,7 @@ import (
 )
 
 // GetFunctionName uses reflection (runtime) to return current function name
+//
 func GetFunctionName() string {
 
 	pc := make([]uintptr, 10)
@@ -25,6 +26,7 @@ func GetFunctionName() string {
 }
 
 // GetPackageDir returns the absolute path of the calling package
+//
 func GetPackageDir() string {
 
 	_, filename, _, ok := runtime.Caller(1)
@@ -38,6 +40,7 @@ func GetPackageDir() string {
 }
 
 // StripRet strips the rightmost byte from the byte array
+//
 func StripRet(value []byte) []byte {
 
 	if len(value) <= 1 {
@@ -49,41 +52,49 @@ func StripRet(value []byte) []byte {
 }
 
 // SetUptime sets the uptime for the application process
+//
 func SetUptime(startTime *time.Time) {
 	*startTime = time.Now()
 }
 
 // Uptime returns uptime for the application process
+//
 func Uptime(startTime time.Time) string {
 	return fmtDuration(time.Since(startTime))
 }
 
 // SecondsSince returns seconds passed since value passed
+//
 func SecondsSince(value time.Time) uint32 {
 	return uint32(time.Since(value).Seconds())
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
+//
 func To24H(value time.Time) string {
 	return value.Format("150405")
 }
 
 // Format24H formats 24-hour time to six places (HHMMSS)
+//
 func Format24H(time string) string {
 	return rightPadToLen(time, "0", 6)
 }
 
 // FormatDateTime formats time to "date at time"
+//
 func FormatDateTime(value time.Time) string {
 	return value.Format("2006-01-02 at 15:04:05")
 }
 
 // ModVal returns the remainder of number/val passed in
+//
 func ModVal(number int, val int) int {
 	return number % val
 }
 
 // CheckErr does simple error management (no logging dependencies)
+//
 func CheckErr(err error) {
 
 	if err != nil {
@@ -94,6 +105,7 @@ func CheckErr(err error) {
 }
 
 // rightPadToLen pads a string to pLen places with padStr
+//
 func rightPadToLen(s string, padStr string, pLen int) string {
 	return s + strings.Repeat(padStr, pLen-len(s))
 }

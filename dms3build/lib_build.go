@@ -14,6 +14,7 @@ import (
 )
 
 // BuildReleaseFolder creates the directory structure for each platform passed into it
+//
 func BuildReleaseFolder() {
 
 	dms3libs.RmDir("dms3_release")
@@ -37,6 +38,7 @@ func BuildReleaseFolder() {
 }
 
 // BuildComponents compiles dms3 components for each platform passed into it
+//
 func BuildComponents() {
 
 	for platformType := range BuildEnv {
@@ -68,6 +70,7 @@ func BuildComponents() {
 }
 
 // CopyServiceDaemons copies daemons into release folder
+//
 func CopyServiceDaemons() {
 
 	fmt.Println("Copying dms3 service daemons into dms3_release folder...")
@@ -78,6 +81,7 @@ func CopyServiceDaemons() {
 }
 
 // CopyMediaFiles copies dms3server media files into release folder
+//
 func CopyMediaFiles() {
 
 	fmt.Println("Copying dms3server media files (WAV) into dms3_release folder...")
@@ -88,6 +92,7 @@ func CopyMediaFiles() {
 }
 
 // CopyDashboardFiles copies the dms3dashboard html file into release folder
+//
 func CopyDashboardFiles() {
 
 	fmt.Println("Copying dms3dashboard file (HTML) into dms3_release folder...")
@@ -99,6 +104,7 @@ func CopyDashboardFiles() {
 }
 
 // CopyConfigFiles copies config files into release folder
+//
 func CopyConfigFiles() {
 
 	fmt.Println("Copying dms3 component config files (TOML) into dms3_release folder...")
@@ -114,6 +120,7 @@ func CopyConfigFiles() {
 }
 
 // ConfirmReleaseFolder checks for the existence of the release folder
+//
 func ConfirmReleaseFolder(releasePath string) {
 
 	if !dms3libs.IsFile(releasePath) {
@@ -197,11 +204,13 @@ func InstallServerComponents(releasePath string) {
 }
 
 // remoteMkDir creates a new folder over SSH with permissions passed in
+//
 func remoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
 	remoteRunCommand(ssh, "mkdir -p "+newPath)
 }
 
 // remoteCopyDir copies a directory over SSH from srcDir to destDir
+//
 func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 
 	fmt.Println("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "...")
@@ -229,6 +238,7 @@ func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 }
 
 // remoteRunCommand runs a command via the SSH protocol
+//
 func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 
 	fmt.Println("Running remote command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "...")
@@ -239,6 +249,7 @@ func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 }
 
 // remoteCopyFile copies a file from src to a remote dest file using SCP
+//
 func remoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
 
 	fmt.Println("Copying file " + srcFile + " to " + ssh.User + "@" + ssh.Server + ":" + destFile + "...")

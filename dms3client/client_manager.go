@@ -3,12 +3,17 @@
 //
 package dms3client
 
-import "github.com/richbl/go-distributed-motion-s3/dms3libs"
+import (
+	"path/filepath"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
+)
 
 // ProcessMotionDetectorState starts/stops the motion detector application
+//
 func ProcessMotionDetectorState() {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	cmdStr := ""
 	state := dms3libs.MotionDetector.State()

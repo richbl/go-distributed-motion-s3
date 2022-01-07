@@ -50,7 +50,7 @@ func CreateLogger(logger *StructLogging) {
 		case 1:
 			{
 				if f, err = os.OpenFile(filepath.Join(logger.LogLocation, logger.LogFilename), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644); err != nil {
-					log.Fatalln(err)
+					LogFatal(err.Error())
 				}
 			}
 		}

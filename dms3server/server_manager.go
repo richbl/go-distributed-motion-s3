@@ -4,6 +4,7 @@
 package dms3server
 
 import (
+	"path/filepath"
 	"time"
 
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
@@ -16,7 +17,7 @@ var checkIntervalTimestamp = time.Now()
 //
 func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	if checkIntervalExpired() {
 
@@ -36,7 +37,7 @@ func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 //
 func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionDetectorState {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	if dms3libs.MotionDetector.State() == state {
 		return state
@@ -60,9 +61,10 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 }
 
 // checkIntervalExpired determines if last check interval (in seconds) has expired
+//
 func checkIntervalExpired() bool {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	if time.Since(checkIntervalTimestamp).Seconds() >= float64(ServerConfig.Server.CheckInterval) {
 		checkIntervalTimestamp = time.Now()
@@ -78,7 +80,7 @@ func checkIntervalExpired() bool {
 //
 func timeInRange() bool {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	if ServerConfig.AlwaysOn.Enable {
 		return calcTimeRange()
@@ -93,7 +95,7 @@ func timeInRange() bool {
 //
 func calcTimeRange() bool {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	curTime := dms3libs.To24H(time.Now())
 
@@ -113,7 +115,7 @@ func calcTimeRange() bool {
 //
 func deviceOnLAN() bool {
 
-	dms3libs.LogDebug(dms3libs.GetFunctionName())
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 	dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
 	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 
