@@ -82,6 +82,7 @@ func sendDashboardData(conn net.Conn) {
 	// update client metrics
 	dashboardClientMetrics.Period.LastReport = time.Now()
 	dashboardClientMetrics.Period.Uptime = dms3libs.Uptime(dashboardClientMetrics.Period.StartTime)
+	dashboardClientMetrics.Platform.Kernel = dms3libs.DeviceKernel()
 
 	if dashboardClientMetrics.ShowEventCount {
 		dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)

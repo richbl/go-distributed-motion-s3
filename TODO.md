@@ -3,10 +3,10 @@
 ## IN PROGRESS
 
 - For DMS3Mail, permit larger attachments (or better way to embed the image in the email)
-- Abstract away Linux OS dependencies (e.g., bash command)
-- Review low-level system calls (does golang provide new/updated wrappers)
 - Add README about MAC randomization on mobile devices (e.g., Android)
 - Replace easySSH package with more appropriate SCP library (easySSH does not maintain file execute attrib)
+
+- Send email when remote client goes quiet
 
 - For installation procedure:
   1. compile dms3_release folder (go run cmd/compile_dms3/compile_dms3.go)
@@ -43,6 +43,10 @@
 
 - moved default dms3server listening port into dynamic port range
 
+- Abstract away Linux OS dependencies (e.g., bash command)
+- Review low-level system calls (does golang provide new/updated wrappers)
+
 - For dms3dashboard:
   - Added configuration options for client icon status option timeouts (warning, danger, missing)
-  - Moved dashboard enable flat (dashboardEnable) from dashboard to server TOML
+  - Moved dashboard enable flag (dashboardEnable) from dashboard to server TOML
+  - Added support to provide dynamic update of device kernels in the dashboard

@@ -130,6 +130,7 @@ func (dd *deviceData) updateServerMetrics() {
 		if dd.Devices[i].Platform.Type == Server {
 			dd.Devices[i].Period.LastReport = time.Now()
 			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
+			dd.Devices[i].Platform.Kernel = dms3libs.DeviceKernel()
 		} else {
 			// check for and remove dead (non-reporting) client devices
 			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
@@ -200,6 +201,7 @@ func (udm *DeviceMetrics) updateDeviceMetrics() {
 				dashboardData.Devices[i].EventCount = udm.EventCount
 				dashboardData.Devices[i].Period.LastReport = udm.Period.LastReport
 				dashboardData.Devices[i].Period.Uptime = udm.Period.Uptime
+				dashboardData.Devices[i].Platform.Kernel = udm.Platform.Kernel
 				return
 			}
 
