@@ -40,7 +40,7 @@
 
           {{range $index, $_ := .Devices}}
 
-            {{if eq (ModVal $index 4) 3}} <div class="row"> {{end}}
+          {{if eq (ModVal $index 4) 3}} <div class="row"> {{end}}
 
             <div class="col-lg-3 col-sm-6">
               <div class="card">
@@ -54,6 +54,8 @@
                     <div class="col-xs-7">
                       <div class="numbers">
                         <p>{{.Platform.Hostname}}</p>
+                        {{deviceType $index}}
+                        <br>
                         {{.Platform.Environment}}
                         <br>
                         {{.Platform.Kernel}}
@@ -69,11 +71,11 @@
                       <!-- if client show events, else show clients of server -->
 
                       {{if showEventCount $index}}
-                        <i class="icon-eye"></i> Events: {{.EventCount}}                      
-                        <br>
+                      <i class="icon-eye"></i> Events: {{.EventCount}}
+                      <br>
                       {{else}}
-                        <i class="icon-display"></i> Clients: {{clientCount}}
-                        <br>
+                      <i class="icon-display"></i> Clients: {{clientCount}}
+                      <br>
                       {{end}}
 
                       <i class="icon-loop2"></i> Update: {{FormatDateTime .Period.LastReport}}
@@ -85,7 +87,8 @@
               </div>
             </div>
 
-            {{if eq (ModVal $index 4) 3}} </div> {{end}}
+            {{if eq (ModVal $index 4) 3}}
+          </div> {{end}}
 
           {{end}}
 

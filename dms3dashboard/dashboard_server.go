@@ -91,6 +91,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 		"FormatDateTime": dms3libs.FormatDateTime,
 		"iconStatus":     iconStatus,
 		"iconType":       iconType,
+		"deviceType":     deviceType,
 		"clientCount":    clientCount,
 		"showEventCount": showEventCount,
 	}
@@ -290,6 +291,23 @@ func iconType(index int) string {
 		return "icon-raspberry-pi"
 	case Server:
 		return "icon-server2"
+	default:
+		return ""
+	}
+
+}
+
+// deviceType is an HTML template function that returns a string based on device type
+//
+func deviceType(index int) string {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	switch dashboardData.Devices[index].Platform.Type {
+	case Client:
+		return "client"
+	case Server:
+		return "server"
 	default:
 		return ""
 	}

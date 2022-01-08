@@ -6,8 +6,6 @@
 - Add README about MAC randomization on mobile devices (e.g., Android)
 - Replace easySSH package with more appropriate SCP library (easySSH does not maintain file execute attrib)
 
-- Send email when remote client goes quiet
-
 - For installation procedure:
   1. compile dms3_release folder (go run cmd/compile_dms3/compile_dms3.go)
   2. edit /dms3_release/config/dms3build/dms3build.toml
