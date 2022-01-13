@@ -16,7 +16,7 @@
   # FileLocation is where the HTML dashboard template file is located
   # By default, the value is "" (empty string), which sets to the path of the release dashboard 
   # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dashboard.html)
-  # Any other filepath/filename will be used if valid, else set to local development folder
+  # Any other filepath/filename will be used if valid
   #
   FileLocation = ""
 
