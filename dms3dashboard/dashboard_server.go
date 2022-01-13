@@ -49,33 +49,20 @@ func SendDashboardRequest(conn net.Conn) {
 
 }
 
-// setDashboardFileLocation sets the location of the HTML file used when displaying the dashboard
+// setDashboardFileLocation checks/sets the location of the HTML file used when displaying the
+// dashboard
 //
 func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
-	relPath := filepath.Join(configPath, "dms3dashboard")
-	fail := false
+	// set default template location
+	if dash.FileLocation == "" {
+		dash.FileLocation = filepath.Join(configPath, "dms3dashboard")
+	}
 
 	if !dms3libs.IsFile(filepath.Join(dash.FileLocation, dash.Filename)) {
-
-		// if no location set, set to release folder, else set to development folder
-		if dash.FileLocation == "" {
-
-			if dms3libs.IsFile(filepath.Join(relPath, dash.Filename)) {
-				dash.FileLocation = relPath
-			} else {
-				fail = true
-			}
-
-		} else {
-			fail = true
-		}
-
-		if fail {
-			dms3libs.LogFatal("unable to set dashboard location... check TOML configuration file")
-		}
+		dms3libs.LogFatal("unable to set email template location... check TOML configuration file")
 	}
 
 }
