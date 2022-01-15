@@ -141,3 +141,19 @@ func CountFilesInDir(srcDir string) int {
 	return fileCount
 
 }
+
+// CheckFileLocation checks/sets the location of file and pathname passed in as defined in various
+// TOML config files, returning a fully qualified path
+//
+func CheckFileLocation(configPath string, fileDir string, fileLocation *string, filename string) {
+
+	// set default template location
+	if *fileLocation == "" {
+		*fileLocation = filepath.Join(configPath, fileDir)
+	}
+
+	if filename == "" || !IsFile(filepath.Join(*fileLocation, filename)) {
+		LogFatal("unable to set file location... check TOML configuration file")
+	}
+
+}

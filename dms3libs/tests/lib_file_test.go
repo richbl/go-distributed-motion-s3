@@ -116,3 +116,24 @@ func TestCountFilesInDir(t *testing.T) {
 	dms3libs.RmDir(currentDir)
 
 }
+
+func TestCheckFileLocation(t *testing.T) {
+
+	dms3libs.MkDir(filepath.Join(dms3libs.GetPackageDir(), "tmpDir"))
+	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), "lib_audio_test.wav"), filepath.Join(dms3libs.GetPackageDir(), "tmpDir", "tmpFile"))
+	currentDir := filepath.Join(dms3libs.GetPackageDir(), "tmpDir")
+
+	configPath := dms3libs.GetPackageDir()
+	fileDir := "tmpDir"
+	fileLocation := ""
+	filename := "tmpFile"
+
+	dms3libs.CheckFileLocation(configPath, fileDir, &fileLocation, filename)
+
+	if fileLocation == "" {
+		t.Error("fileLocation not set")
+	}
+
+	dms3libs.RmDir(currentDir)
+
+}

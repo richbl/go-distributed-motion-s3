@@ -25,8 +25,8 @@ func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 
 	dashboardConfig = new(tomlTables)
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
+	dms3libs.CheckFileLocation(configPath, "dms3dashboard", &dashboardConfig.Server.FileLocation, dashboardConfig.Server.Filename)
 
-	dashboardConfig.Server.setDashboardFileLocation(configPath)
 	dashboardData = new(deviceData)
 	dm.appendServerMetrics()
 
@@ -45,24 +45,6 @@ func SendDashboardRequest(conn net.Conn) {
 		receiveDashboardData(conn)
 	} else {
 		sendDashboardEnableState(conn, "0")
-	}
-
-}
-
-// setDashboardFileLocation checks/sets the location of the HTML file used when displaying the
-// dashboard
-//
-func (dash *serverKeyValues) setDashboardFileLocation(configPath string) {
-
-	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
-
-	// set default template location
-	if dash.FileLocation == "" {
-		dash.FileLocation = filepath.Join(configPath, "dms3dashboard")
-	}
-
-	if !dms3libs.IsFile(filepath.Join(dash.FileLocation, dash.Filename)) {
-		dms3libs.LogFatal("unable to set email template location... check TOML configuration file")
 	}
 
 }
