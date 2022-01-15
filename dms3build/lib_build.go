@@ -91,15 +91,14 @@ func CopyMediaFiles() {
 
 }
 
-// CopyDashboardFiles copies the dms3dashboard html file into release folder
-//
-func CopyDashboardFiles() {
+// CopyComponents copies component html files and assets into the release folder
+func CopyComponents(component string) {
 
-	fmt.Println("Copying dms3dashboard file (HTML) into dms3_release folder...")
-	dms3libs.CopyFile(filepath.Join("dms3dashboard", "dashboard.html"), filepath.Join("dms3_release", "config", "dms3dashboard", "dashboard.html"))
+	fmt.Println("Copying " + component + " file (HTML) into dms3_release folder...")
+	dms3libs.CopyFile(filepath.Join(component, component+".html"), filepath.Join("dms3_release", "config", component, component+".html"))
 
-	fmt.Println("Copying dms3dashboard assets into dms3_release folder...")
-	dms3libs.CopyDir(filepath.Join("dms3dashboard", "assets"), filepath.Join("dms3_release", "config", "dms3dashboard"))
+	fmt.Println("Copying " + component + " assets into dms3_release folder...")
+	dms3libs.CopyDir(filepath.Join(component, "assets"), filepath.Join("dms3_release", "config", component))
 
 }
 

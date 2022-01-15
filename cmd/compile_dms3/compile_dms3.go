@@ -30,8 +30,11 @@ func main() {
 	// copy dms3server media files into release folder
 	dms3build.CopyMediaFiles()
 
-	// copy dms3dashboard html files into release folder
-	dms3build.CopyDashboardFiles()
+	// copy dms3dashboard html file and assets into release folder
+	dms3build.CopyComponents("dms3dashboard")
+
+	// copy dms3mail html file and assets into release folder
+	dms3build.CopyComponents("dms3mail")
 
 	// copy TOML files into release folder
 	dms3build.CopyConfigFiles()
