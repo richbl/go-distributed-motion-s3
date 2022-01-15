@@ -47,6 +47,7 @@
   - Added configuration options for client icon status option timeouts (warning, danger, missing)
   - Moved dashboard enable flag (dashboardEnable) from dashboard to server TOML
   - Added support to provide dynamic update of device kernels in the dashboard
+  - Updated favicon to support png/svg formats
 
 - For dms3mail:
   - Permit larger attachments (or better way to embed the image in the email)

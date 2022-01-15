@@ -11,11 +11,11 @@
   Port = 8081
 
   # Filename of HTML dashboard template file
-  Filename = "dashboard.html"
+  Filename = "dms3dashboard.html"
 
   # FileLocation is where the HTML dashboard template file is located
   # By default, the value is "" (empty string), which sets to the path of the release dashboard 
-  # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dashboard.html)
+  # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dms3dashboard.html)
   # Any other filepath/filename will be used if valid
   #
   FileLocation = ""

@@ -2,7 +2,7 @@
 # TOML 1.0.0
 
 # Filename of HTML email template file
-Filename = "dms3mail_inline.html"
+Filename = "dms3mail.html"
 
 # FileLocation is where the HTML email template file is located
 # By default, the value is "" (empty string), which sets to the path of the release email 
