@@ -57,6 +57,13 @@ body {
     font-family: 'Muli', Arial, sans-serif;
 }
 
+img {
+  max-height: 70px;
+  max-width: 100%;
+  background-color: #ffffff;
+  padding:10px 0;
+}
+
 body .wrapper {
     min-height: 100vh;
     position: relative;
@@ -147,7 +154,7 @@ hr {
 }
 
 .navbar-default {
-    background-color: #f4f3ef;
+    background-color: #ffffff;
     border-bottom: 1px solid #DDDDDD;
 }
 
