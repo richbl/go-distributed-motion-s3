@@ -2,7 +2,6 @@
 
 ## IN PROGRESS
 
-- For DMS3Mail, permit larger attachments (or better way to embed the image in the email)
 - Add README about MAC randomization on mobile devices (e.g., Android)
 - Replace easySSH package with more appropriate SCP library (easySSH does not maintain file execute attrib)
 
@@ -48,3 +47,14 @@
   - Added configuration options for client icon status option timeouts (warning, danger, missing)
   - Moved dashboard enable flag (dashboardEnable) from dashboard to server TOML
   - Added support to provide dynamic update of device kernels in the dashboard
+
+- For dms3mail:
+  - Permit larger attachments (or better way to embed the image in the email)
+    - Created new tokenized HTML email template
+      - Special thanks to https://github.com/TedGoas/Cerberus for template basis
+  - Added support to determine percentage of image file changed during event (GetImageDimensions())
+
+- dms3libs:
+  - Added GetImageDimensions() and related test
+  - Added CheckFileLocation() and related test
+    - Replaces similar functions in both dms3server and dms3mail

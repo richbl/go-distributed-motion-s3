@@ -4,6 +4,8 @@ package dms3libs
 
 import (
 	"fmt"
+	"image"
+	_ "image/jpeg"
 	"log"
 	"os"
 	"path"
@@ -101,6 +103,28 @@ func CheckErr(err error) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+
+}
+
+// GetImageDimensions returns the (width, height) of an image passed in
+//
+func GetImageDimensions(imagePath string) (int, int) {
+
+	var file *os.File
+	var err error
+	var img image.Config
+
+	if file, err = os.Open(imagePath); err != nil {
+		LogFatal(err.Error())
+	}
+
+	defer file.Close()
+
+	if img, _, err = image.DecodeConfig(file); err != nil {
+		LogFatal(err.Error())
+	}
+
+	return img.Width, img.Height
 
 }
 

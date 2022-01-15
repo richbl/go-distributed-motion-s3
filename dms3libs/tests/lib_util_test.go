@@ -125,3 +125,14 @@ func TestModVal(t *testing.T) {
 	}
 
 }
+
+func TestGetImageDimensions(t *testing.T) {
+
+	imageFile := filepath.Join(dms3libs.GetPackageDir(), "lib_util_test.jpg")
+	w, h := dms3libs.GetImageDimensions(imageFile)
+
+	if w != 100 && h != 100 {
+		t.Error("Failure. Dimensions do not match image")
+	}
+
+}

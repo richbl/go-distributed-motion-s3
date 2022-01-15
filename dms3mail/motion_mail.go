@@ -3,7 +3,11 @@
 package dms3mail
 
 import (
+	"bytes"
 	"flag"
+	"fmt"
+	"html/template"
+	"math"
 	"path"
 	"path/filepath"
 	"strconv"
@@ -14,14 +18,6 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-type structEventDetails struct {
-	eventNumber    string
-	eventMedia     string
-	eventDate      string
-	cameraNumber   int
-	pixelsDetected int
-}
-
 // Init configs the library and configuration for dms3mail
 //
 func Init(configPath string) {
@@ -31,50 +27,52 @@ func Init(configPath string) {
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
+	dms3libs.CheckFileLocation(configPath, "dms3mail", &mailConfig.FileLocation, mailConfig.Filename)
 
 	GenerateEventEmail()
 
 }
 
-// GenerateEventEmail is the entry point for this package, first calling parseEvent to interpret
+// GenerateEventEmail is the entry point for this package, first calling parseEventArgs to interpret
 // the Motion event, and then calling generateSMTPEmail to create and send the email
 //
 func GenerateEventEmail() {
 
 	var eventDetails structEventDetails
 
-	parseEvent(&eventDetails)
-	generateSMTPEmail(&eventDetails)
+	eventDetails.parseEventArgs()
+	eventDetails.generateSMTPEmail()
 
 }
 
-// parseEvent creates an event by parsing the following command line arguments passed in via the
+// parseEventArgs creates an event by parsing the following command line arguments passed in via the
 //  Motion on_picture_save or the on_movie_end command:
 //
-//  ARGV[0] pixels detected
+//  ARGV[0] count of pixels changed
 //  ARGV[1] media filename
-//  ARGV[2] device (camera) number
 //
-func parseEvent(eventDetails *structEventDetails) {
+func (eventDetails *structEventDetails) parseEventArgs() {
 
+	// parse command line arguments passed from Motion command
 	pixels := flag.Int("pixels", 0, "count of pixels detected in the event")
 	filename := flag.String("filename", "", "fullpath filename of the event media file")
-	camera := flag.Int("camera", 0, "camera number that captured the event")
 
 	flag.Parse()
 
-	if flag.NFlag() != 3 {
+	if flag.NFlag() != 2 {
 		dms3libs.LogFatal("only " + strconv.Itoa(flag.NFlag()) + " argument(s) passed... exiting")
-	}
-
-	if !dms3libs.IsFile(*filename) {
+	} else if !dms3libs.IsFile(*filename) {
 		dms3libs.LogFatal("filename not found... exiting")
 	}
 
-	eventDetails.cameraNumber = *camera
 	eventDetails.eventMedia = *filename
-	eventDetails.pixelsDetected = *pixels
-	eventDetails.eventNumber, eventDetails.eventDate = getEventDetails(*filename)
+
+	// get image dimensions and calculate percent of image change
+	width, height := dms3libs.GetImageDimensions(eventDetails.eventMedia)
+	eventDetails.eventChange = fmt.Sprintf("%d", int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
+
+	eventDetails.eventDate = getEventDetails(eventDetails.eventMedia)
+	eventDetails.clientName = strings.Title(dms3libs.DeviceHostname())
 
 }
 
@@ -83,65 +81,85 @@ func parseEvent(eventDetails *structEventDetails) {
 //   eventNumber - Motion-generated event number
 //   eventDate - Motion-generated event datetime
 //
-// NOTE: this method assumes that filename follows the default Motion file-naming convention of
-//  %v-%Y%m%d%H%M%S (for movies) or %v-%Y%m%d%H%M%S-%q (for pictures), where:
+// This method assumes that filename follows the default Motion file-naming convention of
+// [%v-]%Y%m%d%H%M%S (for movies) or [%v-]%Y%m%d%H%M%S-%q (for pictures), where:
 //
-//   %v - Motion-generated event number
+//   [%v] - event number (as of Motion 4.3.2, no longer included in filename by default)
 //   %Y%m%d%H%M%S - ISO 8601 date, with hours, minutes, seconds notion
 //   %q - frame number (value ignored)
 //
-func getEventDetails(filename string) (eventNumber string, eventDate string) {
+func getEventDetails(filename string) (eventDate string) {
 
+	var index int
 	file := path.Base(filename)
 	sepCount := strings.Count(file, "-")
 
-	if sepCount != 1 && sepCount != 2 {
-		dms3libs.LogFatal("bad file-naming convention... exiting")
+	if sepCount > 0 && sepCount < 3 {
+		index = sepCount - 1
+	} else {
+		dms3libs.LogFatal("unexpected Motion filenaming convention: missing separators")
 	}
 
 	res := strings.Split(file, "-")
-	year, _ := strconv.Atoi(res[1][0:4])
-	month, _ := strconv.Atoi(res[1][4:6])
-	day, _ := strconv.Atoi(res[1][6:8])
-	hour, _ := strconv.Atoi(res[1][8:10])
-	min, _ := strconv.Atoi(res[1][10:12])
-	sec, _ := strconv.Atoi(res[1][12:14])
 
-	return res[0], time.Date(year, time.Month(month), day, hour, min, sec, 0, time.UTC).Format("2006-01-02 at 15:04:05")
+	if len(res[index]) != 14 {
+		dms3libs.LogFatal("unexpected Motion filenaming convention: incorrect string length")
+	}
+
+	year, _ := strconv.Atoi(res[index][0:4])
+	month, _ := strconv.Atoi(res[index][4:6])
+	day, _ := strconv.Atoi(res[index][6:8])
+	hour, _ := strconv.Atoi(res[index][8:10])
+	min, _ := strconv.Atoi(res[index][10:12])
+	sec, _ := strconv.Atoi(res[index][12:14])
+
+	return time.Date(year, time.Month(month), day, hour, min, sec, 0, time.UTC).Format("15:04:05 on 2006-01-02")
 
 }
 
-// createEmailBody performs a placeholder replacement in the email body with eventDetails elements
+// createEmailBody loads the email template (HTML) and parses elements
 //
-func createEmailBody(eventDetails *structEventDetails) string {
+func (elements emailTemplateElements) createEmailBody() string {
 
-	var replacements = map[string]string{
-		"!EVENT":  eventDetails.eventNumber,
-		"!PIXELS": strconv.Itoa(eventDetails.pixelsDetected),
-		"!CAMERA": strconv.Itoa(eventDetails.cameraNumber),
+	t := template.Must(template.New(mailConfig.Filename).ParseFiles(filepath.Join(mailConfig.FileLocation, mailConfig.Filename)))
+
+	var tpl bytes.Buffer
+
+	if err := t.Execute(&tpl, elements); err != nil {
+		dms3libs.LogFatal(err.Error())
 	}
 
-	processedEmailBody := mailConfig.Email.Body
-
-	for key, val := range replacements {
-		processedEmailBody = strings.Replace(processedEmailBody, key, val, -1)
-	}
-
-	return processedEmailBody
+	return tpl.String()
 
 }
 
 // generateSMTPEmail generates and mails an email message based on configuration options
 // See https://github.com/go-gomail/gomail for mail package options
 //
-func generateSMTPEmail(eventDetails *structEventDetails) {
+func (eventDetails *structEventDetails) generateSMTPEmail() {
 
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", mailConfig.Email.From)
 	mail.SetHeader("To", mailConfig.Email.To)
-	mail.SetHeader("Subject", "Motion Detected on Camera #"+strconv.Itoa(eventDetails.cameraNumber)+" at "+eventDetails.eventDate)
-	mail.SetBody("text/html", createEmailBody(eventDetails))
-	mail.Attach(eventDetails.eventMedia)
+	mail.SetHeader("Subject", "Motion Detected on Device Client "+eventDetails.clientName+" at "+eventDetails.eventDate)
+
+	headerImage := filepath.Join(mailConfig.FileLocation, "assets", "dms3_logo.jpg")
+	footerImage := filepath.Join(mailConfig.FileLocation, "assets", "github.jpg")
+
+	elements := &emailTemplateElements{
+		Header: filepath.Base(headerImage),
+		Event:  filepath.Base(eventDetails.eventMedia),
+		Date:   eventDetails.eventDate,
+		Client: eventDetails.clientName,
+		Change: eventDetails.eventChange,
+		Footer: filepath.Base(footerImage),
+	}
+
+	mail.SetBody("text/html", elements.createEmailBody())
+
+	mail.Embed(headerImage)
+	mail.Embed(eventDetails.eventMedia)
+	mail.Embed(footerImage)
 
 	dialer := gomail.NewDialer(mailConfig.SMTP.Address, mailConfig.SMTP.Port, mailConfig.SMTP.Username, mailConfig.SMTP.Password)
 

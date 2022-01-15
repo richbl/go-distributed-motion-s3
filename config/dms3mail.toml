@@ -1,17 +1,22 @@
 # Distributed-Motion-S3 (DMS3) MAIL configuration file
 # TOML 1.0.0
 
+# Filename of HTML email template file
+Filename = "dms3mail_inline.html"
+
+# FileLocation is where the HTML email template file is located
+# By default, the value is "" (empty string), which sets to the path of the release email 
+# folder (e.g., /etc/distributed-motion-s3/dms3mail)
+# Any other filepath/filename will be used if valid
+#
+FileLocation = ""
+
 [Email]
   # EmailFrom is the email sender
   From = "dms3mail@businesslearninginc.com"
 
   # EmailTo is the email recipient
   To = "user@gmail.com"
-
-  # EmailBody is the email body
-  # Note that reserved words use the syntax !ALLCAPS and are parsed and replaced
-  #
-  Body = "Motion detected an event of importance. The event (!EVENT) shows !PIXELS pixels changed, and was captured by Camera !CAMERA."
 
 [SMTP]
   # SMTPAddress is the SMTP address of the recipient
