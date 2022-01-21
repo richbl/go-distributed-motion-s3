@@ -1,5 +1,4 @@
 # Distributed-Motion-S3 (DMS3) CLIENT configuration file
-# TOML 1.0.0
 
 [Server]
   # IP is the address on which the dms server is running

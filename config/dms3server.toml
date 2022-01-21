@@ -1,5 +1,4 @@
 # Distributed-Motion-S3 (DMS3) SERVER configuration file
-# TOML 1.0.0
 
 [Server]
   # Port is the port on which to run the motion server

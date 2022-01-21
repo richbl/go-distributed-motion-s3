@@ -1,5 +1,4 @@
 # Distributed-Motion-S3 (DMS3) LIBS configuration file
-# TOML 1.0.0
 
 # SysCommands provide a location mapping of required system commands
 [SysCommands]

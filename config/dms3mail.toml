@@ -1,5 +1,4 @@
 # Distributed-Motion-S3 (DMS3) MAIL configuration file
-# TOML 1.0.0
 
 # Filename of HTML email template file
 Filename = "dms3mail.html"

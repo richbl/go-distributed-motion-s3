@@ -1,5 +1,4 @@
 # Distributed-Motion-S3 (DMS3) BUILD configuration file
-# TOML 1.0.0
 
 [Clients]
 
