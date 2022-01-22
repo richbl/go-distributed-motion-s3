@@ -22,10 +22,17 @@
   # Dashboard title
   Title = "DMS3 Dashboard"
 
-  # Enables (true) or disables (false) the alphabetically re-sort of devices displayed in the
+  # Enables (true) or disables (false) to alphabetically re-sort of devices displayed in the
   # dashboard template
   #
   ReSort = true
+
+  # Enables (true) or disables (false) to make dms3server as the first of all devices displayed
+  # in the dashboard template
+  #
+  # Ignored if ReSort == false
+  #
+  ServerFirst = true
 
   # Device status identifies the stages when a device is no longer reporting status updates
   # to the dashboard server. Status health is represented graphically on the dashboard.

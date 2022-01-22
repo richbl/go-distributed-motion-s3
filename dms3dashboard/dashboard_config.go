@@ -27,6 +27,7 @@ type serverKeyValues struct {
 	FileLocation string
 	Title        string
 	ReSort       bool
+	ServerFirst  bool
 	DeviceStatus *serverDeviceStatus
 }
 

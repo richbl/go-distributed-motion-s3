@@ -219,14 +219,33 @@ func resortDashboardDevices() {
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	sort.Slice(dashboardData.Devices, func(i, j int) bool {
+
 		switch strings.Compare(dashboardData.Devices[i].Platform.Hostname, dashboardData.Devices[j].Platform.Hostname) {
 		case -1:
 			return true
 		case 1:
 			return false
 		}
+
 		return dashboardData.Devices[i].Platform.Hostname > dashboardData.Devices[j].Platform.Hostname
+
 	})
+
+	if dashboardConfig.Server.ServerFirst {
+
+		// place server in first dashboard position
+		for i := range dashboardData.Devices {
+
+			if dashboardData.Devices[i].Platform.Type == Server {
+				server := dashboardData.Devices[i]
+				dashboardData.Devices = append(dashboardData.Devices[:i], dashboardData.Devices[i+1:]...)
+				dashboardData.Devices = append([]DeviceMetrics{server}, dashboardData.Devices[:]...)
+			}
+
+		}
+
+	}
+
 }
 
 // iconStatus is an HTML template function that returns the CSS string representing icon color,

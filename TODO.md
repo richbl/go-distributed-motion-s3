@@ -2,12 +2,11 @@
 
 ## IN PROGRESS
 
-- Add README about per-network wifi MAC randomization on mobile devices (e.g., Android)
+- Add README about:
+  - per-network wifi MAC randomization on mobile devices (e.g., Android)
+  - consideration for using old-files-delete to automatically remove older image files
+ 
 - Add application versioning (using ldflags/git tag)
-
-- If a client reports in every 60 minutes, but the server expects sooner based on health status, ???
-- dms3server always first (dashboard)?
-  - separate ordering system option (ordinal numbering)?
 
 - dms3mail: change artwork to reflect email dark mode
 
@@ -57,6 +56,8 @@
   - Updated favicon to support png/svg formats
   - remove div in dms3dashboard.html (not needed)
   - No longer passing in client/server structs into dashboard package (all done within package)
+  - Fix to dashboard HTML (remove conditional div)
+  - New option (ServerFirst) to make dms3server always first in dashboard
 
 - For dms3mail:
   - Permit larger attachments (or better way to embed the image in the email)
