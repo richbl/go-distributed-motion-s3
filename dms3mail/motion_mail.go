@@ -74,7 +74,7 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 	eventDetails.eventChange = fmt.Sprintf("%d", int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
 
 	eventDetails.eventDate = getEventDetails(eventDetails.eventMedia)
-	eventDetails.clientName = strings.Title(dms3libs.DeviceHostname())
+	eventDetails.clientName = strings.Title(dms3libs.GetDeviceHostname())
 
 }
 

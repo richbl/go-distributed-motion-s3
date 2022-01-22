@@ -19,7 +19,8 @@ import (
 
 // InitDashboardServer configs the library and server configuration for the dashboard
 //
-func InitDashboardServer(configPath string, dm *DeviceMetrics) {
+
+func InitDashboardServer(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
@@ -27,11 +28,32 @@ func InitDashboardServer(configPath string, dm *DeviceMetrics) {
 	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
 	dms3libs.CheckFileLocation(configPath, "dms3dashboard", &dashboardConfig.Server.FileLocation, dashboardConfig.Server.Filename)
 
-	dashboardData = new(deviceData)
-	dm.appendServerMetrics()
+	dashboardData = &deviceData{
+		Title:   "",
+		Devices: []DeviceMetrics{},
+	}
 
+	// create initial server device entry in set of all dashboard devices
+	serverData := &DeviceMetrics{
+		Platform: DevicePlatform{
+			Type:        Server,
+			OSName:      dms3libs.GetDeviceOSName(),
+			Hostname:    dms3libs.GetDeviceHostname(),
+			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
+			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
+		},
+		Period: DeviceTime{
+			CheckInterval: checkInterval,
+			StartTime:     time.Now(),
+			Uptime:        "",
+			LastReport:    time.Now(),
+		},
+		ShowEventCount: false,
+		EventCount:     0,
+	}
+
+	dashboardData.Devices = append(dashboardData.Devices, *serverData)
 	go dashboardConfig.Server.startDashboard(configPath)
-
 }
 
 // SendDashboardRequest manages dashboard requests and receipt of client device data
@@ -55,6 +77,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
+	// needed for HTML template functionality
 	funcs := template.FuncMap{
 		"ModVal":         dms3libs.ModVal,
 		"FormatDateTime": dms3libs.FormatDateTime,
@@ -144,6 +167,7 @@ func receiveDashboardData(conn net.Conn) {
 	if n, err := conn.Read(buf); err != nil {
 		dms3libs.LogFatal(err.Error())
 	} else {
+
 		decBuf := bytes.NewBuffer(buf[:n]) // gob decoding of client metrics
 
 		if err := gob.NewDecoder(decBuf).Decode(updatedDeviceMetrics); err != nil {
@@ -205,24 +229,6 @@ func resortDashboardDevices() {
 	})
 }
 
-// appendServerMetrics appends the server to the dashboard list
-//
-func (dm *DeviceMetrics) appendServerMetrics() {
-
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	serverData := new(DeviceMetrics)
-	*serverData = *dm
-	serverData.Platform.Type = Server
-	serverData.Platform.OSName = dms3libs.DeviceOSName()
-	serverData.Platform.Hostname = dms3libs.DeviceHostname()
-	serverData.Platform.Environment = dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine)
-	serverData.Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
-
-	dashboardData.Devices = append(dashboardData.Devices, *serverData)
-
-}
-
 // iconStatus is an HTML template function that returns the CSS string representing icon color,
 // depending on the last time the client reported status to the server, relative to the client's
 // CheckInterval
@@ -269,27 +275,25 @@ func iconType(index int) string {
 
 // deviceType is an HTML template function that returns a string based on device type
 //
-func deviceType(index int) string {
+// func deviceType(index int) string {
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+// 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-	switch dashboardData.Devices[index].Platform.Type {
-	case Client:
-		return "client"
-	case Server:
-		return "server"
-	default:
-		return ""
-	}
+// 	switch dashboardData.Devices[index].Platform.Type {
+// 	case Client:
+// 		return "client"
+// 	case Server:
+// 		return "server"
+// 	default:
+// 		return ""
+// 	}
 
-}
+// }
 
 // deviceOSName is an HTML template function that returns a string based on device OS
 //
 func deviceOSName(index int) string {
-
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
 	return dashboardData.Devices[index].Platform.OSName
 }
 

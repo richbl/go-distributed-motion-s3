@@ -17,7 +17,8 @@ var dashboardClientMetrics *DeviceMetrics
 // InitDashboardClient loads configuration and assigns the dashboard client profile (sets
 //  static client metrics)
 //
-func InitDashboardClient(configPath string, dm *DeviceMetrics) {
+
+func InitDashboardClient(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
@@ -26,20 +27,23 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 
 	dashboardClientMetrics = &DeviceMetrics{
 		Platform: DevicePlatform{
-			Type:        dm.Platform.Type,
-			OSName:      dms3libs.DeviceOSName(),
-			Hostname:    dms3libs.DeviceHostname(),
+			Type:        Client,
+			OSName:      dms3libs.GetDeviceOSName(),
+			Hostname:    dms3libs.GetDeviceHostname(),
 			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
 			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
 		},
 		Period: DeviceTime{
-			StartTime:     dm.Period.StartTime,
-			CheckInterval: dm.Period.CheckInterval,
+			CheckInterval: checkInterval,
+			StartTime:     time.Now(),
+			Uptime:        "",
+			LastReport:    time.Now(),
 		},
+		ShowEventCount: false,
+		EventCount:     0,
 	}
 
 	dashboardClientMetrics.checkImagesFolder()
-
 }
 
 // ReceiveDashboardRequest receives server requests and returns data

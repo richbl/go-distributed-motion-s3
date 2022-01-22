@@ -17,41 +17,24 @@ import (
 //
 func Init(configPath string) {
 
-	dms3libs.SetUptime(&startTime)
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
 	dms3libs.LoadComponentConfig(&ServerConfig, filepath.Join(configPath, "dms3server", "dms3server.toml"))
 
 	dms3libs.SetLogFileLocation(ServerConfig.Logging)
 	dms3libs.CreateLogger(ServerConfig.Logging)
+
 	dms3libs.LogInfo("dms3server started")
 
 	setMediaLocation(configPath, ServerConfig)
 	dms3dash.DashboardEnable = ServerConfig.Server.EnableDashboard
 
 	if dms3dash.DashboardEnable {
-		dms3dash.InitDashboardServer(configPath, configDashboardServerMetrics())
+		dms3dash.InitDashboardServer(configPath, ServerConfig.Server.CheckInterval)
 	}
 
 	startServer(ServerConfig.Server.Port)
-
-}
-
-// configDashboardServerMetrics initializes the DeviceMetrics struct used by dms3dashboard
-//
-func configDashboardServerMetrics() *dms3dash.DeviceMetrics {
-
-	dm := &dms3dash.DeviceMetrics{
-		Platform: dms3dash.DevicePlatform{
-			Type: dms3dash.Client,
-		},
-		Period: dms3dash.DeviceTime{
-			StartTime:     startTime,
-			CheckInterval: ServerConfig.Server.CheckInterval,
-		},
-	}
-
-	return dm
 
 }
 

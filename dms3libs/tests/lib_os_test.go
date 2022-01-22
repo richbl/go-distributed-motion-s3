@@ -8,7 +8,7 @@ import (
 
 func TestDeviceHostname(t *testing.T) {
 
-	val := dms3libs.DeviceHostname()
+	val := dms3libs.GetDeviceHostname()
 
 	if val != "" {
 		t.Log("Success, devicehost is", val)
@@ -20,7 +20,7 @@ func TestDeviceHostname(t *testing.T) {
 
 func TestDeviceOSName(t *testing.T) {
 
-	val := dms3libs.DeviceOSName()
+	val := dms3libs.GetDeviceOSName()
 
 	if val != "" {
 		t.Log("Success, device OS name is", val)

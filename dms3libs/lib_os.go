@@ -21,9 +21,9 @@ const (
 	Release
 )
 
-// DeviceHostname returns the name of the local machine
+// GetDeviceHostname returns the name of the local machine
 //
-func DeviceHostname() string {
+func GetDeviceHostname() string {
 
 	name, err := os.Hostname()
 	CheckErr(err)
@@ -31,10 +31,10 @@ func DeviceHostname() string {
 
 }
 
-// DeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of the
-// /etc/os-release file found in most Linux-based distributions
+// GetDeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
+// the /etc/os-release file found in most Linux-based distributions
 //
-func DeviceOSName() string {
+func GetDeviceOSName() string {
 
 	result := "OS unknown"
 

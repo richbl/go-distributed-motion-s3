@@ -19,45 +19,16 @@ func Init(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-	dms3libs.SetUptime(&startTime)
-
 	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
 	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, "dms3client", "dms3client.toml"))
 
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)
+
 	dms3libs.LogInfo("dms3client started")
 
-	dms3dash.InitDashboardClient(configPath, configDashboardClientMetrics())
+	dms3dash.InitDashboardClient(configPath, clientConfig.Server.CheckInterval)
 	startClient(clientConfig.Server.IP, clientConfig.Server.Port)
-
-}
-
-// configDashboardClientMetrics initializes the DeviceMetrics struct used by dms3dashboard
-//
-func configDashboardClientMetrics() *dms3dash.DeviceMetrics {
-
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	dm := &dms3dash.DeviceMetrics{
-		Platform: dms3dash.DevicePlatform{
-			Type:        dms3dash.Client,
-			OSName:      "",
-			Hostname:    "",
-			Environment: "",
-			Kernel:      "",
-		},
-		Period: dms3dash.DeviceTime{
-			CheckInterval: clientConfig.Server.CheckInterval,
-			StartTime:     startTime,
-			Uptime:        "",
-			LastReport:    time.Time{},
-		},
-		ShowEventCount: false,
-		EventCount:     0,
-	}
-
-	return dm
 
 }
 

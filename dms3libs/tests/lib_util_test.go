@@ -43,26 +43,11 @@ func TestStripRet(t *testing.T) {
 
 }
 
-func TestSetUptime(t *testing.T) {
-
-	now := time.Now()
-	then := now
-	dms3libs.SetUptime(&then)
-
-	if now.Sub(then).Seconds() < 0.1 {
-		t.Log("Success")
-	} else {
-		t.Error("Test for SetUptime failed")
-	}
-
-}
-
 func TestUptime(t *testing.T) {
 
-	testTime := new(time.Time)
-	dms3libs.SetUptime(testTime)
+	testTime := time.Now()
 	time.Sleep(1000 * time.Millisecond) // force uptime value
-	val := dms3libs.Uptime(*testTime)
+	val := dms3libs.Uptime(testTime)
 
 	if val != "000d:00h:00m:00s" {
 		t.Log("Success, uptime is", val)

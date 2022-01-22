@@ -4,11 +4,9 @@
 
 - Add README about per-network wifi MAC randomization on mobile devices (e.g., Android)
 - Add application versioning (using ldflags/git tag)
-- 
-- FIXME what's the story with InitDashboardClient (client_connector)?
 
 - If a client reports in every 60 minutes, but the server expects sooner based on health status, ???
-- dms2server always first (dashboard)?
+- dms3server always first (dashboard)?
   - separate ordering system option (ordinal numbering)?
 
 - dms3mail: change artwork to reflect email dark mode
@@ -58,6 +56,7 @@
   - Added support to provide dynamic update of device kernels in the dashboard
   - Updated favicon to support png/svg formats
   - remove div in dms3dashboard.html (not needed)
+  - No longer passing in client/server structs into dashboard package (all done within package)
 
 - For dms3mail:
   - Permit larger attachments (or better way to embed the image in the email)

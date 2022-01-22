@@ -3,12 +3,8 @@
 package dms3client
 
 import (
-	"time"
-
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
-
-var startTime time.Time
 
 // clientConfig contains dms3Client configuration settings read from TOML file
 var clientConfig *structSettings

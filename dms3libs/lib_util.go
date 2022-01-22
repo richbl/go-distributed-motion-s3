@@ -53,12 +53,6 @@ func StripRet(value []byte) []byte {
 
 }
 
-// SetUptime sets the uptime for the application process
-//
-func SetUptime(startTime *time.Time) {
-	*startTime = time.Now()
-}
-
 // Uptime returns uptime for the application process
 //
 func Uptime(startTime time.Time) string {
