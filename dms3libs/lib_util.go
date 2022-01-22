@@ -106,6 +106,19 @@ func CheckErr(err error) {
 
 }
 
+// FUTURE USE: GetGitVersion queries the external git runtime for the most recent version tag, returning a
+// string to the caller
+//
+func GetGitVersion() string {
+
+	if res, err := RunCommand("git tag --sort=-version:refname | head -n 1"); err != nil {
+		return "no git version"
+	} else {
+		return string(res[:len(res)-1])
+	}
+
+}
+
 // GetImageDimensions returns the (width, height) of an image passed in
 //
 func GetImageDimensions(imagePath string) (int, int) {

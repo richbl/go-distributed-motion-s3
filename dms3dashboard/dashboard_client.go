@@ -27,9 +27,10 @@ func InitDashboardClient(configPath string, dm *DeviceMetrics) {
 	dashboardClientMetrics = &DeviceMetrics{
 		Platform: DevicePlatform{
 			Type:        dm.Platform.Type,
+			OSName:      dms3libs.DeviceOSName(),
 			Hostname:    dms3libs.DeviceHostname(),
-			Environment: dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform(),
-			Kernel:      dms3libs.DeviceKernel(),
+			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
+			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
 		},
 		Period: DeviceTime{
 			StartTime:     dm.Period.StartTime,
@@ -82,7 +83,7 @@ func sendDashboardData(conn net.Conn) {
 	// update client metrics
 	dashboardClientMetrics.Period.LastReport = time.Now()
 	dashboardClientMetrics.Period.Uptime = dms3libs.Uptime(dashboardClientMetrics.Period.StartTime)
-	dashboardClientMetrics.Platform.Kernel = dms3libs.DeviceKernel()
+	dashboardClientMetrics.Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
 
 	if dashboardClientMetrics.ShowEventCount {
 		dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)

@@ -26,6 +26,7 @@ func Init(configPath string) {
 
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)
+	dms3libs.LogInfo("dms3client started")
 
 	dms3dash.InitDashboardClient(configPath, configDashboardClientMetrics())
 	startClient(clientConfig.Server.IP, clientConfig.Server.Port)
@@ -40,12 +41,20 @@ func configDashboardClientMetrics() *dms3dash.DeviceMetrics {
 
 	dm := &dms3dash.DeviceMetrics{
 		Platform: dms3dash.DevicePlatform{
-			Type: dms3dash.Client,
+			Type:        dms3dash.Client,
+			OSName:      "",
+			Hostname:    "",
+			Environment: "",
+			Kernel:      "",
 		},
 		Period: dms3dash.DeviceTime{
-			StartTime:     startTime,
 			CheckInterval: clientConfig.Server.CheckInterval,
+			StartTime:     startTime,
+			Uptime:        "",
+			LastReport:    time.Time{},
 		},
+		ShowEventCount: false,
+		EventCount:     0,
 	}
 
 	return dm
@@ -62,7 +71,6 @@ func startClient(ServerIP string, ServerPort int) {
 		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
 			dms3libs.LogInfo(err.Error())
 		} else {
-			dms3libs.LogInfo("client started")
 			dms3libs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
 			go processClientRequest(conn)
 		}

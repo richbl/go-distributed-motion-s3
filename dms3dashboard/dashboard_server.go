@@ -60,7 +60,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 		"FormatDateTime": dms3libs.FormatDateTime,
 		"iconStatus":     iconStatus,
 		"iconType":       iconType,
-		"deviceType":     deviceType,
+		"deviceOSName":   deviceOSName,
 		"clientCount":    clientCount,
 		"showEventCount": showEventCount,
 	}
@@ -100,7 +100,7 @@ func (dd *deviceData) updateServerMetrics() {
 		if dd.Devices[i].Platform.Type == Server {
 			dd.Devices[i].Period.LastReport = time.Now()
 			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
-			dd.Devices[i].Platform.Kernel = dms3libs.DeviceKernel()
+			dd.Devices[i].Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
 		} else {
 			// check for and remove dead (non-reporting) client devices
 			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
@@ -214,9 +214,10 @@ func (dm *DeviceMetrics) appendServerMetrics() {
 	serverData := new(DeviceMetrics)
 	*serverData = *dm
 	serverData.Platform.Type = Server
+	serverData.Platform.OSName = dms3libs.DeviceOSName()
 	serverData.Platform.Hostname = dms3libs.DeviceHostname()
-	serverData.Platform.Environment = dms3libs.DeviceOS() + " " + dms3libs.DevicePlatform()
-	serverData.Platform.Kernel = dms3libs.DeviceKernel()
+	serverData.Platform.Environment = dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine)
+	serverData.Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
 
 	dashboardData.Devices = append(dashboardData.Devices, *serverData)
 
@@ -281,6 +282,15 @@ func deviceType(index int) string {
 		return ""
 	}
 
+}
+
+// deviceOSName is an HTML template function that returns a string based on device OS
+//
+func deviceOSName(index int) string {
+
+	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+
+	return dashboardData.Devices[index].Platform.OSName
 }
 
 // clientCount is an HTML template function that returns the current count of dms3clients

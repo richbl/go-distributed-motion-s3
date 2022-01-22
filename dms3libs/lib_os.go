@@ -3,9 +3,22 @@
 package dms3libs
 
 import (
+	"bufio"
 	"os"
-	"runtime"
+	"path/filepath"
+	"regexp"
+	"strings"
 	"syscall"
+)
+
+// DeviceDetails defines the set of available device details available in GetDeviceDetails
+type DeviceDetails int
+
+// types of DMS3 devices
+const (
+	Sysname DeviceDetails = iota
+	Machine
+	Release
 )
 
 // DeviceHostname returns the name of the local machine
@@ -18,21 +31,45 @@ func DeviceHostname() string {
 
 }
 
-// DeviceOS returns the operating system of the local machine
+// DeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of the
+// /etc/os-release file found in most Linux-based distributions
 //
-func DeviceOS() string {
-	return runtime.GOOS
+func DeviceOSName() string {
+
+	result := "OS unknown"
+
+	if file, err := os.Open(filepath.Join(string(filepath.Separator), "etc", "os-release")); err == nil {
+
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
+
+		nameRegx := regexp.MustCompile(`^NAME=(.*)$`)
+		versionIDRegx := regexp.MustCompile(`^VERSION_ID=(.*)$`)
+		osName := ""
+		osVersion := ""
+
+		for scanner.Scan() {
+
+			if res := nameRegx.FindStringSubmatch(scanner.Text()); res != nil {
+				osName = strings.Trim(res[1], `"`)
+			} else if res := versionIDRegx.FindStringSubmatch(scanner.Text()); res != nil {
+				osVersion = strings.Trim(res[1], `"`)
+			}
+
+		}
+
+		if osName != "" && osVersion != "" {
+			result = strings.ToLower(osName + " " + osVersion)
+		}
+
+	}
+
+	return result
 }
 
-// DevicePlatform returns the CPU architecture of the local machine
+// GetDeviceDetails returns device details of the local machine
 //
-func DevicePlatform() string {
-	return runtime.GOARCH
-}
-
-// DeviceKernel returns the current kernel in use on the local machine
-//
-func DeviceKernel() string {
+func GetDeviceDetails(element DeviceDetails) string {
 
 	utsName, error := uname()
 	CheckErr(error)
@@ -40,11 +77,24 @@ func DeviceKernel() string {
 	var len int
 	var buf [65]byte
 
-	for ; utsName.Release[len] != 0; len++ {
-		buf[len] = uint8(utsName.Release[len])
+	switch element {
+	case Sysname:
+		for ; utsName.Sysname[len] != 0; len++ {
+			buf[len] = uint8(utsName.Sysname[len])
+		}
+	case Machine:
+		for ; utsName.Machine[len] != 0; len++ {
+			buf[len] = uint8(utsName.Machine[len])
+		}
+	case Release:
+		for ; utsName.Release[len] != 0; len++ {
+			buf[len] = uint8(utsName.Release[len])
+		}
+	default:
+		LogFatal("invalid DeviceDetails element passed in")
 	}
 
-	return string(buf[:len])
+	return strings.ToLower(string(buf[:len]))
 }
 
 // uname returns the Utsname struct used to query system settings

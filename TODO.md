@@ -2,8 +2,16 @@
 
 ## IN PROGRESS
 
-- Add README about MAC randomization on mobile devices (e.g., Android)
-- Replace easySSH package with more appropriate SCP library (easySSH does not maintain file execute attrib)
+- Add README about per-network wifi MAC randomization on mobile devices (e.g., Android)
+- Add application versioning (using ldflags/git tag)
+- 
+- FIXME what's the story with InitDashboardClient (client_connector)?
+
+- If a client reports in every 60 minutes, but the server expects sooner based on health status, ???
+- dms2server always first (dashboard)?
+  - separate ordering system option (ordinal numbering)?
+
+- dms3mail: change artwork to reflect email dark mode
 
 - For installation procedure:
   1. compile dms3_release folder (go run cmd/compile_dms3/compile_dms3.go)
@@ -42,12 +50,14 @@
 
 - Abstract away Linux OS dependencies (e.g., bash command)
 - Review low-level system calls (does golang provide new/updated wrappers)
+- Remove TOML versions from config files (confusing)
 
 - For dms3dashboard:
   - Added configuration options for client icon status option timeouts (warning, danger, missing)
   - Moved dashboard enable flag (dashboardEnable) from dashboard to server TOML
   - Added support to provide dynamic update of device kernels in the dashboard
   - Updated favicon to support png/svg formats
+  - remove div in dms3dashboard.html (not needed)
 
 - For dms3mail:
   - Permit larger attachments (or better way to embed the image in the email)

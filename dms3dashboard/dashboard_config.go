@@ -54,6 +54,7 @@ type DeviceMetrics struct {
 // DevicePlatform represents the physical device platform environment
 type DevicePlatform struct {
 	Type        dashboardDeviceType
+	OSName      string
 	Hostname    string
 	Environment string
 	Kernel      string

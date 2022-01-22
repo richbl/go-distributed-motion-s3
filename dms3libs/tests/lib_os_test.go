@@ -18,38 +18,26 @@ func TestDeviceHostname(t *testing.T) {
 
 }
 
-func TestDeviceOS(t *testing.T) {
+func TestDeviceOSName(t *testing.T) {
 
-	val := dms3libs.DeviceOS()
+	val := dms3libs.DeviceOSName()
 
 	if val != "" {
-		t.Log("Success, device OS is", val)
+		t.Log("Success, device OS name is", val)
 	} else {
-		t.Error("Failure. Unable to find deviceOS")
+		t.Error("Failure. Unable to find device OS name")
 	}
 
 }
 
-func TestDevicePlatform(t *testing.T) {
+func TestGetDeviceDetails(t *testing.T) {
 
-	val := dms3libs.DevicePlatform()
+	val := dms3libs.GetDeviceDetails(dms3libs.Sysname)
 
 	if val != "" {
 		t.Log("Success, device platform is", val)
 	} else {
-		t.Error("Failure. Unable to find device platform")
-	}
-
-}
-
-func TestDeviceKernel(t *testing.T) {
-
-	val := dms3libs.DeviceKernel()
-
-	if val != "" {
-		t.Log("Success, device kernel is", val)
-	} else {
-		t.Error("Failure. Unable to find device kernel")
+		t.Error("Failure. Unable to find device details")
 	}
 
 }
