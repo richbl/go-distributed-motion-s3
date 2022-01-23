@@ -158,6 +158,12 @@ hr {
     border-bottom: 1px solid #DDDDDD;
 }
 
+.container-fluid > .navbar-header,
+.container > .navbar-header {
+    margin-right: 0px;
+    margin-left:  0px;
+}
+
 .footer {
     background-attachment: fixed;
     position: relative;

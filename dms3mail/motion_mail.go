@@ -145,8 +145,8 @@ func (eventDetails *structEventDetails) generateSMTPEmail() {
 	mail.SetHeader("To", mailConfig.Email.To)
 	mail.SetHeader("Subject", "Motion Detected on Device Client "+eventDetails.clientName+" at "+eventDetails.eventDate)
 
-	headerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3logo.jpg")
-	footerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3github.jpg")
+	headerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3logo.png")
+	footerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3github.png")
 
 	elements := &emailTemplateElements{
 		Header: filepath.Base(headerImage),
