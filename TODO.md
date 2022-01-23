@@ -8,8 +8,6 @@
  
 - Add application versioning (using ldflags/git tag)
 
-- dms3mail: change artwork to reflect email dark mode
-
 - For installation procedure:
   1. compile dms3_release folder (go run cmd/compile_dms3/compile_dms3.go)
   2. edit /dms3_release/config/dms3build/dms3build.toml
@@ -64,6 +62,7 @@
     - Created new tokenized HTML email template
       - Special thanks to https://github.com/TedGoas/Cerberus for template basis
   - Added support to determine percentage of image file changed during event (GetImageDimensions())
+  - Changed artwork to reflect email dark mode (using png w/transparency)
 
 - dms3libs:
   - Added GetImageDimensions() and related test
