@@ -5,12 +5,35 @@
 
 ## Contents
 
-1. [**DMS<sup>3</sup>** Release News](#new-for-release-140)
-2. [What Is **DMS<sup>3</sup>**?](#so-what-is-dmssup3sup-anyway)
-3. [**DMS<sup>3</sup>** Features](#dmssup3sup-features)
-4. [**DMS<sup>3</sup>** Use Cases](#dmssup3sup-use-cases)
+- [Distributed Motion Surveillance Security System (DMS<sup>3</sup>)](#distributed-motion-surveillance-security-system-dmssup3sup)
+  - [Contents](#contents)
+  - [**New for Release 1.4.0**](#new-for-release-140)
+    - [**DMS<sup>3</sup>Mail**](#dmssup3supmail)
+    - [**DMS<sup>3</sup>Dashboard**](#dmssup3supdashboard)
+    - [**DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**](#dmssup3supserver--dmssup3supclient)
+  - [What Is **DMS<sup>3</sup>**?](#what-is-dmssup3sup)
+  - [**DMS<sup>3</sup>** Features](#dmssup3sup-features)
+    - [**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Server**, and **DMS<sup>3</sup>Dashboard** Features](#dmssup3supclient-dmssup3supserver-and-dmssup3supdashboard-features)
+    - [**DMS<sup>3</sup>Mail** Features](#dmssup3supmail-features)
+    - [Motion Detection Application Support](#motion-detection-application-support)
+    - [Support for "Smart" and "Less Smart" Device Clients](#support-for-smart-and-less-smart-device-clients)
+  - [**DMS<sup>3</sup>** Use Cases](#dmssup3sup-use-cases)
+    - ["Leaving Home, Coming Home"](#leaving-home-coming-home)
+    - ["Nighttime Surveillance"](#nighttime-surveillance)
+  - [**DMS<sup>3</sup>** Components](#dmssup3sup-components)
+  - [**DMS<sup>3</sup>** Architecture](#dmssup3sup-architecture)
+  - [How **DMS<sup>3</sup>** Works](#how-dmssup3sup-works)
+    - [**DMS<sup>3</sup>Server** Operation](#dmssup3supserver-operation)
+    - [**DMS<sup>3</sup>Client** Operation](#dmssup3supclient-operation)
+      - [Running on Smart Device Clients (SDCs)](#running-on-smart-device-clients-sdcs)
+      - [Running with Less Smart Device Clients (LSDCs)](#running-with-less-smart-device-clients-lsdcs)
+    - [**DMS<sup>3</sup>Client** / **DMS<sup>3</sup>Server** Work Flow](#dmssup3supclient--dmssup3supserver-work-flow)
+    - [**DMS<sup>3</sup>Mail** Operation](#dmssup3supmail-operation)
+  - [**DMS<sup>3</sup>** Requirements](#dmssup3sup-requirements)
+  - [**DMS<sup>3</sup>** Installation](#dmssup3sup-installation)
+  - [License](#license)
 
-## New for Release 1.4.0
+## **New for Release 1.4.0**
 
 Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the surveillance security system that so many people have relied upon even more relevant, stable and secure. 
 
@@ -74,7 +97,7 @@ New for this release are the following additional configuration options for **DM
   - System-level daemon service calls are now abstracted away to work on across broader array of Unix-like operating systems
   - **DMS<sup>3</sup>Server** listening port moved from the registered port range into the more appropriate dynamic/private range
 
-## What Is DMS<sup>3</sup>?
+## What Is **DMS<sup>3</sup>**?
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/150858539-e67fdf19-7ab8-4c82-9c86-08afbd7c64e5.png)
 
@@ -90,7 +113,7 @@ New for this release are the following additional configuration options for **DM
 - Optionally, the **DMS<sup>3</sup>Server** can display the current state of all the **DMS<sup>3</sup>Clients** visually through the use of the the **DMS<sup>3</sup>Dashboard** component
 - Works cooperatively with legacy "less smart" device clients such as IP cameras (wired or WiFi), webcams, and other USB camera devices
 
-## DMS<sup>3</sup> Features
+## **DMS<sup>3</sup>** Features
 
 Here's a list of some of the more outstanding features of **DMS<sup>3</sup>**:
 
@@ -151,7 +174,7 @@ While **DMS<sup>3</sup>** is primarily responsible for monitoring user proxies a
   - IP cameras (e.g., the [Nest Cam](https://nest.com/cameras/ "Google Nest")), either wired or wireless
   - Webcams, typically using USB connections and run from a laptop or desktop computer
 
-## DMS<sup>3</sup> Use Cases
+## **DMS<sup>3</sup>** Use Cases
 
 ### "Leaving Home, Coming Home"
 
@@ -167,7 +190,7 @@ In addition to sensing user proxies, **DMS<sup>3</sup>** can be configured to ke
 
 This feature is particularly useful for nighttime surveillance, when users may be asleep and/or smartphones may be turned off. For example, **DMS<sup>3</sup>** can be configured to turn a surveillance system on at 2330, and stay on until 0500 the next morning. During this time, **DMS<sup>3</sup>** will remain operational and monitor (and report) surveillance events as they occur.
 
-## 4. DMS<sup>3</sup> Components
+## **DMS<sup>3</sup>** Components
 
 **DMS<sup>3</sup>** is organized into the following application components:
 
@@ -180,7 +203,7 @@ Optional for smart device clients configured to use the [Motion](https://motion-
 
 - **DMS<sup>3</sup>Mail**: a separate, configurable **DMS<sup>3</sup>** component for generating and sending an email in real-time whenever a client running [Motion](https://motion-project.github.io/ "Motion") generates a significant motion-related event
 
-## 5.0 DMS<sup>3</sup> Architecture
+## **DMS<sup>3</sup>** Architecture
 
 **DMS<sup>3</sup>** is patterned after a [client server model](https://en.wikipedia.org/wiki/Client%E2%80%93server_model "client server model"), where **DMS<sup>3</sup>Server** is centrally responsible for the logic of enabling/disabling the video surveillance system, while each participating smart device client is responsible for starting/stopping the locally-installed motion detection application. For less smart device clients, the processing of video stream data is passed over the wire to the server for processing and eventual system response and/or user notification.
 
@@ -188,7 +211,7 @@ In the example presented at the start of this document, one IP camera device, on
 
 The webcam device and the IP camera device--both less smart device clients, incapable of on-board stream processing--must pass raw stream data along to a device proxy running **DMS<sup>3</sup>Client**, which then applies motion detection processing on the incoming video streams.
 
-## 6.0 How DMS<sup>3</sup> Works
+## How **DMS<sup>3</sup>** Works
 
 ### **DMS<sup>3</sup>Server** Operation
 
@@ -237,7 +260,7 @@ The syntax for these [Motion](https://motion-project.github.io/ "Motion") comman
 
 Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an optional image file or video clip capturing the surveillance event of interest.
 
-## 7. DMS<sup>3</sup> Requirements
+## **DMS<sup>3</sup>** Requirements
 
 - A Unix-like operating system installed on the server and smart device client (SDC) endpoints
 - While **DMS<sup>3</sup>** was written and tested under Linux (Ubuntu 17.04+, and various Debian and Raspian releases), there should be no reason why **DMS<sup>3</sup>** won't work under other Linux distributions
@@ -253,14 +276,14 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
   - [ping](http://en.wikipedia.org/wiki/Ping_(networking_utility) "ping"): ICMP network packet echo/response tool
   - [pkill](https://en.wikipedia.org/wiki/Pkill "pkill"): globally search a regular expression and send signals to a process
 
-## 8. DMS<sup>3</sup> Installation
+## **DMS<sup>3</sup>** Installation
 
 **DMS<sup>3</sup>** provides two separate installation documents:
 
 - [Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/QUICK_INSTALL.md): uses the available `dms3build` build tools and installer to provided automated installation of **DMS<sup>3</sup>** components across participating hardware devices
 - [Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md): uses project sources to first compile for specific hardware device platforms, and then manually install **DMS<sup>3</sup>** components
 
-## 9. License
+## License
 
 The MIT License (MIT)
 
