@@ -1,11 +1,58 @@
 # Distributed Motion Surveillance Security System (DMS<sup>3</sup>)
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3/tree/master)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
+[![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
 
-## NEW! for Release 1.3.0 - **DMS<sup>3</sup>Dashboard**
+## New for Release 1.4.0
 
-![dms3_dashboard](https://user-images.githubusercontent.com/10182110/33868591-bb0e2608-deb8-11e7-802b-3f30a71683fd.png
+Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the surveillance security system that so many people have relied upon even more stable and secure. 
+
+Upgrades and improvements to **DMS<sup>3</sup>** components include:
+
+### **DMS<sup>3</sup>Mail**
+
+![dms3mail](https://user-images.githubusercontent.com/10182110/150719391-a562ac4a-154e-4dad-b4bc-6c88f4d2b425.png)
+
+- The **DMS<sup>3</sup>Mail** component gets a significant makeover to comply with ongoing changes and strategies in managing advanced HTML5 email templates to work with myriad end-user email applications. Upgrades to **DMS<sup>3</sup>Mail** include:
+  - **NEW!** A much-anticipated and fully configurable HTML5 email template, based on the very popular [Cerberus responsive email patterns](https://github.com/TedGoas/Cerberus). For use in **DMS<sup>3</sup>**, we integrated the [Go HTML/template package](https://pkg.go.dev/html/template) into the Cerberus fluid template, very similar to what we did when creating the **DMS<sup>3</sup>Dashboard** component. This new responsive email template now presents a more complete email message to the end user, with the following new functionality:
+      - **NEW!** Larger image attachments are now integrated directly into the email body (versus as an attachment)
+      - **NEW!** More complete information now presented in the email for each security event, including the hostname of the **DMS<sup>3</sup> Client** device component sourcing the event.
+      - **NEW!** As well, the percentage of changes (in pixels) is now provided, thanks to a new *GetImageDimensions()* routine that provides image details as **DMS<sup>3</sup>Mail** processes the security event.
+      - As part of this new progressive email template, email "dark mode" is now handled automatically, making it easier to view email on mobile platforms
+
+### **DMS<sup>3</sup>Dashboard**
+
+- Added additional configuration options for the dashboard template
+  - **NEW!** Configurable client icon status option timeouts (warning, danger, missing) visually provide a status of a *DMS<sup>3</sup>**'s clients health
+  - **NEW!** Option to make **DMS<sup>3</sup>Server** always first in the set of **DMS<sup>3</sup>Client** devices displayed in the dashboard
+  - **NEW!** Option to alphabetically sort **DMS<sup>3</sup>** devices displayed in the dashboard
+  - **NEW!** Now reporting a more comprehensive, and dynamically updated, list of **DMS<sup>3</sup>** device attributes, including:
+    - Operating system name and version release (*e.g.,* Raspbian GNU/Linux 10)
+    - Hardware platform (*e.g.,* Linux ARM7l)
+    - Kernel release (*e.g.,* 5.10.63-v7+)
+  - Various upgrades to the dashboard HTML template, including revisions to the template display, and updates to use the new **DMS<sup>3</sup>** logo
+
+### **DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**
+  
+- Both of these **DMS<sup>3</sup>** components received a significant upgrade that includes:
+  - A revision to the **DMS<sup>3</sup>** component codebase, moving from Go release 1.7 to Go 1.17, bringing with this language release update numerous new low-level packages and platform performance optimizations
+  - The addition of the ARM8 platform type (great news for Raspberry Pi and related SBC users), automatically incorporated into our native **DMS<sup>3</sup>Build** process
+    - As part of the **DMS<sup>3</sup>Build** process, the remote installers have been rewritten to abstract away specific Linux dependencies
+  - All TOML configuration files updated from TOML 0.4.0 to TOML 1.0.0
+  - Revised overall project structure to reflect idiomatic Go principles
+    - Commands now organized into a *cmds* folder, while configuration files are now managed in a *config* folder
+    - Project moved from use of the *gocode* process to using *gopls*
+    - Project migration over to the use of [Go modules](https://go.dev/ref/mod) 
+  - System-level daemon service calls are now abstracted away to work on across broader array of Unix-like operating systems
+  - **DMS<sup>3</sup>Server** listening port moved from the registered port range into the more appropriate dynamic/private range
+
+
+fixme  >> ENDED HERE
+
+
+## **DMS<sup>3</sup>Dashboard**
+
+![dms3_dashboard](https://user-images.githubusercontent.com/10182110/150717902-8eca508a-f107-4b24-87e6-022dde20196a.png
 )
 
 Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The new **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** component and provide regularly-updated information for all **DMS<sup>3</sup>Client** components with device metrics including:
