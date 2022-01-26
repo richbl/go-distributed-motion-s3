@@ -1,9 +1,12 @@
-# Distributed-Motion-S3 (DMS3) LIBS configuration file
+# Distributed-Motion-S3 DMS3Libs Component Configuration File
+# 1.4.0
 
-# SysCommands provide a location mapping of required system commands
 [SysCommands]
+
+  # SysCommands provide a location mapping of required system commands used by various DMS3
+  # components
+  #
   APLAY = "/usr/bin/aplay"
-  ARP = "/usr/sbin/arp"      # deprecated: 'ip' command used instead
   BASH = "/usr/bin/bash"
   CAT = "/usr/bin/cat"
   ENV = "/usr/bin/env"

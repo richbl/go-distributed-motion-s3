@@ -1,18 +1,22 @@
-# Distributed-Motion-S3 (DMS3) CLIENT configuration file
+# Distributed-Motion-S3 DMS3Client Component Configuration File
+# 1.4.0
 
 [Server]
-  # IP is the address on which the dms server is running
+  # IP is the address on which the DMS3Server is running
+  #
   IP = "10.10.10.9"
 
-  # Port is the port on which the dms server is running
+  # Port is the port on which the DMS3Server is running
+  #
   Port = 49300
 
-  # CheckInterval is the interval (in seconds) for checking the dms server
+  # CheckInterval is the interval (in seconds) for checking with the DMS3Server
+  #
   CheckInterval = 15
 
 [Logging]
-  # LogLevel sets the log levels for application logging using the following table
-  #
+
+  # LogLevel sets the log levels for application logging using the following table:
   # Note that DEBUG > INFO > FATAL, so DEBUG includes all log levels
   #
   #  0 - OFF, no logging
@@ -22,23 +26,20 @@
   #
   LogLevel = 2
 
-  # LogDevice determines to what device logging should be set using the following table:
+  # LogDevice determines to what output logging should be set using the following table:
+  # Ignored if LogLevel == 0
   #
   #  0 - STDOUT (terminal)
   #  1 - log file
   #
-  # Ignored if LogLevel == 0
-  #
   LogDevice = 0
 
   # LogFilename is the logging filename
-  #
   # Ignored if LogLevel == 0 or LogDevice == 0
   #
   LogFilename = "dms3client.log"
 
   # LogLocation is the location of logfile (absolute path; must have r/w permissions)
-  #
   # Ignored if LogLevel == 0 or LogDevice == 0
   #
   LogLocation = "/var/log/dms3"

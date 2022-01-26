@@ -1,4 +1,5 @@
-# Distributed-Motion-S3 (DMS3) BUILD configuration file
+# Distributed-Motion-S3 DMS3Build Component Configuration File
+# 1.4.0
 
 [Clients]
 

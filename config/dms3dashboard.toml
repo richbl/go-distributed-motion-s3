@@ -1,44 +1,47 @@
-# Distributed-Motion-S3 (DMS3) Dashboard configuration file
+# Distributed-Motion-S3 DMS3Dashboard Component Configuration File
+# 1.4.0
 
 [Server]
 
-  # Configuration elements for DMS3 server
-  #
-  # These elements are ignored if Server.EnableDashboard == false (in dms3server.toml)
+  # Configuration elements for DMS3Server
+  # Ignored if Server.EnableDashboard == false (set in dms3server.toml)
 
-  # Port is the port on which to run the dashboard server
+  # Port is the port on which to run the DMS3Dashboard server
+  #
   Port = 8081
 
-  # Filename of HTML dashboard template file
+  # Filename of DMS3Dashboard HTML dashboard template file
+  #
   Filename = "dms3dashboard.html"
 
   # FileLocation is where the HTML dashboard template file is located
-  # By default, the value is "" (empty string), which sets to the path of the release dashboard 
+  #
+  # By default, the value is "" (empty string), which sets to the path of the release dashboard
   # folder (e.g., /etc/distributed-motion-s3/dms3dashboard/dms3dashboard.html)
   # Any other filepath/filename will be used if valid
   #
   FileLocation = ""
 
   # Dashboard title
+  #
   Title = "DMS3 Dashboard"
 
-  # Enables (true) or disables (false) to alphabetically re-sort of devices displayed in the
+  # Enables (true) or disables (false) to alphabetically re-sort devices displayed in the
   # dashboard template
   #
   ReSort = true
 
-  # Enables (true) or disables (false) to make dms3server as the first of all devices displayed
+  # Enables (true) or disables (false) to make DMS3Server the first of all devices displayed
   # in the dashboard template
-  #
   # Ignored if ReSort == false
   #
   ServerFirst = true
 
   # Device status identifies the stages when a device is no longer reporting status updates
-  # to the dashboard server. Status health is represented graphically on the dashboard.
+  # to the dashboard server
   #
-  # Device status values are defined as a multiplier of Server.CheckInterval (default = 15 seconds)
-  # declared/defined in the dms3server.toml file.
+  # Device status values are defined as a multiplier of Server.CheckInterval
+  # (default = 15 seconds) declared/defined in the dms3server.toml file
   #
   # If the device check interval for the dashboard server is every 15 seconds (default), and
   # the device status multiplier for caution (DeviceStatus.Caution) is 200 (default), then the
@@ -55,13 +58,13 @@
 
 [Client]
 
-  # Configuration elements for DMS3 client
-
-  # ImagesFolder is the location of where the motion detection application stores its
-  # motion-triggered image/movie files on the client (e.g., should match the target_dir parameter
-  # used in the Motion application)
-  # Used in determining the client "events" metrics, presented through the dashboard
+  # Configuration elements for DMS3Client
   #
-  # If the value is "" (empty string), this value is disabled (not reported) on the dashboard
+  # ImagesFolder is the location of where the motion detection application stores its
+  # motion-triggered image/movie files on the client (e.g., matching the target_dir parameter
+  # used in the Motion application)
+  #
+  # Used in determining the client "events" metric, presented through the dashboard
+  # If the value is "" (empty string), this metric is disabled (not reported) on the dashboard
   #
   ImagesFolder = "/home/richbl/motion_pics"

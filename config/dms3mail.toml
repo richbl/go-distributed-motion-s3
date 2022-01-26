@@ -1,47 +1,49 @@
-# Distributed-Motion-S3 (DMS3) MAIL configuration file
+# Distributed-Motion-S3 DMS3Mail Component Configuration File
+# 1.4.0
 
 # Filename of HTML email template file
+#
 Filename = "dms3mail.html"
 
 # FileLocation is where the HTML email template file is located
-# By default, the value is "" (empty string), which sets to the path of the release email 
+# By default, the value is "" (empty string), which sets the path to the release email
 # folder (e.g., /etc/distributed-motion-s3/dms3mail)
-# Any other filepath/filename will be used if valid
+#
+# Any other filepath/filename will be used, if valid
 #
 FileLocation = ""
 
 [Email]
+
   # EmailFrom is the email sender
+  #
   From = "dms3mail@businesslearninginc.com"
 
   # EmailTo is the email recipient
+  #
   To = "user@gmail.com"
 
 [SMTP]
-  # SMTPAddress is the SMTP address of the recipient
+
+  # SMTPAddress is the host of the SMTP server
+  #
   Address = "smtp.gmail.com"
 
-  # SMTPPort is the port used by the recipient email account
+  # SMTPPort is the port of the SMTP server
+  #
   Port = 587
 
-  # SMTPDomain is the receiving email domain
-  Domain = "localhost"
-
-  # SMTPUsername is the username of the recipient
+  # SMTPUsername is the username to use to authenticate to the SMTP server
+  #
   Username = "user"
 
-  # SMTPPassword is the password of the recipient
+  # SMTPPassword is the password to use to authenticate to the SMTP server
+  #
   Password = "password"
 
-  # SMTPAuthentication is the email server authentication scheme
-  Authentication = "plain"
-
-  # SMTPEnableStartTLSAuto indicates whether TLS is used
-  EnableStartTLSAuto = true
-
 [Logging]
-  # LogLevel sets the log levels for application logging using the following table
-  #
+
+  # LogLevel sets the log levels for application logging using the following table:
   # Note that DEBUG > INFO > FATAL, so DEBUG includes all log levels
   #
   #  0 - OFF, no logging
@@ -52,22 +54,19 @@ FileLocation = ""
   LogLevel = 1
 
   # LogDevice determines to what device logging should be set using the following table:
+  # Ignored if LogLevel == 0
   #
   #  0 - STDOUT (terminal)
   #  1 - log file
   #
-  # Ignored if LogLevel == 0
-  #
   LogDevice = 0
 
   # LogFilename is the logging filename
-  #
   # Ignored if LogLevel == 0 or LogDevice == 0
   #
   LogFilename = "dms3mail.log"
 
   # LogLocation is the location of logfile (absolute path; must have r/w permissions)
-  #
   # Ignored if LogLevel == 0 or LogDevice == 0
   #
   LogLocation = "/var/log/dms3"
