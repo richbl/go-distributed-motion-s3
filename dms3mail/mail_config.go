@@ -24,13 +24,10 @@ type structEmail struct {
 
 // SMTP mailer parameters
 type structSMTP struct {
-	Address            string
-	Port               int
-	Domain             string
-	Username           string
-	Password           string
-	Authentication     string
-	EnableStartTLSAuto bool
+	Address  string
+	Port     int
+	Username string
+	Password string
 }
 
 // event details to be sent via email
