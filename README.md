@@ -93,8 +93,6 @@ New for this release are the following additional configuration options for **DM
 
 ## **DMS<sup>3</sup>** Features
 
-Here's a list of some of the more outstanding features of **DMS<sup>3</sup>**:
-
 ### **DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Server**, and **DMS<sup>3</sup>Dashboard** Features
 
 - Support for the **DMS<sup>3</sup>Dashboard** component, allowing for the easy, visual monitoring of all **DMS<sup>3</sup>Client** devices managed by a **DMS<sup>3</sup>Server** component
