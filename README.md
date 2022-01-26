@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
 
 ## Contents
 
@@ -30,6 +31,7 @@
     - [**DMS<sup>3</sup>Client** / **DMS<sup>3</sup>Server** Work Flow](#dmssup3supclient--dmssup3supserver-work-flow)
     - [**DMS<sup>3</sup>Mail** Operation](#dmssup3supmail-operation)
   - [**DMS<sup>3</sup>** Requirements](#dmssup3sup-requirements)
+    - [Wifi MAC Randomization Techniques](#wifi-mac-randomization-techniques)
   - [**DMS<sup>3</sup>** Installation](#dmssup3sup-installation)
   - [License](#license)
 
@@ -96,7 +98,8 @@ New for this release are the following additional configuration options for **DM
     - Project migration over to the use of [Go modules](https://go.dev/ref/mod) 
   - System-level daemon service calls are now abstracted away to work on across broader array of Unix-like operating systems
   - **DMS<sup>3</sup>Server** listening port moved from the registered port range into the more appropriate dynamic/private range
-
+  - All [TOML](https://github.com/toml-lang/toml) configuration files revved and validated ([tomlv](https://github.com/BurntSushi/toml/tree/master/cmd/tomlv))
+ to 1.0.0
 ## What Is **DMS<sup>3</sup>**?
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/150858539-e67fdf19-7ab8-4c82-9c86-08afbd7c64e5.png)
@@ -262,6 +265,7 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
 
 ## **DMS<sup>3</sup>** Requirements
 
+- In order to compile the **DMS<sup>3</sup>** project components, an operational Go environment is required (this version of **DMS<sup>3</sup>** was developed using Go 1.17)
 - A Unix-like operating system installed on the server and smart device client (SDC) endpoints
 - While **DMS<sup>3</sup>** was written and tested under Linux (Ubuntu 17.04+, and various Debian and Raspian releases), there should be no reason why **DMS<sup>3</sup>** won't work under other Linux distributions
 - A motion detection application, such as [Motion](https://motion-project.github.io/ "Motion"), correctly installed and configured with appropriate video devices configured on all smart device clients
@@ -276,12 +280,17 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
   - [ping](http://en.wikipedia.org/wiki/Ping_(networking_utility) "ping"): ICMP network packet echo/response tool
   - [pkill](https://en.wikipedia.org/wiki/Pkill "pkill"): globally search a regular expression and send signals to a process
 
+### Wifi MAC Randomization Techniques
+
+At its core, **DMS<sup>3</sup>** sensing relies on the concept of a user proxy. In this context, *a user proxy is any device representing a user that can be sensed on a home network*. A smartphone is an excellent user proxy, assuming that a user's smartphone is active on the home network when the user is "at home," and drops from the network when the user leaves and is then "not at home." **DMS<sup>3</sup>** performs this sensing by searching the end user's network for MAC addresses registered during the configuration of the **DMS<sup>3</sup>Server** component (in the `dms3server.toml` file). 
+
+Historically, MAC addresses have always represented, 1-for-1, the underlying hardware. However, more recently, and as a broader privacy policy, some device vendors now provide users the option to have their device generate MAC addresses randomly for over-the-air communications. This feature can disrupt the sensing services used by the **DMS<sup>3</sup>Server** component.
+
+As a result, it's important to review your smartphone (or other user proxies) privacy policies and configuration options to disable this feature, or reconfigure it accordingly.
+
 ## **DMS<sup>3</sup>** Installation
 
-**DMS<sup>3</sup>** provides two separate installation documents:
-
-- [Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/QUICK_INSTALL.md): uses the available `dms3build` build tools and installer to provided automated installation of **DMS<sup>3</sup>** components across participating hardware devices
-- [Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md): uses project sources to first compile for specific hardware device platforms, and then manually install **DMS<sup>3</sup>** components
+A separate installation document is [available here](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md).
 
 ## License
 

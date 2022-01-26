@@ -1,154 +1,286 @@
 # Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3)](https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3)
+[![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
+
+## Contents
+
+- [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](#distributed-motion-surveillance-security-system-dmssup3sup-manual-installation)
+  - [Contents](#contents)
+  - [Overview](#overview)
+    - [Installation](#installation)
+  - [Download/Clone the **DMS<sup>3</sup>** Project](#downloadclone-the-dmssup3sup-project)
+  - [Compile **DMS<sup>3</sup>**](#compile-dmssup3sup)
+  - [Configure **DMS<sup>3</sup>** Components](#configure-dmssup3sup-components)
+    - [**DMS<sup>3</sup>Server** Configuration](#dmssup3supserver-configuration)
+      - [1. Edit **DMS<sup>3</sup>** Configuration Files](#1-edit-dmssup3sup-configuration-files)
+        - [Elements of the `dms3server.toml` File](#elements-of-the-dms3servertoml-file)
+        - [Elements of the `dms3dashboard.toml` File for the **DMS<sup>3</sup>Server**](#elements-of-the-dms3dashboardtoml-file-for-the-dmssup3supserver)
+        - [Elements of the `dms3libs.toml` File](#elements-of-the-dms3libstoml-file)
+      - [2. Optional: Configure the Server to Run the **DMS<sup>3</sup>Server** component as a Daemon "computing daemon")](#2-optional-configure-the-server-to-run-the-dmssup3supserver-component-as-a-daemon)
+    - [**DMS<sup>3</sup>Client** Configuration](#dmssup3supclient-configuration)
+      - [1. Edit **DMS<sup>3</sup>** Configuration Files](#1-edit-dmssup3sup-configuration-files-1)
+        - [Elements of the `dms3client.toml` File](#elements-of-the-dms3clienttoml-file)
+        - [Elements of the `dms3dashboard.toml` File for the **DMS<sup>3</sup>Client**](#elements-of-the-dms3dashboardtoml-file-for-the-dmssup3supclient)
+        - [Elements of the `dms3libs.toml` File](#elements-of-the-dms3libstoml-file-1)
+        - [Elements of the `dms3mail.toml` File](#elements-of-the-dms3mailtoml-file)
+    - [**DMS<sup>3</sup>**  Smart Device Client (SDC) Motion Detection Application Configuration](#dmssup3sup--smart-device-client-sdc-motion-detection-application-configuration)
+  - [Install **DMS<sup>3</sup>** Components](#install-dmssup3sup-components)
+    - [**DMS<sup>3</sup>Server** Installation](#dmssup3supserver-installation)
+    - [**DMS<sup>3</sup>Client** Installation](#dmssup3supclient-installation)
+    - [**DMS<sup>3</sup>Mail** Installation (Optional)](#dmssup3supmail-installation-optional)
+  - [Confirm the Installation of a Motion Detection Application on All SDCs](#confirm-the-installation-of-a-motion-detection-application-on-all-sdcs)
+  - [Optional: Integrate **DMS<sup>3</sup>Mail** with Motion on the Device Client](#optional-integrate-dmssup3supmail-with-motion-on-the-device-client)
+  - [Run the **DMS<sup>3</sup>** Components](#run-the-dmssup3sup-components)
+    - [Running Components as Executables](#running-components-as-executables)
+    - [Optional: Running  Components as Services](#optional-running--components-as-services)
+    - [Optional: View the **DMS<sup>3</sup>Dashboard** Component](#optional-view-the-dmssup3supdashboard-component)
+  - [6. Configuration Testing & Troubleshooting](#6-configuration-testing--troubleshooting)
+    - [System Testing **DMS<sup>3</sup>**](#system-testing-dmssup3sup)
+    - [Unit Testing the **DMS<sup>3</sup>Libs** Component](#unit-testing-the-dmssup3suplibs-component)
+  - [**Appendix A**: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)](#appendix-a-running-dmssup3sup-with-less-smart-device-clients-lsdcs)
+
+## Overview
 This procedure describes how to manually install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
 
-For details on how to quickly install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** using the included `dms3build` process, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/QUICK_INSTALL.md) documentation.
+For details on how to quickly install **DMS<sup>3</sup>** using the **DMS<sup>3</sup>Build** process, read the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Quick Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/QUICK_INSTALL.md) documentation.
 
-## Installation Overview
+### Installation
 
 The installation of **DMS<sup>3</sup>** is comprised of two steps:
 
-1. The installation and configuration of **DMS<sup>3</sup>** components on participating hardware devices:
+1. The installation and configuration of the following **DMS<sup>3</sup>** components on participating hardware devices:
 
-   | Component | Install Location | Required? |
-   | :------------- | :------------- | :------------- |
-   | DMS<sup>3</sup>Server | server | Yes |
-   | DMS<sup>3</sup>Client | smart device clients (SDCs) | Yes |
-   | DMS<sup>3</sup>Libs | server, SDCs | Yes |
-   | DMS<sup>3</sup>Dashboard | server | Yes (but can be disabled) |
-   | DMS<sup>3</sup>Mail | SDCs | Optional(*) |
+   | Component                    | Install Location                                                                         | Required?                 |
+   | :--------------------------- | :--------------------------------------------------------------------------------------- | :------------------------ |
+   | **DMS<sup>3</sup>Server**    | Server (*e.g.*, headless server or desktop PC)                                           | Yes                       |
+   | **DMS<sup>3</sup>Client**    | Smart device client (SDC), such as a Raspberry Pi or similar single-board computer (SBC) | Yes                       |
+   | **DMS<sup>3</sup>Libs**      | Server, SDCs                                                                             | Yes                       |
+   | **DMS<sup>3</sup>Dashboard** | Server                                                                                   | Yes (but can be disabled) |
+   | **DMS<sup>3</sup>Mail**      | SDCs                                                                                     | Optional(*)               |
 
       > (*) if using the [Motion](https://motion-project.github.io/) motion detection application, the **DMS<sup>3</sup>Mail** component can be installed on the SDC to manage real-time email notification of surveillance events
 
 1. The installation and configuration of a motion detection application, such as [Motion](https://motion-project.github.io/ "Motion") or the [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") Library
 
-## 1. Download/Clone the **DMS<sup>3</sup>** Project
+## Download/Clone the **DMS<sup>3</sup>** Project
 
-Use the `clone or download` button on the [Github project main page](https://github.com/richbl/go-distributed-motion-s3), and clone the project locally using git:
+Use the option to either clone or download the project on the [Github project main page](https://github.com/richbl/go-distributed-motion-s3), and setup the project locally using git. Cloning would look like this:
 
 ```text
 git clone https://github.com/richbl/go-distributed-motion-s3
 ```
 
-## 2. Compile **DMS<sup>3</sup>**
+## Compile **DMS<sup>3</sup>**
 
-The **DMS<sup>3</sup>** project sources must first be compiled into binary executables before installation. To compile all components of the **DMS<sup>3</sup>** project, run `compile_dms3` (i.e., `go run compile_dms3.go`).
+The **DMS<sup>3</sup>** project sources must first be compiled into binary executables--one for each hardware platform--before installation. To compile all components of the **DMS<sup>3</sup>** project, run the `compile_dms3` command located in the `cmd` folder in the project root (i.e., `go run cmd/compile_dms3/compile_dms3.go`).
 
 The result of a successful **DMS<sup>3</sup>** project compile is the creation of a `dms3_release` folder. The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 
 ```shell
-   dms3_release
-   ├── dms3build
-   │   └── dms3build.toml
-   ├── dms3client
-   │   ├── dms3client.service
-   │   └── dms3client.toml
-   ├── dms3dashboard
-   │   ├── assets
-   │   │   ├── css
-   │   │   │   ├── bootstrap.min.css
-   │   │   │   ├── icomoon-icons.css
-   │   │   │   └── paper-dashboard.css
-   │   │   ├── fonts
-   │   │   │   ├── icomoon.eot
-   │   │   │   ├── icomoon.svg
-   │   │   │   ├── icomoon.ttf
-   │   │   │   └── icomoon.woff
-   │   │   └── img
-   │   │       └── favicon.ico
-   │   ├── dashboard.html
-   │   └── dms3dashboard.toml
-   ├── dms3libs
-   │   └── dms3libs.toml
-   ├── dms3mail
-   │   └── dms3mail.toml
-   ├── dms3server
-   │   ├── dms3server.service
-   │   ├── dms3server.toml
-   │   └── media
-   │       ├── motion_start.wav
-   │       └── motion_stop.wav
-   ├── linux_amd64
-   │   ├── dms3client_remote_installer
-   │   ├── dms3server_remote_installer
-   │   ├── dms3client
-   │   ├── dms3mail
-   │   ├── dms3server
-   │   └── install_dms3
-   ├── linux_arm6
-   │   ├── dms3client_remote_installer
-   │   ├── dms3server_remote_installer
-   │   ├── dms3client
-   │   ├── dms3mail
-   │   ├── dms3server
-   │   └── install_dms3
-   └── linux_arm7
-       ├── dms3client_remote_installer
-       ├── dms3server_remote_installer
-       ├── dms3client
-       ├── dms3mail
-       ├── dms3server
-       └── install_dms3
-
+dms3_release/
+├── cmd
+│   ├── install_dms3
+│   ├── linux_amd64
+│   │   ├── dms3client
+│   │   ├── dms3client_remote_installer
+│   │   ├── dms3mail
+│   │   ├── dms3server
+│   │   └── dms3server_remote_installer
+│   ├── linux_arm6
+│   │   ├── dms3client
+│   │   ├── dms3client_remote_installer
+│   │   ├── dms3mail
+│   │   ├── dms3server
+│   │   └── dms3server_remote_installer
+│   ├── linux_arm7
+│   │   ├── dms3client
+│   │   ├── dms3client_remote_installer
+│   │   ├── dms3mail
+│   │   ├── dms3server
+│   │   └── dms3server_remote_installer
+│   └── linux_arm8
+│       ├── dms3client
+│       ├── dms3client_remote_installer
+│       ├── dms3mail
+│       ├── dms3server
+│       └── dms3server_remote_installer
+└── config
+    ├── dms3build
+    │   └── dms3build.toml
+    ├── dms3client
+    │   ├── dms3client.service
+    │   └── dms3client.toml
+    ├── dms3dashboard
+    │   ├── assets
+    │   │   ├── css
+    │   │   │   ├── bootstrap.min.css
+    │   │   │   ├── icomoon-icons.css
+    │   │   │   └── paper-dashboard.css
+    │   │   ├── fonts
+    │   │   │   ├── icomoon.eot
+    │   │   │   ├── icomoon.svg
+    │   │   │   ├── icomoon.ttf
+    │   │   │   └── icomoon.woff
+    │   │   └── img
+    │   │       ├── dms3logo.png
+    │   │       ├── favicon.png
+    │   │       └── favicon.svg
+    │   ├── dms3dashboard.html
+    │   └── dms3dashboard.toml
+    ├── dms3libs
+    │   └── dms3libs.toml
+    ├── dms3mail
+    │   ├── assets
+    │   │   └── img
+    │   │       ├── dms3github.png
+    │   │       └── dms3logo.png
+    │   ├── dms3mail.html
+    │   └── dms3mail.toml
+    └── dms3server
+        ├── dms3server.service
+        ├── dms3server.toml
+        └── media
+            ├── motion_start.wav
+            └── motion_stop.wav
 ```
 
-## 4. Configure **DMS<sup>3</sup>** Components
+## Configure **DMS<sup>3</sup>** Components
 
 All **DMS<sup>3</sup>** components are configured through an associated text-based configuration file called a TOML ([Tom's Obvious, Minimal Language](https://github.com/toml-lang/toml)) file, and a common file extension, `*.toml`. This file is very minimal in format, but well-documented with many defaults preset, so should be generally self-explanatory. The table below identifies the TOML file with the component:
 
-   | Component | TOML File Location |
-   | :------------- | :------------- |
-   | DMS<sup>3</sup>Server | dms3_release/dms3server/dms3server.toml |
-   | DMS<sup>3</sup>Client | dms3_release/dms3client/dms3client.toml |
-   | DMS<sup>3</sup>Libs | dms3_release/dms3libs/dms3libs.toml |
-   | DMS<sup>3</sup>Dashboard | dms3_release/dms3dashboard/dms3dashboard.toml |
-   | DMS<sup>3</sup>Mail | dms3_release/dms3mail/dms3mail.toml |
+   | Component                    | TOML File Location                                   |
+   | :--------------------------- | :--------------------------------------------------- |
+   | **DMS<sup>3</sup>Server**    | dms3_release/config/dms3server/dms3server.toml       |
+   | **DMS<sup>3</sup>Client**    | dms3_release/config/dms3client/dms3client.toml       |
+   | **DMS<sup>3</sup>Libs**      | dms3_release/config/dms3libs/dms3libs.toml           |
+   | **DMS<sup>3</sup>Dashboard** | dms3_release/config/dms3dashboard/dms3dashboard.toml |
+   | **DMS<sup>3</sup>Mail**      | dms3_release/config/dms3mail/dms3mail.toml           |
+  
+> Note that all **DMS<sup>3</sup>** component configuration files are located in the top-level `dms3_release/config` folder
 
-### **DMS<sup>3</sup>** Server Configuration
+### **DMS<sup>3</sup>Server** Configuration
 
-1. Edit **DMS<sup>3</sup>** configuration files
+#### 1. Edit **DMS<sup>3</sup>** Configuration Files
 
-   All server-side package components, **DMS<sup>3</sup>Server**, **DMS<sup>3</sup>Dashboard**, and **DMS<sup>3</sup>Libs** must be configured for proper operation. Each component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
+All server-side package components, **DMS<sup>3</sup>Server**, **DMS<sup>3</sup>Dashboard**, and **DMS<sup>3</sup>Libs** must be configured for proper operation. As noted above, each **DMS<sup>3</sup>** component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the component code.
 
-   - `dms3server.toml`, by default installed into `/etc/distributed-motion-s3/dms3server`, is used for:
-     - setting the server port
-     - determining what devices to monitor (MAC addresses)
-     - determining if and when to run the *Always On* feature (set time range)
-     - identifying audio files used when enabling/disabling the surveillance system
-     - configuring component logging options
-   - `dms3dashboard.toml`, shared between both **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client**, this file is installed into `/etc/distributed-motion-s3/dms3dashboard` and configures dashboard settings:
-     - whether the dashboard is enabled
-     - the local port the web server will run on
-     - the filename and location of the dashboard HTML file
-     - the banner title of the dashboard
-   - `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3/dms3libs`, is used to configure the location of system-level commands (e.g., `ping`)
+Each TOML configuration file is self-documenting, and provides examples of common default values.
 
-   Each configuration file is self-documenting, and provides examples of common default values.
+##### Elements of the `dms3server.toml` File
+By default, installed into `/etc/distributed-motion-s3/dms3server` on the server, used for setting the following:
 
-1. Optional: configure the server to run the **DMS<sup>3</sup>Server** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
+  - `Server.Port`: setting the server port
+  - `Server.CheckInterval`: the interval (in seconds) between checks for change to motion state
+  - `Server.EnableDashboard`: start and display the HTML dashboard template
+  - `Audio.Enable`: enable the play-back of audio on motion detector application start/stop
+  - `Audio.PlayMotionStart`: the audio file to play when the motion detector application starts
+  - `Audio.PlayMotionEnd`: the audio file to play when the motion detector application stops
+  - `AlwaysOn.Enable`: toggle the time-based *Always On* feature
+  - `AlwaysOn.TimeRange`: set the range (24-hour format) to start/stop the *Always On* feature
+  - `UserProxy.IPBase`: the first three address octets defining the network (*e.g.*, 10.10.10.) where user proxies (devices representing users on the network, such as a smartphone) will be scanned to determine when the motion detector application should be run
+  - `UserProxy.IPRange`: the fourth address octet defined as the network range (e.g., 100, 254)
+  - `UserProxy.MacsToFind`: the MAC addresses (*e.g.*, "24:da:9b:0d:53:8f") of user proxy device(s) to search for on the LAN
+  - `Logging.LogLevel`: sets the log levels for application logging
+  - `Logging.LogDevice`: determines to what device logging should be output
+  - `Logging.LogFilename`: filename of the **DMS<sup>3</sup>Server** log
+  - `Logging.LogLocation`: location of logfile (absolute path; must have full r/w permissions)
 
-   Running the **DMS<sup>3</sup>Server** component as a [`systemd`](https://en.wikipedia.org/wiki/Systemd) service is preferred, as this service can be configured to run at machine startup, recover from failures, etc.
+##### Elements of the `dms3dashboard.toml` File for the **DMS<sup>3</sup>Server**
+Shared between both **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client**, this file is installed into `/etc/distributed-motion-s3/dms3dashboard` on the server and configures the following **DMS<sup>3</sup>Dashboard** settings for the **DMS<sup>3</sup>Server** component:
 
-   As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3server.service`, located in the `dms3_release` folder at `dms3_release/dms3server`.
+  - `Server.Port`: setting the port on which to run the dashboard HTML server
+  - `Server.Filename`: filename of HTML dashboard template file
+  - `Server.FileLocation`: where the HTML dashboard template file is located
+  - `Server.Title`: the dashboard title (displayed in the browser)
+  - `Server.Resort`: toggle to alphabetically re-sort of devices displayed in the dashboard template
+  - `Server.ServerFirst`: toggle to make the **DMS<sup>3</sup>Server** the first of all devices displayed in the dashboard template
+  - `Server.DeviceStatus`: device status identifies the stages when a device is no longer reporting status updates to the dashboard server, as status health is represented graphically on the dashboard
 
-### **DMS<sup>3</sup>** Smart Device Client (SDC) Configuration
+##### Elements of the `dms3libs.toml` File
 
-1. Edit **DMS<sup>3</sup>** configuration files
+By default, shared by all **DMS<sup>3</sup>** components, installed into `/etc/distributed-motion-s3/dms3libs`, and used to configure the location of system-level commands (*e.g.*, `ping`). This file maps command name to absolute pathname, as follows:
 
-   All client-side package components--**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Dashboard**, **DMS<sup>3</sup>Libs**, and **DMS<sup>3</sup>Mail** (if installed)--must be configured for proper operation. Each component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the code:
+  - `SysCommands`:
+    - APLAY = "/usr/bin/aplay"
+    - BASH = "/usr/bin/bash"
+    - CAT = "/usr/bin/cat"
+    - ENV = "/usr/bin/env"
+    - GREP = "/usr/bin/grep"
+    - IP = "/usr/sbin/ip"
+    - PGREP = "/usr/bin/pgrep"
+    - PING = "/usr/bin/ping"
+    - PKILL = "/usr/bin/pkill"
 
-   - `dms3client.toml`, by default installed into `/etc/distributed-motion-s3/dms3client`, is used for:
-     - setting the server IP address and port
-     - setting the frequency to check **DMS<sup>3</sup>Server** for motion state changes
-     - configuring component logging options
-   - `dms3dashboard.toml`, shared between both **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client**, this file is installed into `/etc/distributed-motion-s3/dms3dashboard` and configures dashboard settings:
-     - the location of where the installed motion detection application stores its motion-triggered image/movie files on the client, useful in reporting the number of events on the dashboard for each **DMS<sup>3</sup>Client**
-   - `dms3libs.toml`, by default installed into `/etc/distributed-motion-s3/dms3libs`, is used to configure the location of system-level commands (e.g., `ping`)
-   - `dms3mail.toml`, by default installed into `/etc/distributed-motion-s3/dms3mail`, if installed, is used for:
-     - setting email configuration options
-     - configuring component logging options
+#### 2. Optional: Configure the Server to Run the **DMS<sup>3</sup>Server** component as a [Daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
 
-   Each configuration file is self-documenting, and provides examples of common default values.
+   Running the **DMS<sup>3</sup>Server** component as a service (*e.g.*, using [`systemd`](https://en.wikipedia.org/wiki/Systemd), or similar) is preferred, as this service can be configured to run at machine startup, recover from failures, *etc*.
+
+   As different Unix-like systems use different approaches for system service management and startup, daemon configuration is beyond the scope of the install procedure. However, the project does include a sample daemon file for running with [`systemd`](https://en.wikipedia.org/wiki/Systemd), called `dms3server.service`, located in the `dms3_release` folder at `dms3_release/config/dms3server`.
+
+### **DMS<sup>3</sup>Client** Configuration
+
+#### 1. Edit **DMS<sup>3</sup>** Configuration Files
+
+All client-side package components, **DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Dashboard**, and **DMS<sup>3</sup>Libs** must be configured for proper operation. As noted above, each **DMS<sup>3</sup>** component includes a separate `*.toml` file which serves the purpose of isolating user-configurable parameters from the rest of the component code.
+
+Each TOML configuration file is self-documenting, and provides examples of common default values.
+
+##### Elements of the `dms3client.toml` File
+By default, installed into `/etc/distributed-motion-s3/dms3client` on each Smart Device Client (SDC) and used for setting the following:
+
+  - `Server.IP`: the address on which the **DMS<sup>3</sup>Server** is running
+  - `Server.Port`: the port on which the **DMS<sup>3</sup>Server** is running
+  - `Server.CheckInterval`: the interval (in seconds) for checking the  **DMS<sup>3</sup>Server**
+  - `Logging.LogLevel`: sets the log levels for application logging
+  - `Logging.LogDevice`: determines to what device logging should be output
+  - `Logging.LogFilename`: filename of the **DMS<sup>3</sup>Client** log
+  - `Logging.LogLocation`: location of logfile (absolute path; must have full r/w permissions)
+
+##### Elements of the `dms3dashboard.toml` File for the **DMS<sup>3</sup>Client**
+Shared between both **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client**, this file is installed into `/etc/distributed-motion-s3/dms3dashboard` on each device client and configures the following **DMS<sup>3</sup>Dashboard** settings for the **DMS<sup>3</sup>Client** component:
+
+  - `Client.ImagesFolder`:  the location where the motion detection application stores its motion-triggered image/movie files on the client
+
+##### Elements of the `dms3libs.toml` File
+
+By default, shared by all **DMS<sup>3</sup>** components, installed into `/etc/distributed-motion-s3/dms3libs`, and used to configure the location of system-level commands (*e.g.*, `ping`). This file maps command name to absolute pathname, as follows:
+
+  - `SysCommands`:
+    - APLAY = "/usr/bin/aplay"
+    - BASH = "/usr/bin/bash"
+    - CAT = "/usr/bin/cat"
+    - ENV = "/usr/bin/env"
+    - GREP = "/usr/bin/grep"
+    - IP = "/usr/sbin/ip"
+    - PGREP = "/usr/bin/pgrep"
+    - PING = "/usr/bin/ping"
+    - PKILL = "/usr/bin/pkill"
+
+##### Elements of the `dms3mail.toml` File
+
+Optionally, if **DMS<sup>3</sup>Client** is configured to run the [Motion](https://motion-project.github.io/) motion detection application (this is the default **DMS<sup>3</sup>Client** configuration), an additional **DMS<sup>3</sup>** component can be installed to manage email notifications to the end user. This is the **DMS<sup>3</sup>Mail** component.
+
+By default, installed into `/etc/distributed-motion-s3/dms3mail` on each Smart Device Client (SDC) and used for setting the following:
+
+  - `Filename`: filename of HTML email template file
+  - `FileLocation`: where the HTML email template file is located
+  - `Email.From`: the email sender
+  - `Email.To`: the email recipient
+  - `SMTP.Address`:  SMTP server address of the recipient
+  - `SMTP.Port`: the port used by the recipient email server
+  - `SMTP.Domain`: the receiving email domain
+  - `SMTP.Username`: the username of the recipient
+  - `SMTP.Password`: the password of the recipient
+  - `SMTP.Authentication`: the email server authentication scheme
+  - `SMTP.EnableStartTLSAuto`: toggles whether TLS is used
+  - `Logging.LogLevel`: sets the log levels for application logging
+  - `Logging.LogDevice`: determines to what device logging should be output
+  - `Logging.LogFilename`: filename of the **DMS<sup>3</sup>Mail** log
+  - `Logging.LogLocation`: location of logfile (absolute path; must have full r/w permissions)
+
+FIXME
 
 1. Optional: configure smart device client(s) to run the **DMS<sup>3</sup>Client** component as a [daemon](https://en.wikipedia.org/wiki/Daemon_(computing) "computing daemon")
 
@@ -160,7 +292,7 @@ All **DMS<sup>3</sup>** components are configured through an associated text-bas
 
 Smart device clients (SDCs) are required to have a motion detection application installed and configured in order to process video streamed from its video camera device.
 
-**DMS<sup>3</sup>Client**, by default, is configured to run the [Motion](https://motion-project.github.io/) motion detection application (of course, [Motion](https://motion-project.github.io/) must still be installed on the device client). However, regardless of the application chosen, all **DMS<sup>3</sup>Client** configuration details are managed in one file, called `lib_detector_config.go` located in the project source tree at  `go-distributed-motion-s3/dms3libs`.
+**DMS<sup>3</sup>Client**, by default, is configured to run the [Motion](https://motion-project.github.io/) motion detection application ([Motion](https://motion-project.github.io/) must still be installed on the device client). However, regardless of the application chosen, all **DMS<sup>3</sup>Client** configuration details are managed in one file, called `lib_detector_config.go` located in the project source tree at  `go-distributed-motion-s3/dms3libs`.
 
 This file defines two important attributes of the configured motion detection application:
 
@@ -169,7 +301,7 @@ This file defines two important attributes of the configured motion detection ap
 
 In most cases when using [Motion](https://motion-project.github.io/), `lib_detector_config.go` will not require configuration.
 
-## 4. Install **DMS<sup>3</sup>**
+## Install **DMS<sup>3</sup>** Components
 
 Each **DMS<sup>3</sup>** component is organized into four component elements:
 
@@ -180,12 +312,12 @@ Each **DMS<sup>3</sup>** component is organized into four component elements:
 
 For proper operation, each component element must be copied into the following locations:
 
-| Component Element | Default Location | Configurable Location? |
-| :------------- | :------------- | :------------- |
-| [Go](https://golang.org/ "Go") executable (e.g., `dms3client`) | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
-| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>` | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `dms3client.go`)
-| Optional: daemon service file (e.g., `dms3client.service`) | `/etc/systemd/system` | No (platform-dependent)
-| Optional: log file (e.g., `dms3client.log`), runtime-generated | `/var/log/dms3` | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)
+| Component Element                                                                       | Default Location                                                                          | Configurable Location?                                                                                                          |
+| :-------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| [Go](https://golang.org/ "Go") executable (e.g., `dms3client`)                          | Anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") (e.g., `/usr/local/bin`) |
+| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>`                                             | Yes, edit in [Go](https://golang.org/ "Go") sources (e.g., `dms3client.go`)                                                     |
+| Optional: daemon service file (e.g., `dms3client.service`)                              | `/etc/systemd/system`                                                                     | No (platform-dependent)                                                                                                         |
+| Optional: log file (e.g., `dms3client.log`), runtime-generated                          | `/var/log/dms3`                                                                           | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (e.g., `dms3client.toml`)                            |
 
 ### **DMS<sup>3</sup>Server** Installation
 
@@ -221,7 +353,7 @@ To install **DMS<sup>3</sup>Mail**:
 1. Copy both the `dms3mail` and `dms3libs` folders into their default locations, `/etc/distributed-motion-s3/dms3mail` and `/etc/distributed-motion-s3/dms3libs`, respectively, or as configured in `dms3mail.go`
 1. Confirm that the user running `dms3mail` has proper permissions to create a log file (`dms3mail.log`) at the default log file location `/var/log/dms3`, or as configured in `dms3mail.toml`
 
-## 5. Confirm the Installation of a Motion Detection Application on All SDCs
+## Confirm the Installation of a Motion Detection Application on All SDCs
 
 Without an operational motion detection application running on the configured **DMS<sup>3</sup>Client** components, **DMS<sup>3</sup>** really doesn't have much to do, though **DMS<sup>3</sup>Server** will obligingly send enable/disable messages to all listening **DMS<sup>3</sup>Client** components based on its user proxy configuration rules.
 
@@ -242,7 +374,7 @@ Without an operational motion detection application running on the configured **
    daemon on
    ```
 
-## 6. Optional: Integrate **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) on the Device Client
+## Optional: Integrate **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) on the Device Client
 
 **DMS<sup>3</sup>Mail** is a stand-alone client-side component responsible for generating and sending an email whenever a valid motion event is triggered in [Motion](https://motion-project.github.io/). The **DMS<sup>3</sup>Mail** component is called by [Motion](https://motion-project.github.io/) whenever the [*on_picture_save*](https://motion-project.github.io/motion_config.html#on_picture_save "on_picture_save command") and the [on_movie_end](https://motion-project.github.io/motion_config.html#on_movie_end "on_movie_end command") commands (called [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking")) are fired during a motion event.
 
@@ -283,7 +415,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 **DMS<sup>3</sup>Mail** will now generate and send an email whenever [Motion](https://motion-project.github.io/) generates an `on_picture_save` or `on_movie_end` command.
 
-## 7. Run the **DMS<sup>3</sup>** Components
+## Run the **DMS<sup>3</sup>** Components
 
 With all the **DMS<sup>3</sup>** components properly configured and installed across various server and client devices, it's now possible to run the **DMS<sup>3</sup>**.
 
@@ -337,7 +469,7 @@ With all the **DMS<sup>3</sup>** components properly configured and installed ac
 
 By default (as configured in `dms3dashboard.toml`), the **DMS<sup>3</sup>Dashboard** component is enabled and configured to run locally on the the **DMS<sup>3</sup>Server** component device on port 8081. To view the **DMS<sup>3</sup>Dashboard** in a web browser, go to [localhost:8081](http://localhost:8081).
 
-## 8. Configuration Testing & Troubleshooting
+## 6. Configuration Testing & Troubleshooting
 
 At this point, **DMS<sup>3</sup>** should now be properly installed and configured on both the server and all smart device clients (SDCs). Once both the **DMS<sup>3</sup>Server** and **DMS<sup>3</sup>Client** are running, **DMS<sup>3</sup>** should:
 
@@ -361,7 +493,7 @@ go test <*>.go
 
 Where `<*>` is a Go test file. The unit test results will be displayed as each test is completed.
 
-## Appendix A: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)
+## **Appendix A**: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)
 
 Less smart device clients (LSDCs), such as IP cameras and webcams require special consideration in **DMS<sup>3</sup>**.
 

@@ -1,10 +1,27 @@
 # Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Quick Install
 
-This procedure describes how to use the `dms3build` build process found in this project to install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**.
+## Contents
 
-For details on how to manually install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md) documentation. This document also provides much greater technical depth in describing the **DMS<sup>3</sup>** installation process.
+- [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Quick Install](#distributed-motion-surveillance-security-system-dmssup3sup-quick-install)
+  - [Contents](#contents)
+  - [Overview](#overview)
+    - [Installation Summary](#installation-summary)
+  - [Download the **DMS<sup>3</sup>** Project Release](#download-the-dmssup3sup-project-release)
+  - [Configure the **DMS<sup>3</sup>** Components](#configure-the-dmssup3sup-components)
+  - [Install the **DMS<sup>3</sup>** Components](#install-the-dmssup3sup-components)
+  - [Confirm the Installation of a Motion Detection Application on All SDCs](#confirm-the-installation-of-a-motion-detection-application-on-all-sdcs)
+  - [Optional: Integrate **DMS<sup>3</sup>Mail** with Motion on the Device Client](#optional-integrate-dmssup3supmail-with-motion-on-the-device-client)
+  - [Run the **DMS<sup>3</sup>** Components](#run-the-dmssup3sup-components)
+    - [Running Components as Executables](#running-components-as-executables)
+    - [Optional: Running  Components as Services](#optional-running--components-as-services)
+    - [Optional: View the **DMS<sup>3</sup>Dashboard** Component](#optional-view-the-dmssup3supdashboard-component)
 
-## Installation Overview
+## Overview
+This procedure describes how to use the **DMS<sup>3</sup>Build** process found in this project to compile and install **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)**.
+
+For details on how to manually install **DMS<sup>3</sup>**, see the [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Manual Installation](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md) documentation. This document also provides much greater technical depth in describing the **DMS<sup>3</sup>** installation process, and the function of the various **DMS<sup>3</sup>** components.
+
+### Installation Summary
 
 The installation of **DMS<sup>3</sup>** is comprised of two steps:
 
@@ -22,7 +39,7 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
 
 1. The installation and configuration of a motion detection application, such as [Motion](https://motion-project.github.io/ "Motion") or the [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") Library
 
-## 1. Download the **DMS<sup>3</sup>** Project Release
+## Download the **DMS<sup>3</sup>** Project Release
 
 1. Download the appropriate release file from [the DMS3 release repository](https://github.com/richbl/go-distributed-motion-s3/releases) and decompress into a temporary folder
 
@@ -94,7 +111,7 @@ The installation of **DMS<sup>3</sup>** is comprised of two steps:
 
 ```
 
-## 2. Configure the **DMS<sup>3</sup>** Components
+## Configure the **DMS<sup>3</sup>** Components
 
 All **DMS<sup>3</sup>** components are configured through an associated text-based configuration file called a TOML ([Tom's Obvious, Minimal Language](https://github.com/toml-lang/toml)) file, and a common file extension, `*.toml`. This file is very minimal in format, but well-documented with many defaults preset, so should be generally self-explanatory. The table below identifies the TOML file with the component:
 
@@ -110,7 +127,7 @@ All **DMS<sup>3</sup>** components are configured through an associated text-bas
 
 The one TOML file not directly associated with a specific **DMS<sup>3</sup>** component is the `dms3build.toml` file, which is responsible for configuring the **DMS<sup>3</sup>** build process. Details for configuring this special TOML file are presented below.
 
-## 3. Install the **DMS<sup>3</sup>** Components
+## Install the **DMS<sup>3</sup>** Components
 
 1. Configure the Installer
 
@@ -156,7 +173,7 @@ The one TOML file not directly associated with a specific **DMS<sup>3</sup>** co
 
    The `dms3build` installer will display installation progress on all device platforms. On completion, these device platforms will be properly configured to run **DMS<sup>3</sup>** components.
 
-## 4. Confirm the Installation of a Motion Detection Application on All SDCs
+## Confirm the Installation of a Motion Detection Application on All SDCs
 
 Without an operational motion detection application running on the configured **DMS<sup>3</sup>Client** components, **DMS<sup>3</sup>** really doesn't have much to do, though **DMS<sup>3</sup>Server** will obligingly send enable/disable messages to all listening **DMS<sup>3</sup>Client** components based on its user proxy configuration rules.
 
@@ -177,7 +194,7 @@ Without an operational motion detection application running on the configured **
    daemon on
    ```
 
-## 5. Optional: Integrate **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) on the Device Client
+## Optional: Integrate **DMS<sup>3</sup>Mail** with [Motion](https://motion-project.github.io/) on the Device Client
 
 **DMS<sup>3</sup>Mail** is a stand-alone client-side component responsible for generating and sending an email whenever a valid motion event is triggered in [Motion](https://motion-project.github.io/). The **DMS<sup>3</sup>Mail** component is called by [Motion](https://motion-project.github.io/) whenever the [*on_picture_save*](https://motion-project.github.io/motion_config.html#on_picture_save "on_picture_save command") and the [on_movie_end](https://motion-project.github.io/motion_config.html#on_movie_end "on_movie_end command") commands (called [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking")) are fired during a motion event.
 
@@ -218,7 +235,7 @@ These commands are saved in the [Motion](https://motion-project.github.io/) conf
 
 **DMS<sup>3</sup>Mail** will now generate and send an email whenever [Motion](https://motion-project.github.io/) generates an `on_picture_save` (or `on_movie_end`) command.
 
-## 6. Run the **DMS<sup>3</sup>** Components
+## Run the **DMS<sup>3</sup>** Components
 
 With all the **DMS<sup>3</sup>** components properly configured and installed across various server and client devices, it's now possible to run the **DMS<sup>3</sup>**.
 
