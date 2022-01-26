@@ -8,7 +8,7 @@
 
 - [Distributed Motion Surveillance Security System (DMS<sup>3</sup>)](#distributed-motion-surveillance-security-system-dmssup3sup)
   - [Contents](#contents)
-  - [**New for Release 1.4.0**](#new-for-release-140)
+  - [New for Release 1.4.0](#new-for-release-140)
     - [**DMS<sup>3</sup>Mail**](#dmssup3supmail)
     - [**DMS<sup>3</sup>Dashboard**](#dmssup3supdashboard)
     - [**DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**](#dmssup3supserver--dmssup3supclient)
@@ -35,31 +35,31 @@
   - [**DMS<sup>3</sup>** Installation](#dmssup3sup-installation)
   - [License](#license)
 
-## **New for Release 1.4.0**
+## New for Release 1.4.0
 
-Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the surveillance security system that so many people have relied upon even more relevant, stable and secure. 
+Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the **DMS<sup>3</sup>** surveillance security system that so many people have relied upon even more efficient, stable, and secure.
 
 ### **DMS<sup>3</sup>Mail**
 
-- The **DMS<sup>3</sup>Mail** component gets a significant makeover in response to ongoing changes in the use of advanced HTML5 email templates developed to work with myriad end-user email applications. Upgrades to **DMS<sup>3</sup>Mail** include:
-  - **NEW!** A much-anticipated and fully configurable HTML5 email template, based on the very popular [Cerberus responsive email patterns](https://github.com/TedGoas/Cerberus). For use in **DMS<sup>3</sup>**, we integrated the [Go HTML/template package](https://pkg.go.dev/html/template) into the Cerberus fluid template, very similar to what we did when creating the **DMS<sup>3</sup>Dashboard** component. This new responsive email template now presents a more complete email message to the end user, with the following new functionality:
-      - **NEW!** Larger image attachments are now integrated directly into the email body (versus as an attachment)
-      - **NEW!** More complete information now presented in the email for each security event, including the hostname of the **DMS<sup>3</sup> Client** device component sourcing the event.
-      - **NEW!** As well, the percentage of changes (in pixels) is now provided, thanks to a new *GetImageDimensions()* routine that provides image details as **DMS<sup>3</sup>Mail** processes the security event.
-      - As part of this new progressive email template, email "dark mode" is now handled automatically, making it easier to view email on mobile platforms
+- The **DMS<sup>3</sup>Mail** component gets a significant makeover in response to ongoing changes in the use of advanced progressive HTML5 email templates developed to work with myriad end-user email applications. Upgrades to **DMS<sup>3</sup>Mail** include:
+  - **NEW!** A much-anticipated and fully configurable HTML5 email template, based on the very popular [Cerberus responsive email patterns](https://github.com/TedGoas/Cerberus). For use in **DMS<sup>3</sup>**, we integrated the [Go HTML/template package](https://pkg.go.dev/html/template) into the Cerberus fluid template, very similar to what we did when creating the **DMS<sup>3</sup>Dashboard** component. This new responsive email template now presents a more complete email message to the end user, with the following functionality:
+    - **NEW!** Larger image attachments are now integrated directly into the email body (versus as an attachment)
+    - **NEW!** More complete metrics now presented in the email for each security event, including the hostname of the **DMS<sup>3</sup> Client** component sourcing the event.
+    - **NEW!** The percentage of changes (in pixels) is now provided, thanks to a new *GetImageDimensions()* routine that provides image details as **DMS<sup>3</sup>Mail** processes the security event in real-time.
+    - As part of this new progressive email template, email "dark mode" is now handled automatically, making it easier to view email on disparate mobile platforms
 
-![dms3mail](https://user-images.githubusercontent.com/10182110/150719391-a562ac4a-154e-4dad-b4bc-6c88f4d2b425.png)
+  ![dms3mail](https://user-images.githubusercontent.com/10182110/150719391-a562ac4a-154e-4dad-b4bc-6c88f4d2b425.png)
 
 ### **DMS<sup>3</sup>Dashboard**
 
-Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** component and provide regularly-updated information for all **DMS<sup>3</sup>Client** components with device metrics including:
+Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** and provide regularly-updated information of all **DMS<sup>3</sup>Client** components with device metrics that include:
 
 - Hostname
 - Hardware platform and operating system
 - Kernel version
-- Current **DMS<sup>3</sup>** component uptime
+- Current **DMS<sup>3</sup>Server** and all reporting **DMS<sup>3</sup>Client** components' uptime
 - Count of **DMS<sup>3</sup>Clients** reporting to the **DMS<sup>3</sup>Server**
-- Count of surveillance events generated by that component (if applicable)
+- Count of surveillance events generated by **DMS<sup>3</sup>Clients** components
 - Date/time (ISO 8601) the component last reported to the **DMS<sup>3</sup>Server**
 
 Additionally, **DMS<sup>3</sup>Dashboard** provides a quick visual health check of all **DMS<sup>3</sup>Client** components, using color-sensitive component icons, where:
@@ -74,6 +74,7 @@ The **DMS<sup>3</sup>Dashboard** component is written using [Go's HTML templatin
 - Fonts provided by [Icomoon](https://icomoon.io/)
 
 New for this release are the following additional configuration options for **DMS<sup>3</sup>Dashboard**:
+
 - **NEW!** Independently configurable client icon status option timeouts (warning, danger, missing) visually provide a status of a **DMS<sup>3</sup>Client** health in real-time
 - **NEW!** Option to make **DMS<sup>3</sup>Server** always first in the set of **DMS<sup>3</sup>Client** devices displayed in the dashboard
 - **NEW!** Option to alphabetically sort **DMS<sup>3</sup>** devices displayed in the dashboard
@@ -81,39 +82,39 @@ New for this release are the following additional configuration options for **DM
   - Operating system name and version release (*e.g.,* Raspbian GNU/Linux 10)
   - Hardware platform (*e.g.,* Linux ARM7l)
   - Kernel release (*e.g.,* 5.10.63-v7+)
-- Various additional upgrades to the dashboard HTML template, including revisions to the template display, and updates to use the new **DMS<sup>3</sup>** logo in the template header
+- **NEW!** Various additional upgrades to the dashboard HTML template, including revisions to the template display, and updates to use the new **DMS<sup>3</sup>** logo in the template header
 
 ![dms3_dashboard](https://user-images.githubusercontent.com/10182110/150717902-8eca508a-f107-4b24-87e6-022dde20196a.png
 )
+
 ### **DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**
   
 - Both of these **DMS<sup>3</sup>** components received a significant upgrade that includes:
   - A revision to the **DMS<sup>3</sup>** component codebase, moving from [Go 1.8 to Go 1.17](https://go.dev/doc/devel/release), bringing with this language release update numerous new low-level packages, platform performance optimizations, and security enhancements
   - The addition of the ARM8 platform type (great news for Raspberry Pi and related SBC users), automatically incorporated into our native **DMS<sup>3</sup>Build** process
     - As part of the **DMS<sup>3</sup>Build** process, the remote installers have been rewritten to abstract away specific Linux dependencies
-  - All TOML configuration files updated from TOML 0.4.0 to TOML 1.0.0
   - Revised overall project structure to reflect idiomatic Go principles
-    - Commands now organized into a *cmds* folder, while configuration files are now managed in a *config* folder
-    - Project moved from use of the *gocode* process to using *gopls*
-    - Project migration over to the use of [Go modules](https://go.dev/ref/mod) 
-  - System-level daemon service calls are now abstracted away to work on across broader array of Unix-like operating systems
-  - **DMS<sup>3</sup>Server** listening port moved from the registered port range into the more appropriate dynamic/private range
-  - All [TOML](https://github.com/toml-lang/toml) configuration files revved and validated ([tomlv](https://github.com/BurntSushi/toml/tree/master/cmd/tomlv))
- to 1.0.0
+    - Commands now organized into a `cmd` folder, while configuration files are now managed in a `config` folder
+    - Project moved from use of the `gocode` process to using `gopls`
+    - Project migration over to the use of [Go modules](https://go.dev/ref/mod)
+  - System-level service (daemon) calls are now abstracted away to work on across a broader array of Unix-like operating systems
+  - **DMS<sup>3</sup>Server** listening port moved from the previous registered port range into the more appropriate dynamic/private range
+  - All [TOML](https://github.com/toml-lang/toml) configuration files revved from 0.4.0 and validated ([tomlv](https://github.com/BurntSushi/toml/tree/master/cmd/tomlv)) to 1.0.0
+
 ## What Is **DMS<sup>3</sup>**?
 
 ![dms3_topology](https://user-images.githubusercontent.com/10182110/150858539-e67fdf19-7ab8-4c82-9c86-08afbd7c64e5.png)
 
 > If you appreciate isometric drawings, please check out our [isometric-icons project, located here](https://github.com/richbl/isometric-icons).
 
-**Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** is a [Go-based](https://golang.org/ "Go") application that integrates third-party open-source motion detection applications (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, or [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a distributed motion surveillance system that:
+**Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** is a [Go-based](https://golang.org/ "Go") application that integrates third-party open-source motion detection applications (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detection software package, or [OpenCV](http://opencv.org/ "OpenCV"), the Open Source Computer Vision Library) into a distributed motion surveillance system that:
 
 - Senses when someone is "at home" and when someone is "not at home" and **automatically enables or disables the surveillance system**
-- Through the **DMS<sup>3</sup>Server**, coordinates video stream processing, reporting, and user notification to capable "smart" device clients, called **DMS<sup>3</sup>Clients** (e.g., a Raspberry Pi) which:
+- Through the **DMS<sup>3</sup>Server**, coordinates video stream processing, reporting, and user notification to capable "smart" device clients, running the **DMS<sup>3</sup>Client** component (*e.g.*, a Raspberry Pi) which:
   - Greatly minimizes network congestion, *particularly during high-bandwidth surveillance events of interest*
-  - Better utilizes smart device client CPU processing power: keeping stream processing "on-board" and distributed around the network
+  - Better utilizes smart device client CPU/GPU processing power: keeping stream processing "on-board" and distributed around the network
 - Optionally, **DMS<sup>3</sup>Clients** can report events of interest via email using the available **DMS<sup>3</sup>Mail** component
-- Optionally, the **DMS<sup>3</sup>Server** can display the current state of all the **DMS<sup>3</sup>Clients** visually through the use of the the **DMS<sup>3</sup>Dashboard** component
+- Optionally, the **DMS<sup>3</sup>Server** can display the current state of all reporting **DMS<sup>3</sup>Clients** visually through the use of the **DMS<sup>3</sup>Dashboard** component
 - Works cooperatively with legacy "less smart" device clients such as IP cameras (wired or WiFi), webcams, and other USB camera devices
 
 ## **DMS<sup>3</sup>** Features
@@ -127,14 +128,14 @@ Here's a list of some of the more outstanding features of **DMS<sup>3</sup>**:
   - Uses [Go's HTML templating package](https://pkg.go.dev/html/template) to simplify Go/HTML integration
   - Easily integrate 3rd-party configurable HTML website templates
 
-- Automated starting/stopping of any number of motion detection applications installed on smart device clients (e.g., the [Motion](https://motion-project.github.io/ "Motion") motion detector software package) based on the presence/absence of user proxy devices
+- Automated starting/stopping of any number of motion detection applications installed on smart device clients (*e.g.*, the [Motion](https://motion-project.github.io/ "Motion") motion detector software package) based on the presence/absence of user proxy devices
 
 - *Always On* feature starts/stops the motion detection application based on time-of-day (*e.g*., can enable video surveillance during nighttime or specific holiday hours)
-- Device clients can be custom-configured to process and respond to surveillance event data independently and uniquely (e.g., an outdoor IR camera device only sends email during nighttime hours)
-- Optionally play audio file(s) on surveillance system enable and disable
+- Device clients can be custom-configured to process and respond to surveillance events independently and uniquely (*e.g.*, an outdoor IR camera device only sends email during nighttime hours)
+- Optionally play separate audio file(s) on surveillance system enable and disable
 - Configurable event logging
   - INFO, ERROR, FATAL, and DEBUG log levels
-  - Persist logs to file or [stdout](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_.28stdout.29 "standard output")
+  - Persist logs to file or send to STDOUT (terminal)
 - [MAC](http://en.wikipedia.org/wiki/MAC_address "MAC address") (Layer 2) address sensing
   - IPv4 protocol support
   - IPv6 protocol support [planned]
@@ -146,10 +147,10 @@ Here's a list of some of the more outstanding features of **DMS<sup>3</sup>**:
 
   - Fully configurable email message subject, body, *etc.* using the excellent [Cerberus](https://github.com/TedGoas/Cerberus) responsive HTML email template
   - Optionally attach an event image or video to an email message
-  - SMTP-support for compatibility with most web-mail services (e.g., [Gmail](http://gmail.com "Google Gmail"))
+  - SMTP-support for compatibility with most web-mail services (*e.g.*, [Gmail](http://gmail.com "Google Gmail"))
   - Configurable event logging
     - INFO, ERROR, FATAL, and DEBUG log levels
-    - Persist logs to file or [stdout](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_.28stdout.29 "standard output")
+    - Persist logs to file or send to STDOUT (terminal)
 
 ### Motion Detection Application Support
 
@@ -157,7 +158,7 @@ While **DMS<sup>3</sup>** is primarily responsible for monitoring user proxies a
 
 - Support for the [Motion](https://motion-project.github.io/ "Motion") motion detector software package
 
-  - Movement detection support of video devices. See [this list](https://github.com/Motion-Project/motion/wiki/Supported-hardware "Device Compatibility") for video device compatibility. Note that **DMS<sup>3</sup>** was developed and tested using smart device clients running [Motion](https://motion-project.github.io/ "Motion") with native camera support (e.g., a Raspberry Pi with an on-board camera module)
+  - Movement detection support of video devices. See [this list](https://github.com/Motion-Project/motion/wiki/Supported-hardware "Device Compatibility") for video device compatibility. Note that **DMS<sup>3</sup>** was developed and tested using smart device clients running [Motion](https://motion-project.github.io/ "Motion") with native camera support (*e.g.*, a Raspberry Pi with an on-board camera module)
 
 - Support for the [OpenCV](http://opencv.org/ "Open Source Computer Vision Library") Library [planned]
 
@@ -168,13 +169,13 @@ While **DMS<sup>3</sup>** is primarily responsible for monitoring user proxies a
 **DMS<sup>3</sup>** is designed to utilize intelligent IoT devices, called **Smart Device Clients (SDCs)**, while still supporting less intelligent, single-purpose devices, called **Less Smart Device Clients (LSDCs)**.
 
 - **DMS<sup>3</sup> Smart Device Clients (SDCs)** are hardware devices capable of processing local video streams for motion detection on-board, with dedicated hardware. Most computers and smaller single board computers (IoT SBCs) would be classed as smart device clients, including:
-  - Raspberry PIs (**DMS<sup>3</sup>** was tested with the RaspPi Model 2, Model 3, and Pi Zero W) with a configured on-board camera
+  - Raspberry PIs (**DMS<sup>3</sup>** was tested with the RaspPi Model 2, Model 3, and Pi Zero W) with a configured on-board camera module
   - Any IoT single board computer (SBC) capable of running a Unix-like operating system
   - Personal computers with a camera and wired or wireless (WiFi) connectivity
 
 - **DMS<sup>3</sup> Less Smart Device Clients (LSDCs)** are hardware devices--typically purpose-built--unable to process motion detection video streams locally. These devices usually generate raw real-time video data, which is then sent, consumed and processed by an external device(s), oftentimes wirelessly across a network. Some examples of LSDCs include:
 
-  - IP cameras (e.g., the [Nest Cam](https://nest.com/cameras/ "Google Nest")), either wired or wireless
+  - IP cameras (*e.g.*, the [Nest Cam](https://nest.com/cameras/ "Google Nest")), either wired or wireless
   - Webcams, typically using USB connections and run from a laptop or desktop computer
 
 ## **DMS<sup>3</sup>** Use Cases
@@ -197,42 +198,40 @@ This feature is particularly useful for nighttime surveillance, when users may b
 
 **DMS<sup>3</sup>** is organized into the following application components:
 
-- **DMS<sup>3</sup>Server**: integrated server-side system services that determine whether to enable/disable the surveillance system, and regularly notifies participating **DMS<sup>3</sup>** device clients of that surveillance state. A **DMS<sup>3</sup>Server** is typically instantiated on a headless server or home desktop computer.
-- **DMS<sup>3</sup>Client**: client-side endpoint services that start/stop the locally-installed motion detection application (e.g., [Motion](https://motion-project.github.io/ "Motion")). Any number of **DMS<sup>3</sup>Client** clients can exist as part of the **DMS<sup>3</sup>** surveillance system. **DMS<sup>3</sup>Clients** are usually installed on IoT hardware (*e.g.,* Raspberry PI or similar SBC devices)
-- **DMS<sup>3</sup>Dashboard**: an optional component that permits for the visual display and real-time status of **DMS<sup>3</sup>** component metrics of **DMS<sup>3</sup>Clients** through a web browser
+- **DMS<sup>3</sup>Server**: integrated server-side system services that determine whether to enable/disable the surveillance system, and regularly notifies participating **DMS<sup>3</sup>** device clients of that surveillance state. A **DMS<sup>3</sup>Server** is typically instantiated on a headless server or home desktop computer
+- **DMS<sup>3</sup>Client**: client-side endpoint services that start/stop the locally-installed motion detection application (*e.g.*, [Motion](https://motion-project.github.io/ "Motion")). Any number of **DMS<sup>3</sup>Client** clients can exist as part of the **DMS<sup>3</sup>** surveillance system. **DMS<sup>3</sup>Clients** are typically installed on IoT hardware (*e.g.,* Raspberry PI or similar SBC devices)
+- **DMS<sup>3</sup>Dashboard**: an optional component that permits for the visual display and real-time status of **DMS<sup>3</sup>Client** components through a web browser
 - **DMS<sup>3</sup>Libs**: a set of related shared libraries used for managing **DMS<sup>3</sup>** client-server services including low-level system and networking commands, system logging, and unit testing
 
 Optional for smart device clients configured to use the [Motion](https://motion-project.github.io/ "Motion") motion detection application:
 
-- **DMS<sup>3</sup>Mail**: a separate, configurable **DMS<sup>3</sup>** component for generating and sending an email in real-time whenever a client running [Motion](https://motion-project.github.io/ "Motion") generates a significant motion-related event
+- **DMS<sup>3</sup>Mail**: a separate, configurable **DMS<sup>3</sup>** component for generating and sending an email in real-time whenever a client running [Motion](https://motion-project.github.io/ "Motion") generates a significant security event
 
 ## **DMS<sup>3</sup>** Architecture
 
-**DMS<sup>3</sup>** is patterned after a [client server model](https://en.wikipedia.org/wiki/Client%E2%80%93server_model "client server model"), where **DMS<sup>3</sup>Server** is centrally responsible for the logic of enabling/disabling the video surveillance system, while each participating smart device client is responsible for starting/stopping the locally-installed motion detection application. For less smart device clients, the processing of video stream data is passed over the wire to the server for processing and eventual system response and/or user notification.
+**DMS<sup>3</sup>** is patterned after a [client server model](https://en.wikipedia.org/wiki/Client%E2%80%93server_model "client server model"), where the **DMS<sup>3</sup>Server** component is centrally responsible for the logic of enabling/disabling the video surveillance system, while each participating smart device client (SDC), through the use of the **DMS<sup>3</sup>Client** component, is responsible for starting/stopping the locally-installed motion detection application. For "less smart" device clients (LSDCs), the processing of video stream data is passed over the wire to the server for processing and eventual system response and/or user notification.
 
-In the example presented at the start of this document, one IP camera device, one IoT SBC device (a Raspberry Pi), and one webcam device are managed through **DMS<sup>3</sup>Server** (using the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol "TCP protocol")). **DMS<sup>3</sup>Server** determines when to enable/disable the surveillance system, and notifies each participating device client. Since the Raspberry Pi can be configured to run a local instance of a motion detection application, **actual video stream processing, imaging, and eventual reporting is done locally**.
+In the example presented at the start of this document, one IP camera device, one IoT SBC device (a Raspberry Pi), and one webcam device are managed through the **DMS<sup>3</sup>Server** component (using the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol "TCP protocol")). The **DMS<sup>3</sup>Server** determines when to enable/disable the surveillance system, and notifies each participating device client running their own local instance of the **DMS<sup>3</sup>Client** component. Since the Raspberry Pi can be configured to run a local instance of a motion detection application, actual video stream processing, imaging, and eventual reporting is all done locally, greatly limiting network congestion.
 
-The webcam device and the IP camera device--both less smart device clients, incapable of on-board stream processing--must pass raw stream data along to a device proxy running **DMS<sup>3</sup>Client**, which then applies motion detection processing on the incoming video streams.
+The webcam device and the IP camera device--both less smart device clients (LSDCs), incapable of on-board stream processing--must pass raw stream data along to a device proxy running a **DMS<sup>3</sup>Client** component, which then applies motion detection processing on the incoming video streams.
 
 ## How **DMS<sup>3</sup>** Works
 
 ### **DMS<sup>3</sup>Server** Operation
 
-**DMS<sup>3</sup>Server** is responsible for signaling the logic of enabling/disabling the video surveillance system to all device client endpoints. That is, **DMS<sup>3</sup>Server** sends either a `Start` or a `Stop` message to all **DMS<sup>3</sup>** device clients listening on the network.
+The **DMS<sup>3</sup>Server** component is responsible for signaling the logic of enabling/disabling the video surveillance system to all device client endpoints. That is, the **DMS<sup>3</sup>Server** sends either a `Start` or a `Stop` message to all **DMS<sup>3</sup>** device clients configured with a **DMS<sup>3</sup>Client** component, listening on the network.
 
-**DMS<sup>3</sup>Server** does this by periodically scanning the network for the existence of registered user proxies. This device can be anything that exposes its MAC address on the network (*e.g.,* a mobile phone on a home LAN). If that device is found on the network, it's assumed that "someone is home" and so **DMS<sup>3</sup>Server** sends out a `Stop` message to all participating device clients, and their respective motion detection application is stopped (if currently running).
+**DMS<sup>3</sup>Server** does this by periodically scanning the network for the existence of registered user proxies. This device can be anything that exposes its MAC address on the network (*e.g.,* a mobile phone on a home LAN). If that device is found on the network, it's assumed that "someone is home" and so **DMS<sup>3</sup>Server** sends out a `Stop` message to all participating device clients, and their respective motion detection application is subsequently stopped (if currently running).
 
-If that user proxy MAC "leaves" and is no longer found on the network, it's assumed that "nobody is home", and **DMS<sup>3</sup>Server** sends out a `Start` message to all participating device clients, and the motion detection application on that client is started (if currently stopped). Similar logic is used in the reverse case: when a user proxy is once again "back home," the motion detection application of each device client is signalled to `Stop`.
+If that user proxy then "leaves" and is no longer found on the network, it's assumed that "nobody is home", and the **DMS<sup>3</sup>Server** sends out a `Start` message to all participating device clients, and the motion detection application on that client is started (if currently stopped). Similar logic is used in the reverse case: when a user proxy is once again "back home," the motion detection application of each device client is signalled to `Stop`.
 
-Alternatively, the *Always On* feature uses time-of-day to enable/disable the surveillance system. **DMS<sup>3</sup>Server** will look at the time range specified, and if the current time falls between the time range, the motion detection application of all client devices will be started. Once the current time falls outside of the specified time range, the motion detection application for each device client is then stopped.
-
-> Note that **DMS<sup>3</sup>Server** *only signals to participating device clients* the current state of the video surveillance system. Each device client is ultimately responsible for starting/stopping its local instance of the installed motion detection application
+Alternatively, the *Always On* feature uses time-of-day to enable/disable the surveillance system. The **DMS<sup>3</sup>Server** will look at the time range specified, and if the current time falls between the time range, the motion detection application of all client devices will be started. Once the current time falls outside of the specified time range, the motion detection application for each device client is then stopped.
 
 ### **DMS<sup>3</sup>Client** Operation
 
 #### Running on Smart Device Clients (SDCs)
 
-**DMS<sup>3</sup>Client** runs on each configured smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application. **DMS<sup>3</sup>Client** does this by periodically listening to **DMS<sup>3</sup>Server** at the pre-configured IP address and port (network socket address). When **DMS<sup>3</sup>Client** receives a change in motion detection application state, it either starts or stops its locally-installed motion detection application.
+The **DMS<sup>3</sup>Client** component runs on each configured smart device client endpoint, and is responsible for starting/stopping its locally installed motion detection application. The **DMS<sup>3</sup>Client** does this by periodically listening to the configured **DMS<sup>3</sup>Server** at the pre-configured IP address and port (network socket address). When the **DMS<sup>3</sup>Client** receives a change in motion detection application state, it either starts or stops its locally-installed motion detection application.
 
 #### Running with Less Smart Device Clients (LSDCs)
 
@@ -240,10 +239,10 @@ In instances where the device client is "less smart" and unable to process motio
 
 ### **DMS<sup>3</sup>Client** / **DMS<sup>3</sup>Server** Work Flow
 
-Operationally, **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** device clients work together to establish a synchronized video surveillance state across all endpoints:
+Operationally, the **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** device clients work together to establish a synchronized video surveillance state across all endpoints:
 
 - **DMS<sup>3</sup>Server**: usually configured as a daemon running on a central server, walks a logic tree whenever a client connects (or re-connects) to the server. **DMS<sup>3</sup>Server** is responsible for answering the question *"should the surveillance system be enabled or disabled right now?"*
-- **DMS<sup>3</sup>Client**: usually configured as a daemon that runs on each of the participating smart device clients, a **DMS<sup>3</sup>Client** regularly polls (at a configurable interval) the **DMS<sup>3</sup>Server**, and receives from **DMS<sup>3</sup>Server** the current motion detection application state (called *MotionDetectorState*), that is, whether the locally installed motion detection application should be started or stopped
+- **DMS<sup>3</sup>Client**: usually configured as a daemon that runs on each of the participating smart device clients, a **DMS<sup>3</sup>Client** regularly polls (at a configurable interval) the **DMS<sup>3</sup>Server**, and receives from the **DMS<sup>3</sup>Server** the current motion detection application state (called *MotionDetectorState*), that is, whether the locally installed motion detection application should be started or stopped
 
 The activity diagram below shows the work flow of these two components:
 
@@ -261,7 +260,7 @@ The syntax for these [Motion](https://motion-project.github.io/ "Motion") comman
 <on_picture_save|on_movie_end> <absolute path to dms3mail> -pixels=%D -filename=%f
 ```
 
-Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an optional image file or video clip capturing the surveillance event of interest.
+Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](https://motion-project.github.io/ "Motion") event [hooks](http://en.wikipedia.org/wiki/Hooking "Hooking"), and an email will be generated and sent out with an image file or video clip capturing the surveillance event of interest.
 
 ## **DMS<sup>3</sup>** Requirements
 
@@ -282,11 +281,11 @@ Once configured, **DMS<sup>3</sup>Mail** will respond to these two [Motion](http
 
 ### Wifi MAC Randomization Techniques
 
-At its core, **DMS<sup>3</sup>** sensing relies on the concept of a user proxy. In this context, *a user proxy is any device representing a user that can be sensed on a home network*. A smartphone is an excellent user proxy, assuming that a user's smartphone is active on the home network when the user is "at home," and drops from the network when the user leaves and is then "not at home." **DMS<sup>3</sup>** performs this sensing by searching the end user's network for MAC addresses registered during the configuration of the **DMS<sup>3</sup>Server** component (in the `dms3server.toml` file). 
+At its core, **DMS<sup>3</sup>** sensing relies on the concept of a *user proxy*. In this context, *a user proxy is any device representing a user that can be sensed on a home network*. A smartphone is an excellent user proxy, assuming that a user's smartphone is active on the home network when the user is "at home," and drops from the network when the user leaves and is then "not at home." **DMS<sup>3</sup>** performs this sensing by searching the end user's network for MAC addresses registered during the configuration of the **DMS<sup>3</sup>Server** component (in the `dms3server.toml` file).
 
 Historically, MAC addresses have always represented, 1-for-1, the underlying hardware. However, more recently, and as a broader privacy policy, some device vendors now provide users the option to have their device generate MAC addresses randomly for over-the-air communications. This feature can disrupt the sensing services used by the **DMS<sup>3</sup>Server** component.
 
-As a result, it's important to review your smartphone (or other user proxies) privacy policies and configuration options to disable this feature, or reconfigure it accordingly.
+As a result, it's important to review your smartphone (or other user proxies) privacy policies and feature options and configure it accordingly.
 
 ## **DMS<sup>3</sup>** Installation
 

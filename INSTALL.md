@@ -5,6 +5,7 @@
 ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
 
 ## Contents
+
 - [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Installation](#distributed-motion-surveillance-security-system-dmssup3sup-installation)
   - [Contents](#contents)
   - [Installation Overview](#installation-overview)
@@ -20,6 +21,8 @@
       - [Edit the **DMS<sup>3</sup>Dashboard** Configuration File (`dms3dashboard.toml`)](#edit-the-dmssup3supdashboard-configuration-file-dms3dashboardtoml)
     - [**DMS<sup>3</sup>Libs** Configuration](#dmssup3suplibs-configuration)
       - [Edit the **DMS<sup>3</sup>Libs** Configuration File (`dms3libs.toml`)](#edit-the-dmssup3suplibs-configuration-file-dms3libstoml)
+    - [Optional: **DMS<sup>3</sup>Mail** Configuration](#optional-dmssup3supmail-configuration)
+      - [Edit the **DMS<sup>3</sup>Mail** Configuration File (`dms3mail.toml`)](#edit-the-dmssup3supmail-configuration-file-dms3mailtoml)
   - [4. Install the **DMS<sup>3</sup>** Components](#4-install-the-dmssup3sup-components)
     - [Run the **DMS<sup>3</sup>Build** Installer](#run-the-dmssup3supbuild-installer)
     - [Confirm the Installation of a Motion Detection Application on **DMS<sup>3</sup>Client** Devices](#confirm-the-installation-of-a-motion-detection-application-on-dmssup3supclient-devices)
@@ -37,6 +40,7 @@
   - [**Appendix B**: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)](#appendix-b-running-dmssup3sup-with-less-smart-device-clients-lsdcs)
 
 ## Installation Overview
+
 This procedure describes how to compile and install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
 
 At a high level, these are the steps needed to install the various components of the **DMS<sup>3</sup>** project:
@@ -47,7 +51,7 @@ At a high level, these are the steps needed to install the various components of
 4. Install the **DMS<sup>3</sup>** components to all participating hardware devices
 5. Run the **DMS<sup>3</sup>** components
 
-Since **DMS<sup>3</sup>** is a distributed security system, components are installed both on a server and at any number of participating device clients, referred to as a smart device client (SDC). SDCs are typically smaller IoT devices and single-board computers (SBCs), such as a Raspberry Pi. 
+Since **DMS<sup>3</sup>** is a distributed security system, components are installed both on a server and at any number of participating device clients, referred to as a smart device client (SDC). SDCs are typically smaller IoT devices and single-board computers (SBCs), such as a Raspberry Pi.
 
 The table below provides an overview of where **DMS<sup>3</sup>** components will be installed:
 
@@ -71,13 +75,16 @@ git clone https://github.com/richbl/go-distributed-motion-s3
 
 The **DMS<sup>3</sup>** project sources must first be compiled into binary executables--one for each supported hardware platform--before installation.
 
-To compile all components of the **DMS<sup>3</sup>** project, run the `compile_dms3` command located in the `cmd` folder in the project root (*i.e.*, `go run cmd/compile_dms3/compile_dms3.go`).
+**DMS<sup>3</sup>** components must be compiled for the operating system (*e.g.*, Linux) and CPU architecture (*e.g.*, AMD64) of the hardware device on which the component will be installed. If the OS and architecture are not available in the current **DMS<sup>3</sup>** release, it's very possible to configure a platform and compile as appropriate. For details on [Go](https://golang.org/ "Go") compiler support, see the [Go support for various architectures and OS platforms](https://golang.org/doc/install/source#environment "Go Support").
 
-The current release of **DMS<sup>3</sup>** supports the following architectures:
+The current release of **DMS<sup>3</sup>** natively supports the following architectures:
+
 - Linux AMD64
-- Linux ARM6
-- Linux ARM7
-- Linux ARM8
+- Linux ARM6 (*e.g.*, Raspberry Pi A, A+, B, B+, Zero)
+- Linux ARM7 (*e.g.*, Raspberry Pi 2, 3)
+- Linux ARM8 (*e.g.*, Raspberry Pi 4)
+
+To compile all components of the **DMS<sup>3</sup>** project, run the `compile_dms3` command located in the `cmd` folder in the project root (*i.e.*, `go run cmd/compile_dms3/compile_dms3.go`).
 
 The result of a successful **DMS<sup>3</sup>** project compile is the creation of a `dms3_release` folder. The folder structure of a typical **DMS<sup>3</sup>** release is as follows:
 
@@ -221,7 +228,7 @@ By default, this file is installed into `/etc/distributed-motion-s3/dms3server` 
 - `AlwaysOn.Enable`: toggle the time-based *Always On* feature
 - `AlwaysOn.TimeRange`: set the range (24-hour format) to start/stop the *Always On* feature
 - `UserProxy.IPBase`: the first three address octets defining the network (*e.g.*, 10.10.10.) where user proxies (devices representing users on the network, such as a smartphone) will be scanned to determine when the motion detector application should be run
-- `UserProxy.IPRange`: the fourth address octet defined as the network range (e.g., 100, 254)
+- `UserProxy.IPRange`: the fourth address octet defined as the network range (*e.g.*, 100, 254)
 - `UserProxy.MacsToFind`: the MAC addresses (*e.g.*, "24:da:9b:0d:53:8f") of user proxy device(s) to search for on the LAN
 - `Logging.LogLevel`: sets the log levels for application logging
 - `Logging.LogDevice`: determines to what device logging should be output
@@ -250,7 +257,7 @@ The specific **DMS<sup>3</sup>Dashboard** settings for the **DMS<sup>3</sup>Serv
 
 ### **DMS<sup>3</sup>Libs** Configuration
 
-By default, shared by all **DMS<sup>3</sup>** components, this file is installed into `/etc/distributed-motion-s3/dms3libs` on both server and participating device clients, and used to configure the location of system-level commands (*e.g.*, `ping`). 
+By default, shared by all **DMS<sup>3</sup>** components, this file is installed into `/etc/distributed-motion-s3/dms3libs` on both server and participating device clients, and used to configure the location of system-level commands (*e.g.*, `ping`).
 
 #### Edit the **DMS<sup>3</sup>Libs** Configuration File (`dms3libs.toml`)
 
@@ -266,6 +273,27 @@ This file maps command name to absolute pathname, as follows:
   - `PGREP` = "/usr/bin/pgrep"
   - `PING` = "/usr/bin/ping"
   - `PKILL` = "/usr/bin/pkill"
+
+### Optional: **DMS<sup>3</sup>Mail** Configuration
+
+**DMS<sup>3</sup>Mail** is a stand-alone client-side component responsible for generating and sending an email whenever a valid motion event is triggered in the [Motion](https://motion-project.github.io/) application.
+
+#### Edit the **DMS<sup>3</sup>Mail** Configuration File (`dms3mail.toml`)
+
+By default, this file is installed into `/etc/distributed-motion-s3/dms3mail` on each participating device client running the **DMS<sup>3</sup>Client** component, and used for setting the following:
+
+- `Filename`: filename of HTML email template file
+- `FileLocation`: where the HTML email template file is located
+- `Email.From`: the email sender
+- `Email.To`: the email recipient
+- `SMTP.Address`: the host of the SMTP server
+- `SMTP.Port`: the port of the SMTP server
+- `SMTP.Username`: the username to use to authenticate to the SMTP server
+- `SMTP.Password`: the password to use to authenticate to the SMTP server
+- `Logging.LogLevel`: sets the log levels for application logging
+- `Logging.LogDevice`: determines to what device logging should be output
+- `Logging.LogFilename`: filename of the **DMS<sup>3</sup>Mail** log
+- `Logging.LogLocation`: location of logfile (absolute path; must have full r/w permissions)
 
 ## 4. Install the **DMS<sup>3</sup>** Components
 
@@ -289,6 +317,15 @@ go run /dms3_release/cmd/install_dms3
 ```
 
 The `dms3build` installer will display the installation progress on all device platforms. On completion, these device platforms will be properly configured to run **DMS<sup>3</sup>** components.
+
+The table below provides a good overview of where **DMS<sup>3</sup>Build** installs the various **DMS<sup>3</sup>** component files:
+
+| Component Element                                                                       | Default Location                                                                          | Configurable Location?                                                                                                          |
+| :-------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| [Go](https://golang.org/ "Go") executable (*e.g.*, `dms3client`)                          | `usr/local/bin` | Yes, install anywhere on [`$PATH`](http://www.linfo.org/path_env_var.html "PATH environment variable") |
+| [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (*e.g.*, `dms3client.toml`) | `/etc/distributed-motion-s3/<dms3 component>`                                             | Yes, edit in [Go](https://golang.org/ "Go") sources (*e.g.*, `dms3client.go`)                                                     |
+| Optional: daemon service file (*e.g.*, `dms3client.service`)                              | None (manual install only)                                                                     | No (platform-dependent)                                                                                                         |
+| Optional: log file (*e.g.*, `dms3client.log`), runtime-generated                          | `/var/log/dms3`                                                                           | Yes, edit in [TOML](https://en.wikipedia.org/wiki/TOML "TOML") config file (*e.g.*, `dms3client.toml`)                            |
 
 ### Confirm the Installation of a Motion Detection Application on **DMS<sup>3</sup>Client** Devices
 
@@ -448,12 +485,11 @@ Where `<*>` is a Go test file. The unit test results will be displayed as each t
 
 While **DMS<sup>3</sup>** does not generate image or videos files, as part of an installed motion detection application such as [Motion](https://motion-project.github.io/), these applications can often generate a lot of files in very short order.
 
-One solution that we've used successfully while running **DMS<sup>3</sup>** is to install and configure the [Old-Files-Delete script](https://github.com/richbl/old-files-delete) on all client devices running the **DMS<sup>3</sup>Client** component. Properly configured, the Old-Files-Delete script will periodically as a [cron job](https://en.wikipedia.org/wiki/Cron), and keep image and video files well managed. 
+One solution that we've used successfully while running **DMS<sup>3</sup>** is to install and configure the [Old-Files-Delete script](https://github.com/richbl/old-files-delete) on all client devices running the **DMS<sup>3</sup>Client** component. Properly configured, the Old-Files-Delete script will periodically as a [cron job](https://en.wikipedia.org/wiki/Cron), and keep image and video files well managed.
 
 From the project site:
 
 > **Old-Files-Delete** (`old_files_delete.sh`) is a [bash](https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29) script to recursively delete files older than (n) number of days. `run_old_files_delete.sh` is a related script intended to be used for making unattended script calls into `old_files_delete.sh` (*e.g.*, running cron jobs).
-
 
 ## **Appendix B**: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)
 
