@@ -45,7 +45,7 @@ func startServer(serverPort int) {
 	if listener, error := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); error != nil {
 		dms3libs.LogFatal(error.Error())
 	} else {
-		dms3libs.LogInfo("server started")
+		dms3libs.LogInfo("TCP server started")
 		defer listener.Close()
 		serverLoop(listener)
 	}
