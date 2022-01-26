@@ -4,37 +4,6 @@
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
 ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
 
-## Contents
-
-- [Distributed Motion Surveillance Security System (DMS<sup>3</sup>)](#distributed-motion-surveillance-security-system-dmssup3sup)
-  - [Contents](#contents)
-  - [New for Release 1.4.0](#new-for-release-140)
-    - [**DMS<sup>3</sup>Mail**](#dmssup3supmail)
-    - [**DMS<sup>3</sup>Dashboard**](#dmssup3supdashboard)
-    - [**DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**](#dmssup3supserver--dmssup3supclient)
-  - [What Is **DMS<sup>3</sup>**?](#what-is-dmssup3sup)
-  - [**DMS<sup>3</sup>** Features](#dmssup3sup-features)
-    - [**DMS<sup>3</sup>Client**, **DMS<sup>3</sup>Server**, and **DMS<sup>3</sup>Dashboard** Features](#dmssup3supclient-dmssup3supserver-and-dmssup3supdashboard-features)
-    - [**DMS<sup>3</sup>Mail** Features](#dmssup3supmail-features)
-    - [Motion Detection Application Support](#motion-detection-application-support)
-    - [Support for "Smart" and "Less Smart" Device Clients](#support-for-smart-and-less-smart-device-clients)
-  - [**DMS<sup>3</sup>** Use Cases](#dmssup3sup-use-cases)
-    - ["Leaving Home, Coming Home"](#leaving-home-coming-home)
-    - ["Nighttime Surveillance"](#nighttime-surveillance)
-  - [**DMS<sup>3</sup>** Components](#dmssup3sup-components)
-  - [**DMS<sup>3</sup>** Architecture](#dmssup3sup-architecture)
-  - [How **DMS<sup>3</sup>** Works](#how-dmssup3sup-works)
-    - [**DMS<sup>3</sup>Server** Operation](#dmssup3supserver-operation)
-    - [**DMS<sup>3</sup>Client** Operation](#dmssup3supclient-operation)
-      - [Running on Smart Device Clients (SDCs)](#running-on-smart-device-clients-sdcs)
-      - [Running with Less Smart Device Clients (LSDCs)](#running-with-less-smart-device-clients-lsdcs)
-    - [**DMS<sup>3</sup>Client** / **DMS<sup>3</sup>Server** Work Flow](#dmssup3supclient--dmssup3supserver-work-flow)
-    - [**DMS<sup>3</sup>Mail** Operation](#dmssup3supmail-operation)
-  - [**DMS<sup>3</sup>** Requirements](#dmssup3sup-requirements)
-    - [Wifi MAC Randomization Techniques](#wifi-mac-randomization-techniques)
-  - [**DMS<sup>3</sup>** Installation](#dmssup3sup-installation)
-  - [License](#license)
-
 ## New for Release 1.4.0
 
 Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the **DMS<sup>3</sup>** surveillance security system that so many people have relied upon even more efficient, stable, and secure.

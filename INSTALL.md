@@ -4,44 +4,9 @@
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
 ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
 
-## Contents
-
-- [Distributed Motion Surveillance Security System (DMS<sup>3</sup>) Installation](#distributed-motion-surveillance-security-system-dmssup3sup-installation)
-  - [Contents](#contents)
-  - [Installation Overview](#installation-overview)
-  - [1. Download the **DMS<sup>3</sup>** Project](#1-download-the-dmssup3sup-project)
-  - [2. Compile the **DMS<sup>3</sup>** Components](#2-compile-the-dmssup3sup-components)
-  - [3. Configure the **DMS<sup>3</sup>** Components](#3-configure-the-dmssup3sup-components)
-    - [**DMS<sup>3</sup>Build** Configuration](#dmssup3supbuild-configuration)
-      - [Edit the **DMS<sup>3</sup>Build** Configuration File (`dms3build.toml`)](#edit-the-dmssup3supbuild-configuration-file-dms3buildtoml)
-    - [**DMS<sup>3</sup>Client** & **DMS<sup>3</sup>Server** Configurations](#dmssup3supclient--dmssup3supserver-configurations)
-      - [Edit the **DMS<sup>3</sup>Client** Configuration File (`dms3client.toml`)](#edit-the-dmssup3supclient-configuration-file-dms3clienttoml)
-      - [Edit the **DMS<sup>3</sup>Server** Configuration File (`dms3server.toml`)](#edit-the-dmssup3supserver-configuration-file-dms3servertoml)
-    - [**DMS<sup>3</sup>Dashboard** Configuration](#dmssup3supdashboard-configuration)
-      - [Edit the **DMS<sup>3</sup>Dashboard** Configuration File (`dms3dashboard.toml`)](#edit-the-dmssup3supdashboard-configuration-file-dms3dashboardtoml)
-    - [**DMS<sup>3</sup>Libs** Configuration](#dmssup3suplibs-configuration)
-      - [Edit the **DMS<sup>3</sup>Libs** Configuration File (`dms3libs.toml`)](#edit-the-dmssup3suplibs-configuration-file-dms3libstoml)
-    - [Optional: **DMS<sup>3</sup>Mail** Configuration](#optional-dmssup3supmail-configuration)
-      - [Edit the **DMS<sup>3</sup>Mail** Configuration File (`dms3mail.toml`)](#edit-the-dmssup3supmail-configuration-file-dms3mailtoml)
-  - [4. Install the **DMS<sup>3</sup>** Components](#4-install-the-dmssup3sup-components)
-    - [Run the **DMS<sup>3</sup>Build** Installer](#run-the-dmssup3supbuild-installer)
-    - [Confirm the Installation of a Motion Detection Application on **DMS<sup>3</sup>Client** Devices](#confirm-the-installation-of-a-motion-detection-application-on-dmssup3supclient-devices)
-    - [Optional: Integrate **DMS<sup>3</sup>Mail** with Motion on **DMS<sup>3</sup>Client** Devices](#optional-integrate-dmssup3supmail-with-motion-on-dmssup3supclient-devices)
-  - [5. Run the **DMS<sup>3</sup>** Components](#5-run-the-dmssup3sup-components)
-    - [Run **DMS<sup>3</sup>** Components as Executables](#run-dmssup3sup-components-as-executables)
-      - [Run the **DMS<sup>3</sup>Server** Component](#run-the-dmssup3supserver-component)
-      - [Run the **DMS<sup>3</sup>Client** Component](#run-the-dmssup3supclient-component)
-    - [Optional: Run **DMS<sup>3</sup>** Components as Services](#optional-run-dmssup3sup-components-as-services)
-    - [Optional: View the **DMS<sup>3</sup>Dashboard** Component](#optional-view-the-dmssup3supdashboard-component)
-  - [6. Configuration Testing & Troubleshooting](#6-configuration-testing--troubleshooting)
-    - [System Testing **DMS<sup>3</sup>**](#system-testing-dmssup3sup)
-    - [Unit Testing the **DMS<sup>3</sup>Libs** Component](#unit-testing-the-dmssup3suplibs-component)
-  - [**Appendix A**: Managing Motion Capture Files](#appendix-a-managing-motion-capture-files)
-  - [**Appendix B**: Running **DMS<sup>3</sup>** with Less Smart Device Clients (LSDCs)](#appendix-b-running-dmssup3sup-with-less-smart-device-clients-lsdcs)
-
 ## Installation Overview
 
-This procedure describes how to compile and install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
+This document describes how to compile and install the **Distributed Motion Surveillance Security System (DMS<sup>3</sup>)** from the **DMS<sup>3</sup>** project sources.
 
 At a high level, these are the steps needed to install the various components of the **DMS<sup>3</sup>** project:
 
