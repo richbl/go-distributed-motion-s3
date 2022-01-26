@@ -10,6 +10,10 @@ Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<
 
 ### **DMS<sup>3</sup>Mail**
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10182110/150719391-a562ac4a-154e-4dad-b4bc-6c88f4d2b425.png" alt="DMS3Mail Event">
+</p>
+
 - The **DMS<sup>3</sup>Mail** component gets a significant makeover in response to ongoing changes in the use of advanced progressive HTML5 email templates developed to work with myriad end-user email applications. Upgrades to **DMS<sup>3</sup>Mail** include:
   - **NEW!** A much-anticipated and fully configurable HTML5 email template, based on the very popular [Cerberus responsive email patterns](https://github.com/TedGoas/Cerberus). For use in **DMS<sup>3</sup>**, we integrated the [Go HTML/template package](https://pkg.go.dev/html/template) into the Cerberus fluid template, very similar to what we did when creating the **DMS<sup>3</sup>Dashboard** component. This new responsive email template now presents a more complete email message to the end user, with the following functionality:
     - **NEW!** Larger image attachments are now integrated directly into the email body (versus as an attachment)
@@ -17,9 +21,11 @@ Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<
     - **NEW!** The percentage of changes (in pixels) is now provided, thanks to a new *GetImageDimensions()* routine that provides image details as **DMS<sup>3</sup>Mail** processes the security event in real-time.
     - As part of this new progressive email template, email "dark mode" is now handled automatically, making it easier to view email on disparate mobile platforms
 
-  ![dms3mail](https://user-images.githubusercontent.com/10182110/150719391-a562ac4a-154e-4dad-b4bc-6c88f4d2b425.png)
-
 ### **DMS<sup>3</sup>Dashboard**
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10182110/150717902-8eca508a-f107-4b24-87e6-022dde20196a.png" alt="DMS3Dashboard Display">
+</p>
 
 Ever wonder if your surveillance cameras are operational, in need of updates, or even a reboot? The **DMS<sup>3</sup>Dashboard** component can be enabled to run on a **DMS<sup>3</sup>Server** and provide regularly-updated information of all **DMS<sup>3</sup>Client** components with device metrics that include:
 
@@ -53,9 +59,6 @@ New for this release are the following additional configuration options for **DM
   - Kernel release (*e.g.,* 5.10.63-v7+)
 - **NEW!** Various additional upgrades to the dashboard HTML template, including revisions to the template display, and updates to use the new **DMS<sup>3</sup>** logo in the template header
 
-![dms3_dashboard](https://user-images.githubusercontent.com/10182110/150717902-8eca508a-f107-4b24-87e6-022dde20196a.png
-)
-
 ### **DMS<sup>3</sup>Server** & **DMS<sup>3</sup>Client**
   
 - Both of these **DMS<sup>3</sup>** components received a significant upgrade that includes:
@@ -72,7 +75,9 @@ New for this release are the following additional configuration options for **DM
 
 ## What Is **DMS<sup>3</sup>**?
 
-![dms3_topology](https://user-images.githubusercontent.com/10182110/150858539-e67fdf19-7ab8-4c82-9c86-08afbd7c64e5.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10182110/150858539-e67fdf19-7ab8-4c82-9c86-08afbd7c64e5.png" alt="DMS3 Topology">
+</p>
 
 > If you appreciate isometric drawings, please check out our [isometric-icons project, located here](https://github.com/richbl/isometric-icons).
 
@@ -215,7 +220,9 @@ Operationally, the **DMS<sup>3</sup>Server** and all **DMS<sup>3</sup>Client** d
 
 The activity diagram below shows the work flow of these two components:
 
-![dms3_activity_diagram](https://user-images.githubusercontent.com/10182110/150865977-cd236155-923a-47de-9d76-ff2052b3c11d.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/10182110/150865977-cd236155-923a-47de-9d76-ff2052b3c11d.png" alt="DMS3 Activity Diagram">
+</p>
 
 ### **DMS<sup>3</sup>Mail** Operation
 
