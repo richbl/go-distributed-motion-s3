@@ -263,7 +263,7 @@ As a result, it's important to review your smartphone (or other user proxies) pr
 
 ## **DMS<sup>3</sup>** Installation
 
-A separate installation document is [available here](https://github.com/richbl/go-distributed-motion-s3/blob/master/MANUAL_INSTALL.md).
+A separate installation document is [available here](https://github.com/richbl/go-distributed-motion-s3/blob/master/INSTALL.md).
 
 ## License
 
