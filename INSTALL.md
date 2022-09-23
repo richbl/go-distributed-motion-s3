@@ -278,7 +278,7 @@ The **DMS<sup>3</sup>Build** `install_dms3` binary, located in `dms3_release/cmd
 To install all configured **DMS<sup>3</sup>** components, run `install_dms3` (*i.e.*, `./dms3_release/cmd/install_dms3`):
 
 ```text
-go run /dms3_release/cmd/install_dms3
+go run ./dms3_release/cmd/install_dms3
 ```
 
 The `dms3build` installer will display the installation progress on all device platforms. On completion, these device platforms will be properly configured to run **DMS<sup>3</sup>** components.
