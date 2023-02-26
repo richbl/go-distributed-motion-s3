@@ -450,7 +450,7 @@ Where `<*>` is a Go test file. The unit test results will be displayed as each t
 
 While **DMS<sup>3</sup>** does not generate image or videos files, as part of an installed motion detection application such as [Motion](https://motion-project.github.io/), these applications can often generate a lot of files in very short order.
 
-One solution that we've used successfully while running **DMS<sup>3</sup>** is to install and configure the [Old-Files-Delete script](https://github.com/richbl/old-files-delete) on all client devices running the **DMS<sup>3</sup>Client** component. Properly configured, the Old-Files-Delete script will periodically as a [cron job](https://en.wikipedia.org/wiki/Cron), and keep image and video files well managed.
+One solution that we've used successfully while running **DMS<sup>3</sup>** is to install and configure the [Old-Files-Delete script](https://github.com/richbl/old-files-delete) on all client devices running the **DMS<sup>3</sup>Client** component. Properly configured, the Old-Files-Delete script will run periodically as a [cron job](https://en.wikipedia.org/wiki/Cron), and keep image and video files well managed.
 
 From the project site:
 
