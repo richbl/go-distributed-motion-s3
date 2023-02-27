@@ -1,5 +1,4 @@
 // Package dms3libs configuration structures and variables
-//
 package dms3libs
 
 import (
@@ -22,7 +21,6 @@ type structConfig struct {
 type mapSysCommands map[string]string
 
 // LoadLibConfig loads a TOML configuration file of system commands into parameter values
-//
 func LoadLibConfig(configFile string) {
 
 	if IsFile(configFile) {
@@ -36,7 +34,6 @@ func LoadLibConfig(configFile string) {
 }
 
 // LoadComponentConfig loads a TOML configuration file of client/server configs into parameter values
-//
 func LoadComponentConfig(structConfig interface{}, configFile string) {
 
 	if _, error := os.Stat(configFile); error == nil {
@@ -58,7 +55,6 @@ func LoadComponentConfig(structConfig interface{}, configFile string) {
 }
 
 // SetLogFileLocation sets the location of the log file based on TOML configuration
-//
 func SetLogFileLocation(config *StructLogging) {
 
 	projectDir := path.Dir(GetPackageDir())

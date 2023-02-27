@@ -4,7 +4,6 @@
 //
 // this installer depends on a local dms3_release folder created through dms3 compilation (see
 // compile_dms3.go for details)
-//
 package main
 
 import (

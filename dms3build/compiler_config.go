@@ -1,5 +1,4 @@
 // Package dms3build compiler configuration structures and variables
-//
 package dms3build
 
 // structComponent contains component details

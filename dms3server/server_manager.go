@@ -1,6 +1,5 @@
 // Package dms3server manager processes dms3server device component messages received by
 // dms3client device components
-//
 package dms3server
 
 import (
@@ -14,7 +13,6 @@ var checkIntervalTimestamp = time.Now()
 
 // DetermineMotionDetectorState determines whether to start the motion detector application based
 // device presence/time logic
-//
 func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -34,7 +32,6 @@ func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 
 // setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
 // applications
-//
 func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionDetectorState {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -61,7 +58,6 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 }
 
 // checkIntervalExpired determines if last check interval (in seconds) has expired
-//
 func checkIntervalExpired() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -77,7 +73,6 @@ func checkIntervalExpired() bool {
 
 // timeInRange checks to see if the current time is within the bounds of the 'always on' range
 // (if the AlwaysOn option is enabled)
-//
 func timeInRange() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -92,7 +87,6 @@ func timeInRange() bool {
 
 // calcTimeRange checks to see if the configured time range crosses into the next day, and
 // determines time range accordingly
-//
 func calcTimeRange() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -112,7 +106,6 @@ func calcTimeRange() bool {
 
 // deviceOnLAN checks to see if device MACs exist on LAN (first freshens local arp cache to
 // guarantee good results)
-//
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))

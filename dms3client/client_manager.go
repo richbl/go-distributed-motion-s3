@@ -1,6 +1,5 @@
 // Package dms3client manager processes dms3client device component messages passed to it by
 // the dms3server device component
-//
 package dms3client
 
 import (
@@ -10,7 +9,6 @@ import (
 )
 
 // ProcessMotionDetectorState starts/stops the motion detector application
-//
 func ProcessMotionDetectorState() {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))

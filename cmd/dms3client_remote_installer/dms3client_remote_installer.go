@@ -2,7 +2,6 @@
 // and then deleted automatically
 //
 // NOTE: must be run with admin privileges on the remote device
-//
 package main
 
 import (

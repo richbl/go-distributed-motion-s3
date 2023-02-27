@@ -1,5 +1,4 @@
 // Package dms3libs file provides file services for dms3 device components
-//
 package dms3libs
 
 import (
@@ -11,7 +10,6 @@ import (
 )
 
 // IsFile returns true/false on existence of file/folder passed in
-//
 func IsFile(filename string) bool {
 
 	_, error := os.Stat(filename)
@@ -20,7 +18,6 @@ func IsFile(filename string) bool {
 }
 
 // MkDir creates a new folder with permissions passed in
-//
 func MkDir(newPath string) {
 
 	error := os.MkdirAll(newPath, os.ModePerm)
@@ -29,7 +26,6 @@ func MkDir(newPath string) {
 }
 
 // RmDir removes the folder passed in
-//
 func RmDir(dir string) {
 
 	if IsFile(dir) {
@@ -40,7 +36,6 @@ func RmDir(dir string) {
 }
 
 // WalkDir generates a map of directories (0) and files (1)
-//
 func WalkDir(dirname string) map[string]int {
 
 	fileList := map[string]int{}
@@ -66,7 +61,6 @@ func WalkDir(dirname string) map[string]int {
 }
 
 // CopyFile copies a file from src to dest
-//
 func CopyFile(src string, dest string) {
 
 	srcFile, err := os.Open(src)
@@ -92,7 +86,6 @@ func CopyFile(src string, dest string) {
 }
 
 // CopyDir copies a directory from srcDir to destDir
-//
 func CopyDir(srcDir string, destDir string) {
 
 	pathRoot := filepath.Dir(srcDir)
@@ -124,7 +117,6 @@ func CopyDir(srcDir string, destDir string) {
 }
 
 // CountFilesInDir recursively counts the files in the dir passed in
-//
 func CountFilesInDir(srcDir string) int {
 
 	fileCount := 0
@@ -144,7 +136,6 @@ func CountFilesInDir(srcDir string) int {
 
 // CheckFileLocation checks/sets the location of file and pathname passed in as defined in various
 // TOML config files, returning a fully qualified path
-//
 func CheckFileLocation(configPath string, fileDir string, fileLocation *string, filename string) {
 
 	// set default template location

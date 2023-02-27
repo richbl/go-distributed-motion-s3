@@ -1,5 +1,4 @@
 // Package dms3mail implements a mailer service for dms3clients
-//
 package dms3mail
 
 import (
@@ -19,7 +18,6 @@ import (
 )
 
 // Init configs the library and configuration for dms3mail
-//
 func Init(configPath string) {
 
 	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
@@ -37,7 +35,6 @@ func Init(configPath string) {
 
 // GenerateEventEmail is the entry point for this package, first calling parseEventArgs to interpret
 // the Motion event, and then calling generateSMTPEmail to create and send the email
-//
 func GenerateEventEmail() {
 
 	var eventDetails structEventDetails
@@ -48,11 +45,9 @@ func GenerateEventEmail() {
 }
 
 // parseEventArgs creates an event by parsing the following command line arguments passed in via the
-//  Motion on_picture_save or the on_movie_end command:
-//
-//  ARGV[0] count of pixels changed
-//  ARGV[1] media filename
-//
+// Motion on_picture_save or the on_movie_end command:
+// ARGV[0] count of pixels changed
+// ARGV[1] media filename
 func (eventDetails *structEventDetails) parseEventArgs() {
 
 	// parse command line arguments passed from Motion command
@@ -80,16 +75,15 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 
 // getEventDetails creates the following event details based on filename:
 //
-//   eventNumber - Motion-generated event number
-//   eventDate - Motion-generated event datetime
+//	eventNumber - Motion-generated event number
+//	eventDate - Motion-generated event datetime
 //
 // This method assumes that filename follows the default Motion file-naming convention of
 // [%v-]%Y%m%d%H%M%S (for movies) or [%v-]%Y%m%d%H%M%S-%q (for pictures), where:
 //
-//   [%v] - event number (as of Motion 4.3.2, no longer included in filename by default)
-//   %Y%m%d%H%M%S - ISO 8601 date, with hours, minutes, seconds notion
-//   %q - frame number (value ignored)
-//
+//	[%v] - event number (as of Motion 4.3.2, no longer included in filename by default)
+//	%Y%m%d%H%M%S - ISO 8601 date, with hours, minutes, seconds notion
+//	%q - frame number (value ignored)
 func getEventDetails(filename string) (eventDate string) {
 
 	var index int
@@ -120,7 +114,6 @@ func getEventDetails(filename string) (eventDate string) {
 }
 
 // createEmailBody loads the email template (HTML) and parses elements
-//
 func (elements emailTemplateElements) createEmailBody() string {
 
 	t := template.Must(template.New(mailConfig.Filename).ParseFiles(filepath.Join(mailConfig.FileLocation, mailConfig.Filename)))
@@ -137,7 +130,6 @@ func (elements emailTemplateElements) createEmailBody() string {
 
 // generateSMTPEmail generates and mails an email message based on configuration options
 // See https://github.com/go-gomail/gomail for mail package options
-//
 func (eventDetails *structEventDetails) generateSMTPEmail() {
 
 	mail := gomail.NewMessage()

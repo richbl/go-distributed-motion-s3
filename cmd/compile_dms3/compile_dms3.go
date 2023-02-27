@@ -4,7 +4,6 @@
 // the dms3_release folder is then used as the base object for performing dms3 component
 // installation on dms3client(s) and dms3server(s) device platforms (see install_dms3.go for
 // details)
-//
 package main
 
 import (

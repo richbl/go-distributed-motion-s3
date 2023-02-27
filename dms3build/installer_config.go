@@ -1,5 +1,4 @@
 // Package dms3build installer configuration structures and variables
-//
 package dms3build
 
 // BuildConfig contains installation configuration settings read from TOML file

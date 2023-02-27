@@ -1,5 +1,4 @@
 // Package dms3libs OS provides operating system information services for dms3 device components
-//
 package dms3libs
 
 import (
@@ -22,7 +21,6 @@ const (
 )
 
 // GetDeviceHostname returns the name of the local machine
-//
 func GetDeviceHostname() string {
 
 	name, err := os.Hostname()
@@ -33,7 +31,6 @@ func GetDeviceHostname() string {
 
 // GetDeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
 // the /etc/os-release file found in most Linux-based distributions
-//
 func GetDeviceOSName() string {
 
 	result := "OS unknown"
@@ -68,7 +65,6 @@ func GetDeviceOSName() string {
 }
 
 // GetDeviceDetails returns device details of the local machine
-//
 func GetDeviceDetails(element DeviceDetails) string {
 
 	utsName, error := uname()
@@ -98,7 +94,6 @@ func GetDeviceDetails(element DeviceDetails) string {
 }
 
 // uname returns the Utsname struct used to query system settings
-//
 func uname() (*syscall.Utsname, error) {
 
 	uts := &syscall.Utsname{}

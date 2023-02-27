@@ -1,5 +1,4 @@
 // Package dms3dash client implements client services for a dms3server-based metrics dashboard
-//
 package dms3dash
 
 import (
@@ -14,10 +13,7 @@ import (
 
 var dashboardClientMetrics *DeviceMetrics
 
-// InitDashboardClient loads configuration and assigns the dashboard client profile (sets
-//  static client metrics)
-//
-
+// InitDashboardClient loads configuration and assigns the dashboard client profile (sets static client metrics)
 func InitDashboardClient(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -47,7 +43,6 @@ func InitDashboardClient(configPath string, checkInterval int) {
 }
 
 // ReceiveDashboardRequest receives server requests and returns data
-//
 func ReceiveDashboardRequest(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -60,7 +55,6 @@ func ReceiveDashboardRequest(conn net.Conn) {
 
 // receiveDashboardEnableState parses the server dashboard state notification, returning true
 // if the dashboard state is enabled
-//
 func receiveDashboardEnableState(conn net.Conn) bool {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -79,7 +73,6 @@ func receiveDashboardEnableState(conn net.Conn) bool {
 }
 
 // sendDashboardData sends dashboard info to server
-//
 func sendDashboardData(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -111,7 +104,6 @@ func sendDashboardData(conn net.Conn) {
 // checkImagesFolder confirms the location of the motion-triggered image/movie files managed by
 // the motion detector application (if installed), and used in displaying client metrics in the
 // dashboard
-//
 func (dash *DeviceMetrics) checkImagesFolder() {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))

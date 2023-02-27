@@ -1,5 +1,4 @@
 // Package dms3server connector initializes the dms3server device component
-//
 package dms3server
 
 import (
@@ -14,7 +13,6 @@ import (
 )
 
 // Init configs the library and configuration for dms3server
-//
 func Init(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -39,7 +37,6 @@ func Init(configPath string) {
 }
 
 // startServer starts the TCP server
-//
 func startServer(serverPort int) {
 
 	if listener, error := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); error != nil {
@@ -54,7 +51,6 @@ func startServer(serverPort int) {
 
 // serverLoop starts a loop to listen for clients, spawning a separate processing thread on
 // dms3client connect
-//
 func serverLoop(listener net.Listener) {
 
 	for {
@@ -71,7 +67,6 @@ func serverLoop(listener net.Listener) {
 }
 
 // processClient passes motion detector application state to all dms3client listeners
-//
 func processClient(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -85,7 +80,6 @@ func processClient(conn net.Conn) {
 }
 
 // sendMotionDetectorState sends detector state to clients
-//
 func sendMotionDetectorState(conn net.Conn) {
 
 	state := strconv.Itoa(int(DetermineMotionDetectorState()))
@@ -100,7 +94,6 @@ func sendMotionDetectorState(conn net.Conn) {
 
 // setMediaLocation sets the location where audio files are located for motion detection
 // application start/stop events
-//
 func setMediaLocation(configPath string, config *structSettings) {
 
 	type mediaPath struct {

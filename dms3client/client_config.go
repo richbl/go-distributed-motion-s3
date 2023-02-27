@@ -1,5 +1,4 @@
 // Package dms3client configuration structures and variables
-//
 package dms3client
 
 import (

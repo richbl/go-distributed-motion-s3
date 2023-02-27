@@ -1,5 +1,4 @@
 // Package dms3libs network provides networking services for dms3 device components
-//
 package dms3libs
 
 import (
@@ -10,7 +9,6 @@ import (
 
 // PingHosts uses native ping command to ping the address range passed in to freshen the local
 // arp cache
-//
 func PingHosts(ipBase string, ipRange []int) {
 
 	var wg sync.WaitGroup
@@ -32,7 +30,6 @@ func PingHosts(ipBase string, ipRange []int) {
 
 // FindMacs uses 'ip neigh' to find mac address(es) passed in, returning true if any mac passed in is found
 // (e.g., mac1|mac2|mac3)
-//
 func FindMacs(macsToFind []string) bool {
 
 	macListRegex := ""

@@ -1,5 +1,4 @@
 // Package dms3client connector initializes the dms3client device component
-//
 package dms3client
 
 import (
@@ -14,7 +13,6 @@ import (
 )
 
 // Init configs the library, configuration, and dashboard for dms3client
-//
 func Init(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -33,7 +31,6 @@ func Init(configPath string) {
 }
 
 // startClient periodically attempts to connect to the server (based on CheckInterval)
-//
 func startClient(ServerIP string, ServerPort int) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -53,7 +50,6 @@ func startClient(ServerIP string, ServerPort int) {
 
 // processClientRequest reads from the connection and processes dashboard and motion detector
 // application state
-//
 func processClientRequest(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -67,7 +63,6 @@ func processClientRequest(conn net.Conn) {
 }
 
 // receiveMotionDetectorState receives motion detector state from the server
-//
 func receiveMotionDetectorState(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))

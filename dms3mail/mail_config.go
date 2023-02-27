@@ -1,5 +1,4 @@
 // Package dms3mail configuration structures and variables
-//
 package dms3mail
 
 import "github.com/richbl/go-distributed-motion-s3/dms3libs"

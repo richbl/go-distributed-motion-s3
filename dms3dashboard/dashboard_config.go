@@ -1,5 +1,4 @@
 // Package dms3dash dashboard configuration structures and variables
-//
 package dms3dash
 
 import "time"

@@ -1,5 +1,4 @@
 // Package dms3dash server implements a dms3server-based metrics dashboard for all dms3clients
-//
 package dms3dash
 
 import (
@@ -18,8 +17,6 @@ import (
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
-//
-
 func InitDashboardServer(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -57,7 +54,6 @@ func InitDashboardServer(configPath string, checkInterval int) {
 }
 
 // SendDashboardRequest manages dashboard requests and receipt of client device data
-//
 func SendDashboardRequest(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
@@ -72,7 +68,6 @@ func SendDashboardRequest(conn net.Conn) {
 }
 
 // startDashboard initializes and starts an HTTP server, serving the client dash on the server
-//
 func (dash *serverKeyValues) startDashboard(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -113,7 +108,6 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 
 // updateServerMetrics updates dynamic dashboard data of the server, triggered
 // initially on dashboard start and subsequent webpage refreshes
-//
 func (dd *deviceData) updateServerMetrics() {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -142,7 +136,6 @@ func (dd *deviceData) updateServerMetrics() {
 }
 
 // sendDashboardEnableState asks clients to send client info based on dashboard state
-//
 func sendDashboardEnableState(conn net.Conn, enableState string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -156,7 +149,6 @@ func sendDashboardEnableState(conn net.Conn, enableState string) {
 }
 
 // receiveDashboardData receives and parses client dashboard metrics
-//
 func receiveDashboardData(conn net.Conn) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -181,7 +173,6 @@ func receiveDashboardData(conn net.Conn) {
 
 // updateDeviceMetrics adds new devices to the dashboard list, or updates existing device
 // metrics, where Hostname is the unique key
-//
 func (udm *DeviceMetrics) updateDeviceMetrics() {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -213,7 +204,6 @@ func (udm *DeviceMetrics) updateDeviceMetrics() {
 }
 
 // resortDashboardDevices re-sorts all dashboard devices alphabetically
-//
 func resortDashboardDevices() {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -251,7 +241,6 @@ func resortDashboardDevices() {
 // iconStatus is an HTML template function that returns the CSS string representing icon color,
 // depending on the last time the client reported status to the server, relative to the client's
 // CheckInterval
-//
 func iconStatus(index int) string {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -276,7 +265,6 @@ func iconStatus(index int) string {
 }
 
 // iconType is an HTML template function that returns an icon based on device type
-//
 func iconType(index int) string {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -293,7 +281,6 @@ func iconType(index int) string {
 }
 
 // deviceType is an HTML template function that returns a string based on device type
-//
 // func deviceType(index int) string {
 
 // 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
@@ -310,7 +297,6 @@ func iconType(index int) string {
 // }
 
 // deviceOSName is an HTML template function that returns a string based on device OS
-//
 func deviceOSName(index int) string {
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 	return dashboardData.Devices[index].Platform.OSName
@@ -318,13 +304,11 @@ func deviceOSName(index int) string {
 
 // clientCount is an HTML template function that returns the current count of dms3clients
 // reporting to the server
-//
 func clientCount() int {
 	return len(dashboardData.Devices) - 1
 }
 
 // showEventCount is an HTML template function that returns whether to display client event count
-//
 func showEventCount(index int) bool {
 	return dashboardData.Devices[index].ShowEventCount
 }
