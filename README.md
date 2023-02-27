@@ -4,7 +4,7 @@
 [![codebeat badge](https://codebeat.co/badges/155e9293-7023-4956-81f5-b3cde7b93842)](https://codebeat.co/projects/github-com-richbl-go-distributed-motion-s3-master)
 ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/richbl/go-distributed-motion-s3?include_prereleases)
 
-## New for Release 1.4.0
+## New for Release 1.4.1
 
 Much has changed over the past 4+ years since the 1.3.1 stable release of **DMS<sup>3</sup>**, so this release has focused on upgrades and improvements to make the **DMS<sup>3</sup>** surveillance security system that so many people have relied upon even more efficient, stable, and secure.
 
