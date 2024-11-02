@@ -10,24 +10,25 @@ import (
 // NOTE: this call is blocking (non-threaded), and will return only after the command
 // completes
 func RunCommand(cmd string) (res []byte, err error) {
+
+	LogInfo("Command to be run: " + LibConfig.SysCommands["BASH"] + " -c " + cmd)
 	return exec.Command(LibConfig.SysCommands["BASH"], "-c", cmd).Output()
 }
 
 // IsRunning checks if application is currently running (has PID > 0)
 func IsRunning(application string) bool {
 
-	if _, err := RunCommand(LibConfig.SysCommands["PGREP"] + " -i " + application); err != nil {
+	cmd := LibConfig.SysCommands["PGREP"] + " -if " + application
 
-		switch err.(type) {
-		case *exec.ExitError: // no process found
-			LogInfo("Process not found when running '" + LibConfig.SysCommands["PGREP"] + " -i " + application)
-		default: // fatal command error
-			LogFatal("Failed to run '" + LibConfig.SysCommands["PGREP"] + " -i " + application + "': " + err.Error())
+	if _, err := RunCommand(cmd); err != nil {
+		if _, ok := err.(*exec.ExitError); ok {
+			LogInfo("Process not found when running '" + cmd + "'")
+			return false
 		}
+		LogFatal("Failed to run '" + cmd + "': " + err.Error())
 		return false
-	} else {
-		return true
 	}
+	return true
 
 }
 
@@ -39,13 +40,15 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 		{
 
 			if IsRunning(application) {
-				return false // already running
+				LogInfo("Already running: " + application)
+				return false
 			}
 
 			if _, err := RunCommand(application); err != nil {
 				LogInfo("Failed to start " + application + ": " + err.Error())
 				return false
 			} else {
+				LogInfo("Successfully started " + application)
 				return true
 			}
 
@@ -57,15 +60,17 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 				return false // already stopped
 			}
 
-			if _, err := RunCommand(LibConfig.SysCommands["PKILL"] + " -i " + application); err == nil {
+			cmd := LibConfig.SysCommands["PKILL"] + " -if " + application
+
+			if _, err := RunCommand(cmd); err == nil {
 				return true
 			} else {
 
 				switch err.(type) {
 				case *exec.ExitError: // no process matched
-					LogInfo("Process not found when running '" + LibConfig.SysCommands["PKILL"] + " -i " + application)
+					LogInfo("Process not found when running '" + cmd + "'")
 				default: // fatal command error
-					LogFatal("Failed to run '" + LibConfig.SysCommands["PKILL"] + " -i " + application + "': " + err.Error())
+					LogFatal("Failed to run '" + cmd + "': " + err.Error())
 				}
 				return false
 

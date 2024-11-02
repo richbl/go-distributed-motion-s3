@@ -25,7 +25,7 @@ func ProcessMotionDetectorState() {
 		dms3libs.LogInfo("Unanticipated motion detector state: ignored")
 	}
 
-	motionCommand := dms3libs.MotionDetector.Command()
+	motionCommand := dms3libs.LibConfig.SysCommands["MOTION"]
 
 	if dms3libs.StartStopApplication(state, motionCommand) {
 		dms3libs.LogInfo(motionCommand + " " + cmdStr)

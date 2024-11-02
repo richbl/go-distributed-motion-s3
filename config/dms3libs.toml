@@ -15,3 +15,20 @@
   PGREP = "/usr/bin/pgrep"
   PING = "/usr/bin/ping"
   PKILL = "/usr/bin/pkill"
+
+  # the Motion application is currently used for motion detection and is configured differently
+  # based on the version of Motion (or MotionPlus) installed on the client, and the client OS in
+  # use
+  #
+  # When in doubt, consult the Motion documentation: https://motion-project.github.io/
+  #
+  # As an example, Motion 4.7.x running on a Raspberry Pi with the Bookworm (or later) OS requires
+  # special configuration and the command to start Motion is "libcamerify motion"
+  #
+  # MOTION = "/usr/bin/libcamerify motion"
+  # 
+  # In the configuration below, the MotionPlus application is used, and in a current release
+  # (0.2.2), the command to include its configuration file is required when running the dms3client
+  # as a system service
+  #
+  MOTION = "/usr/local/bin/motionplus -c /usr/local/etc/motionplus/motionplus.conf"

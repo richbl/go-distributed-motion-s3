@@ -1,11 +1,9 @@
-// Package dms3libs detector provides motion detector application services for dms3
-// device components
+// Package dms3libs provides motion detector application services for dms3 device components
 package dms3libs
 
-// MotionDetector is the motion detector application running on the clients (e.g., motion)
-var MotionDetector = structMotionDetector{
-	command: "motion",
-	state:   Stop,
+// MotionDetector represents the motion detector application running on the clients (e.g., motion)
+var MotionDetector = motionDetectorStruct{
+	state: Stop,
 }
 
 // states of the motion detector application
@@ -14,26 +12,21 @@ const (
 	Start
 )
 
-type structMotionDetector struct {
-	command string
-	state   MotionDetectorState
+// MotionDetectorStruct encapsulates the state of the motion detector
+type motionDetectorStruct struct {
+	state MotionDetectorState
 }
 
 // MotionDetectorState defines the motion detector application state type
 type MotionDetectorState int
 
-// Command returns the motion detector application command
-func (s structMotionDetector) Command() string {
-	return s.command
-}
-
 // State returns the motion detector application state
-func (s structMotionDetector) State() MotionDetectorState {
+func (s motionDetectorStruct) State() MotionDetectorState {
 	return s.state
 }
 
 // SetState sets the motion detector application state
-func (s *structMotionDetector) SetState(state MotionDetectorState) bool {
+func (s *motionDetectorStruct) SetState(state MotionDetectorState) bool {
 
 	switch state {
 	case Start, Stop:
