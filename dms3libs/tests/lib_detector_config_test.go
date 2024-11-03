@@ -8,7 +8,7 @@ import (
 
 func TestCommand(t *testing.T) {
 
-	if dms3libs.MotionDetector.Command() == "" {
+	if dms3libs.LibConfig.SysCommands["MOTION"] == "" {
 		t.Error("function failed")
 	}
 
