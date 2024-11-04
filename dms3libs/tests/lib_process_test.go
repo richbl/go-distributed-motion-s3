@@ -13,7 +13,7 @@ func init() {
 
 func TestRunCommand(t *testing.T) {
 
-	testCommand := dms3libs.LibConfig.SysCommands["ARP"]
+	testCommand := dms3libs.LibConfig.SysCommands["ENV"]
 
 	if res, err := dms3libs.RunCommand(testCommand); err != nil {
 		t.Error("Command " + testCommand + " failed")
@@ -23,30 +23,18 @@ func TestRunCommand(t *testing.T) {
 
 }
 
-func TestIsRunning(t *testing.T) {
-
-	// ACTION: set to known active process
-	testApplication := "gopls"
-
-	if !dms3libs.IsRunning(testApplication) {
-		t.Error(testApplication + " command not running")
-	}
-
-}
-
 func TestStartStopApplication(t *testing.T) {
 
-	// ACTION: set to known installed application configured to run as service
-	// NOTE: assumes motion program (https://motion-project.github.io/) is installed
-	//
-	testApplication := "motion"
+	// NOTE: assumes Motion/MotionPlus application (https://motion-project.github.io/) is installed
+	// and properly configured
+	testApplication := dms3libs.LibConfig.SysCommands["MOTION"]
 
 	if !dms3libs.StartStopApplication(dms3libs.Start, testApplication) {
-		t.Error("start failed")
+		t.Error("Start failed")
 	}
 
 	if !dms3libs.StartStopApplication(dms3libs.Stop, testApplication) {
-		t.Error("stop failed")
+		t.Error("Stop failed")
 	}
 
 }

@@ -16,6 +16,9 @@
   PING = "/usr/bin/ping"
   PKILL = "/usr/bin/pkill"
 
+  # TODO need to update release numbers
+  # TODO need to update documentation to detail Motion/MotionPlus configuration
+
   # the Motion application is currently used for motion detection and is configured differently
   # based on the version of Motion (or MotionPlus) installed on the client, and the client OS in
   # use
@@ -27,8 +30,20 @@
   #
   # MOTION = "/usr/bin/libcamerify motion"
   # 
-  # In the configuration below, the MotionPlus application is used, and in a current release
+  # In the configuration below, the MotionPlus application is used, and in a recent release
   # (0.2.2), the command to include its configuration file is required when running the dms3client
   # as a system service
   #
-  MOTION = "/usr/local/bin/motionplus -c /usr/local/etc/motionplus/motionplus.conf"
+  # MOTION = "/usr/local/bin/motionplus -c /usr/local/etc/motionplus/motionplus.conf"
+  #
+  # Alternatively, in the above case when running a system service, the dms3client.service file
+  # can instead be edited to specify the MotionPlus configuration folder:
+  #
+  # ...
+  # WorkingDirectory=/usr/local/etc/motionplus
+  # ...
+  #
+  # In this latter case, the following command is used (no need to specify the configuration
+  # folder):
+  #
+  MOTION = "/usr/local/bin/motionplus"

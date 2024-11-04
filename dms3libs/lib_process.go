@@ -5,6 +5,78 @@ import (
 	"os/exec"
 )
 
+// isRunning checks if application is currently running (has PID > 0)
+func isRunning(application string) bool {
+
+	LogInfo("Check if already running: " + application)
+	cmd := LibConfig.SysCommands["PGREP"] + " -if " + "'" + application + "'"
+
+	if _, err := RunCommand(cmd); err == nil {
+		LogInfo("Already running: " + application)
+		return true
+	} else {
+		handleCommandErrors(err, cmd)
+	}
+
+	return false
+
+}
+
+// handleCommandErrors handles errors encountered while running commands
+func handleCommandErrors(err error, cmd string) {
+
+	switch err.(type) {
+	case *exec.ExitError:
+		// no matching process
+		LogInfo("Process not found when running " + cmd)
+	default:
+		// fatal command error
+		LogFatal("Failed to run " + cmd + ": " + err.Error())
+	}
+
+}
+
+// startApplication starts the specified application if it is not already running
+func startApplication(application string) bool {
+
+	// check already running
+	if isRunning(application) {
+		return false
+	}
+
+	LogInfo("Attempting to start: " + application)
+
+	if _, err := RunCommand(application); err == nil {
+		LogInfo("Successfully started: " + application)
+		return true
+	} else {
+		handleCommandErrors(err, application)
+		return false
+	}
+
+}
+
+// stopApplication stops the specified application if it is currently running
+func stopApplication(application string) bool {
+
+	// check already stopped
+	if !isRunning(application) {
+		return false
+	}
+
+	LogInfo("Attempting to stop: " + application)
+	cmd := LibConfig.SysCommands["PKILL"] + " -if " + "'" + application + "'"
+
+	if _, err := RunCommand(cmd); err == nil {
+		LogInfo("Successfully stopped: " + application)
+		return true
+	} else {
+		handleCommandErrors(err, cmd)
+		return false
+	}
+
+}
+
 // RunCommand is a simple wrapper for the exec.Command() call
 //
 // NOTE: this call is blocking (non-threaded), and will return only after the command
@@ -15,72 +87,17 @@ func RunCommand(cmd string) (res []byte, err error) {
 	return exec.Command(LibConfig.SysCommands["BASH"], "-c", cmd).Output()
 }
 
-// IsRunning checks if application is currently running (has PID > 0)
-func IsRunning(application string) bool {
-
-	cmd := LibConfig.SysCommands["PGREP"] + " -if " + application
-
-	if _, err := RunCommand(cmd); err != nil {
-		if _, ok := err.(*exec.ExitError); ok {
-			LogInfo("Process not found when running '" + cmd + "'")
-			return false
-		}
-		LogFatal("Failed to run '" + cmd + "': " + err.Error())
-		return false
-	}
-	return true
-
-}
-
-// StartStopApplication enable/disables the application passed in
+// StartStopApplication enables/disables the application passed in based on state
 func StartStopApplication(state MotionDetectorState, application string) bool {
 
 	switch state {
 	case Start:
-		{
-
-			if IsRunning(application) {
-				LogInfo("Already running: " + application)
-				return false
-			}
-
-			if _, err := RunCommand(application); err != nil {
-				LogInfo("Failed to start " + application + ": " + err.Error())
-				return false
-			} else {
-				LogInfo("Successfully started " + application)
-				return true
-			}
-
-		}
+		return startApplication(application)
 	case Stop:
-		{
-
-			if !IsRunning(application) {
-				return false // already stopped
-			}
-
-			cmd := LibConfig.SysCommands["PKILL"] + " -if " + application
-
-			if _, err := RunCommand(cmd); err == nil {
-				return true
-			} else {
-
-				switch err.(type) {
-				case *exec.ExitError: // no process matched
-					LogInfo("Process not found when running '" + cmd + "'")
-				default: // fatal command error
-					LogFatal("Failed to run '" + cmd + "': " + err.Error())
-				}
-				return false
-
-			}
-		}
+		return stopApplication(application)
 	default:
-		{
-			LogInfo("Unanticipated application state: ignored")
-			return false
-		}
+		LogInfo("Unanticipated application state: ignored")
+		return false
 	}
 
 }
