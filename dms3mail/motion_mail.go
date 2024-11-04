@@ -14,6 +14,8 @@ import (
 	"time"
 
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"gopkg.in/gomail.v2"
 )
 
@@ -69,7 +71,7 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 	eventDetails.eventChange = fmt.Sprintf("%d", int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
 
 	eventDetails.eventDate = getEventDetails(eventDetails.eventMedia)
-	eventDetails.clientName = strings.Title(dms3libs.GetDeviceHostname())
+	eventDetails.clientName = cases.Title(language.English, cases.NoLower).String(dms3libs.GetDeviceHostname())
 
 }
 
@@ -135,7 +137,7 @@ func (eventDetails *structEventDetails) generateSMTPEmail() {
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", mailConfig.Email.From)
 	mail.SetHeader("To", mailConfig.Email.To)
-	mail.SetHeader("Subject", "Motion Detected on Device Client "+eventDetails.clientName+" at "+eventDetails.eventDate)
+	mail.SetHeader("Subject", "DMS3 Client "+eventDetails.clientName+": Event Detected at "+eventDetails.eventDate)
 
 	headerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3logo.png")
 	footerImage := filepath.Join(mailConfig.FileLocation, "assets", "img", "dms3github.png")
