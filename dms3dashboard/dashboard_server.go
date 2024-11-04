@@ -85,21 +85,26 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(filepath.Join(dash.FileLocation, dash.Filename)))
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(configPath, "dms3dashboard", "assets")))))
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-
-		dashboardData = &deviceData{
-			Title:   dash.Title,
-			Devices: dashboardData.Devices,
-		}
-
-		dashboardData.updateServerMetrics()
-
-		if err := tmpl.Execute(w, dashboardData); err != nil {
-			dms3libs.LogFatal(err.Error())
-		}
-
+		handleDashboardRequest(w, tmpl, dash.Title)
 	})
 
 	if err := http.ListenAndServe(":"+fmt.Sprint(dash.Port), nil); err != nil {
+		dms3libs.LogFatal(err.Error())
+	}
+
+}
+
+// handleDashboardRequest processes requests for the dashboard
+func handleDashboardRequest(w http.ResponseWriter, tmpl *template.Template, title string) {
+
+	dashboardData := &deviceData{
+		Title:   title,
+		Devices: dashboardData.Devices,
+	}
+
+	dashboardData.updateServerMetrics()
+
+	if err := tmpl.Execute(w, dashboardData); err != nil {
 		dms3libs.LogFatal(err.Error())
 	}
 
