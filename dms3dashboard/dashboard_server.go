@@ -78,7 +78,6 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 		"FormatDateTime": dms3libs.FormatDateTime,
 		"iconStatus":     iconStatus,
 		"iconType":       iconType,
-		"deviceOSName":   deviceOSName,
 		"clientCount":    clientCount,
 		"showEventCount": showEventCount,
 	}
@@ -117,7 +116,13 @@ func (dd *deviceData) updateServerMetrics() {
 		if dd.Devices[i].Platform.Type == Server {
 			dd.Devices[i].Period.LastReport = time.Now()
 			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
-			dd.Devices[i].Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
+
+			// calls not needed,as these values do not change (unless server reboots)
+			//
+			// dd.Devices[i].Platform.OSName = dms3libs.GetDeviceOSName()
+			// dd.Devices[i].Platform.Environment = dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine)
+			// dd.Devices[i].Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
+
 		} else {
 			// check for and remove dead (non-reporting) client devices
 			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
@@ -186,6 +191,8 @@ func (udm *DeviceMetrics) updateDeviceMetrics() {
 				dashboardData.Devices[i].EventCount = udm.EventCount
 				dashboardData.Devices[i].Period.LastReport = udm.Period.LastReport
 				dashboardData.Devices[i].Period.Uptime = udm.Period.Uptime
+				dashboardData.Devices[i].Platform.OSName = udm.Platform.OSName
+				dashboardData.Devices[i].Platform.Environment = udm.Platform.Environment
 				dashboardData.Devices[i].Platform.Kernel = udm.Platform.Kernel
 				return
 			}
@@ -295,12 +302,6 @@ func iconType(index int) string {
 // 	}
 
 // }
-
-// deviceOSName is an HTML template function that returns a string based on device OS
-func deviceOSName(index int) string {
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-	return dashboardData.Devices[index].Platform.OSName
-}
 
 // clientCount is an HTML template function that returns the current count of dms3clients
 // reporting to the server

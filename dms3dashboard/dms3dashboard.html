@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="DMS3: Distributed Motion Sense Security System">
+  <meta http-equiv="refresh" content="10">
 
   <link rel="icon" href="assets/img/favicon.png" sizes="any">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
@@ -41,50 +42,50 @@
 
           {{range $index, $_ := .Devices}}
 
-            <div class="col-lg-3 col-sm-6">
-              <div class="card">
-                <div class="content">
-                  <div class="row">
-                    <div class="col-xs-5">
-                      <div class="icon-big {{iconStatus $index}} text-center">
-                        <i class={{iconType $index}}></i>
-                      </div>
-                    </div>
-                    <div class="col-xs-7">
-                      <div class="numbers">
-                        <p>{{.Platform.Hostname}}</p>
-                        {{deviceOSName $index}}
-                        <br>
-                        {{.Platform.Environment}}
-                        <br>
-                        {{.Platform.Kernel}}
-                      </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="card">
+              <div class="content">
+                <div class="row">
+                  <div class="col-xs-5">
+                    <div class="icon-big {{iconStatus $index}} text-center">
+                      <i class={{iconType $index}}></i>
                     </div>
                   </div>
-                  <div class="footer">
-                    <hr>
-                    <div class="stats">
-                      <i class="icon-stopwatch"></i> Uptime: {{.Period.Uptime}}
+                  <div class="col-xs-7">
+                    <div class="numbers">
+                      <p>{{.Platform.Hostname}}</p>
+                      {{.Platform.OSName}}
                       <br>
-
-                      <!-- if client show events, else show clients of server -->
-
-                      {{if showEventCount $index}}
-                      <i class="icon-eye"></i> Events: {{.EventCount}}
+                      {{.Platform.Environment}}
                       <br>
-                      {{else}}
-                      <i class="icon-display"></i> Clients: {{clientCount}}
-                      <br>
-                      {{end}}
-
-                      <i class="icon-loop2"></i> Update: {{FormatDateTime .Period.LastReport}}
-
+                      {{.Platform.Kernel}}
                     </div>
                   </div>
-
                 </div>
+                <div class="footer">
+                  <hr>
+                  <div class="stats">
+                    <i class="icon-stopwatch"></i> Uptime: {{.Period.Uptime}}
+                    <br>
+
+                    <!-- if client show events, else show clients of server -->
+
+                    {{if showEventCount $index}}
+                    <i class="icon-eye"></i> Events: {{.EventCount}}
+                    <br>
+                    {{else}}
+                    <i class="icon-display"></i> Clients: {{clientCount}}
+                    <br>
+                    {{end}}
+
+                    <i class="icon-loop2"></i> Update: {{FormatDateTime .Period.LastReport}}
+
+                  </div>
+                </div>
+
               </div>
             </div>
+          </div>
 
           {{end}}
 

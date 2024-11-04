@@ -24,8 +24,8 @@ func InitDashboardClient(configPath string, checkInterval int) {
 	dashboardClientMetrics = &DeviceMetrics{
 		Platform: DevicePlatform{
 			Type:        Client,
-			OSName:      dms3libs.GetDeviceOSName(),
 			Hostname:    dms3libs.GetDeviceHostname(),
+			OSName:      dms3libs.GetDeviceOSName(),
 			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
 			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
 		},
@@ -80,7 +80,12 @@ func sendDashboardData(conn net.Conn) {
 	// update client metrics
 	dashboardClientMetrics.Period.LastReport = time.Now()
 	dashboardClientMetrics.Period.Uptime = dms3libs.Uptime(dashboardClientMetrics.Period.StartTime)
-	dashboardClientMetrics.Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
+
+	// calls not needed,as these values do not change (unless client reboots)
+	//
+	// dashboardClientMetrics.Platform.OSName = dms3libs.GetDeviceOSName()
+	// dashboardClientMetrics.Platform.Environment = dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine)
+	// dashboardClientMetrics.Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
 
 	if dashboardClientMetrics.ShowEventCount {
 		dashboardClientMetrics.EventCount = dms3libs.CountFilesInDir(dashboardConfig.Client.ImagesFolder)
@@ -115,7 +120,7 @@ func (dash *DeviceMetrics) checkImagesFolder() {
 		if dashboardConfig.Client.ImagesFolder == "" {
 			dashboardClientMetrics.ShowEventCount = false
 		} else {
-			dms3libs.LogFatal("unable to find motion detector application images folder... check TOML configuration file")
+			dms3libs.LogFatal("Unable to find motion detector application images folder... check TOML configuration file")
 		}
 
 	}
