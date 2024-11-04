@@ -1,5 +1,5 @@
 # Distributed-Motion-S3 DMS3Libs Component Configuration File
-# 1.4.1
+# 1.4.2
 
 [SysCommands]
 
@@ -16,7 +16,6 @@
   PING = "/usr/bin/ping"
   PKILL = "/usr/bin/pkill"
 
-  # TODO need to update release numbers
   # TODO need to update documentation to detail Motion/MotionPlus configuration
 
   # the Motion application is currently used for motion detection and is configured differently
