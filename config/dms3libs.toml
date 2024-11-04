@@ -16,8 +16,6 @@
   PING = "/usr/bin/ping"
   PKILL = "/usr/bin/pkill"
 
-  # TODO need to update documentation to detail Motion/MotionPlus configuration
-
   # the Motion application is currently used for motion detection and is configured differently
   # based on the version of Motion (or MotionPlus) installed on the client, and the client OS in
   # use
