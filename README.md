@@ -8,7 +8,7 @@
 
 This release makes several minor security and application updates, including:
 
-- Security update: Bump to [golang.org/x/crypto](https://github.com/golang/crypto) package from 0.1.0 to 0.17.0
+- Security update: bump to [golang.org/x/crypto](https://github.com/golang/crypto) package from 0.1.0 to 0.17.0
 - Minor refactor in the **DMS<sup>3</sup>Dashboard** component to dynamically show operating system (OS) and environment updates in **DMS<sup>3</sup>Clients**. Previously, **DMS<sup>3</sup>Client** OS changes were only updated in the dashboard when a **DMS<sup>3</sup>Client** first came online, or when the **DMS<sup>3</sup>Dashboard** component was restarted
 - A refactor to permit better motion detector configuration when using the [Motion](https://motion-project.github.io/) (and more recent [MotionPlus](https://github.com/Motion-Project/motionplus)) applications. It's now easier to configure **DMS<sup>3</sup>** components for use with either motion detector application across different operating systems (particularly recent changes to the [Raspberry Pi OS](https://www.raspberrypi.com/software/))
 - Minor changes to the **DMS<sup>3</sup>Mail** component
