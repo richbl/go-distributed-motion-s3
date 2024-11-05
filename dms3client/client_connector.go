@@ -23,7 +23,7 @@ func Init(configPath string) {
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)
 
-	dms3libs.LogInfo("dms3client started")
+	dms3libs.LogInfo("dms3client " + dms3libs.GetProjectVersion() + " started")
 
 	dms3dash.InitDashboardClient(configPath, clientConfig.Server.CheckInterval)
 	startClient(clientConfig.Server.IP, clientConfig.Server.Port)

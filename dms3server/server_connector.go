@@ -23,7 +23,7 @@ func Init(configPath string) {
 	dms3libs.SetLogFileLocation(ServerConfig.Logging)
 	dms3libs.CreateLogger(ServerConfig.Logging)
 
-	dms3libs.LogInfo("dms3server started")
+	dms3libs.LogInfo("dms3server " + dms3libs.GetProjectVersion() + " started")
 
 	setMediaLocation(configPath, ServerConfig)
 	dms3dash.DashboardEnable = ServerConfig.Server.EnableDashboard

@@ -27,7 +27,7 @@ func Init(configPath string) {
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
-	dms3libs.LogInfo("dms3mail started")
+	dms3libs.LogInfo("dms3mail " + dms3libs.GetProjectVersion() + " started")
 
 	dms3libs.CheckFileLocation(configPath, "dms3mail", &mailConfig.FileLocation, mailConfig.Filename)
 
