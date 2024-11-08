@@ -43,3 +43,9 @@ type structUserProxy struct {
 	IPRange    []int
 	MacsToFind []string
 }
+
+// Media file locations (for audio)
+type mediaPath struct {
+	configLocation *string
+	mediaLocation  string
+}

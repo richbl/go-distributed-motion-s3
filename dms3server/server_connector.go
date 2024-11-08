@@ -96,53 +96,34 @@ func sendMotionDetectorState(conn net.Conn) {
 // application start/stop events
 func setMediaLocation(configPath string, config *structSettings) {
 
-	type mediaPath struct {
-		configLocation *string
-		mediaLocation  string
-	}
-
 	media := []mediaPath{
-		{
-			&config.Audio.PlayMotionStart,
-			filepath.Join(string(filepath.Separator), "dms3server", "media", "motion_start.wav"),
-		},
-		{
-			&config.Audio.PlayMotionStop,
-
-			filepath.Join(string(filepath.Separator), "dms3server", "media", "motion_stop.wav"),
-		},
+		{&config.Audio.PlayMotionStart, filepath.Join("dms3server", "media", "motion_start.wav")},
+		{&config.Audio.PlayMotionStop, filepath.Join("dms3server", "media", "motion_stop.wav")},
 	}
 
-	fail := false
+	for _, mp := range media {
+		checkMediaLocations(configPath, mp)
+	}
+}
 
-	for i := range media {
+// checkMediaLocations identifies the possible location of media (audio) files (release or
+// development depending on the runtime environment)
+func checkMediaLocations(configPath string, mp mediaPath) {
 
-		relPath := filepath.Join(configPath, media[i].mediaLocation)
-		devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), media[i].mediaLocation)
+	relPath := filepath.Join(configPath, mp.mediaLocation)
+	devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), mp.mediaLocation)
 
-		if !dms3libs.IsFile(*media[i].configLocation) {
+	if mp.configLocation != nil && *mp.configLocation != "" {
+		return // already set
+	}
 
-			// if no location set, set to release folder, else set to development folder
-			if *media[i].configLocation == "" {
-
-				if dms3libs.IsFile(relPath) {
-					*media[i].configLocation = relPath
-				} else if dms3libs.IsFile(devPath) {
-					*media[i].configLocation = devPath
-				} else {
-					fail = true
-				}
-
-			} else {
-				fail = true
-			}
-
-			if fail {
-				dms3libs.LogFatal("unable to set media location... check TOML configuration file")
-			}
-
+	var possiblePaths = []string{relPath, devPath}
+	for _, path := range possiblePaths {
+		if dms3libs.IsFile(path) {
+			*mp.configLocation = path
+			return
 		}
-
 	}
 
+	dms3libs.LogFatal("unable to set media location... check TOML configuration file")
 }
