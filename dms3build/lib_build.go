@@ -38,32 +38,32 @@ func BuildReleaseFolder() {
 // BuildComponents compiles dms3 components for each platform passed into it
 func BuildComponents() {
 
-	for platformType := range BuildEnv {
-		fmt.Println("Building dms3 components for " + BuildEnv[platformType].dirName + " platform...")
+	for platformType, env := range BuildEnv {
+		fmt.Println("Building dms3 components for " + env.dirName + " platform...")
 
-		for jtr := range components {
-
-			if components[jtr].compile {
-
-				// dms3 installer (install_dms3) is only built once (natively on linuxAMD64) into dms3_release root
-				if components[jtr].exeName == "install_dms3" {
-
-					if platformType == linuxAMD64 {
-						_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", "cmd", components[jtr].exeName) + " " + components[jtr].srcName)
-						dms3libs.CheckErr(err)
-					}
-
-				} else {
-					_, err := dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["ENV"] + " " + BuildEnv[platformType].compileTags + " go build -o " + filepath.Join("dms3_release", "cmd", BuildEnv[platformType].dirName, components[jtr].exeName) + " " + components[jtr].srcName)
-					dms3libs.CheckErr(err)
-				}
-
+		for _, component := range components {
+			if component.compile {
+				buildComponent(env, platformType, component)
 			}
-
 		}
-
 	}
 
+}
+
+// buildComponent compiles individual dms3 components passed in from BuildComponents
+func buildComponent(env structPlatform, platformType platformType, component structComponent) {
+
+	var outputDir string
+
+	if component.exeName == "install_dms3" && platformType == linuxAMD64 {
+		outputDir = filepath.Join("dms3_release", "cmd", component.exeName)
+	} else {
+		outputDir = filepath.Join("dms3_release", "cmd", env.dirName, component.exeName)
+	}
+
+	command := dms3libs.LibConfig.SysCommands["ENV"] + " " + env.compileTags + " go build -o " + outputDir + " " + component.srcName
+	_, err := dms3libs.RunCommand(command)
+	dms3libs.CheckErr(err)
 }
 
 // CopyServiceDaemons copies daemons into release folder
