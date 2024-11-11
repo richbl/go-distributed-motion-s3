@@ -4,17 +4,17 @@
 [Clients]
 
    [Clients.0]
-      User = "pi"
-      DeviceName = "picam-alpha.local"
-      SSHPassword = ""        # using SSH certificate
-      RemoteAdminPassword = "PASSWORD"
-      Port = 22
-      Platform = "linuxArm7"
+      User = "pi"                      # Username of the client device
+      DeviceName = "picam-alpha.local" # Domain name of the client device
+      SSHPassword = ""                 # SSH password for the client device (empty if using SSH certificate)
+      RemoteAdminPassword = "PASSWORD" # Remote administration password for the client device (required for component installation)
+      Port = 22                        # SSH port of the client device
+      Platform = "linuxArm7"           # Platform of the client device. `dms3build` will use this to copy over the correct binary executable
 
    [Clients.1]
       User = "pi"
       DeviceName = "picam-beta.local"
-      SSHPassword = ""      # using SSH certificate
+      SSHPassword = ""                 # using SSH certificate
       RemoteAdminPassword = "PASSWORD"
       Port = 22
       Platform = "linuxArm7"
@@ -22,7 +22,7 @@
    [Clients.2]
       User = "pi"
       DeviceName = "picam-gamma.local"
-      SSHPassword = ""      # using SSH certificate
+      SSHPassword = ""                 # using SSH certificate
       RemoteAdminPassword = "PASSWORD"
       Port = 22
       Platform = "linuxArm6"
@@ -30,7 +30,7 @@
    [Clients.3]
       User = "richbl"
       DeviceName = "main.local"
-      SSHPassword = ""      # using SSH certificate
+      SSHPassword = ""                 # using SSH certificate
       RemoteAdminPassword = "PASSWORD"
       Port = 22
       Platform = "linuxAMD64"
@@ -38,9 +38,9 @@
 [Servers]
 
    [Servers.0]
-      User = "richbl"
-      DeviceName = "main.local"
-      SSHPassword = ""      # using SSH certificate
-      RemoteAdminPassword = "PASSWORD"
-      Port = 22
-      Platform = "linuxAMD64"
+      User = "richbl"                  # Username of the server device
+      DeviceName = "main.local"        # Domain name of the server device
+      SSHPassword = ""                 # SSH password for the server device (empty if using SSH certificate)
+      RemoteAdminPassword = "PASSWORD" # Remote administration password for the server device (required for component installation)
+      Port = 22                        # SSH port of the server device
+      Platform = "linuxAMD64"          # Platform of the server device. `dms3build` will use this to copy over the correct binary executable

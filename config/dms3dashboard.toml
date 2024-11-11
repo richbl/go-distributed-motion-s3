@@ -46,7 +46,7 @@
   # If the device check interval for the dashboard server is every 15 seconds (default), and
   # the device status multiplier for caution (DeviceStatus.Caution) is 200 (default), then the
   # dashboard server will report a device caution status (yellow device icon) after 3000
-  # seconds (50 minutes) of no status updates received from that device
+  # seconds (50 minutes) if no status updates received from that device
   #
   # Device status will continue to progress through each of the stages identified below, or reset
   # to a normal device status if device again reports in to the dashboard server
