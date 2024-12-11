@@ -1,6 +1,6 @@
 module github.com/richbl/go-distributed-motion-s3
 
-go 1.22
+go 1.22.5
 
 require (
 	github.com/BurntSushi/toml v0.4.1
