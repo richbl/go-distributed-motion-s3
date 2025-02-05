@@ -12,16 +12,16 @@ import (
 // IsFile returns true/false on existence of file/folder passed in
 func IsFile(filename string) bool {
 
-	_, error := os.Stat(filename)
-	return (!errors.Is(error, fs.ErrNotExist))
+	_, err := os.Stat(filename)
+	return (!errors.Is(err, fs.ErrNotExist))
 
 }
 
 // MkDir creates a new folder with permissions passed in
 func MkDir(newPath string) {
 
-	error := os.MkdirAll(newPath, os.ModePerm)
-	CheckErr(error)
+	err := os.MkdirAll(newPath, os.ModePerm)
+	CheckErr(err)
 
 }
 
@@ -29,8 +29,8 @@ func MkDir(newPath string) {
 func RmDir(dir string) {
 
 	if IsFile(dir) {
-		error := os.RemoveAll(dir)
-		CheckErr(error)
+		err := os.RemoveAll(dir)
+		CheckErr(err)
 	}
 
 }
@@ -39,7 +39,7 @@ func RmDir(dir string) {
 func WalkDir(dirname string) map[string]int {
 
 	fileList := map[string]int{}
-	error := filepath.WalkDir(dirname, func(path string, f os.DirEntry, err error) error {
+	err := filepath.WalkDir(dirname, func(path string, f os.DirEntry, _ error) error {
 
 		// exclude root directory
 		if f.IsDir() && f.Name() == dirname {
@@ -54,7 +54,8 @@ func WalkDir(dirname string) map[string]int {
 
 		return nil
 	})
-	CheckErr(error)
+
+	CheckErr(err)
 
 	return fileList
 

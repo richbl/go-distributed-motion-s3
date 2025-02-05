@@ -17,8 +17,8 @@ func Init(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, "dms3client", "dms3client.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(configPath, dms3libs.DMS3Libs, "dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, dms3libs.DMS3Client, dms3libs.DMS3TOML))
 
 	dms3libs.SetLogFileLocation(clientConfig.Logging)
 	dms3libs.CreateLogger(clientConfig.Logging)
@@ -31,12 +31,12 @@ func Init(configPath string) {
 }
 
 // startClient periodically attempts to connect to the server (based on CheckInterval)
-func startClient(ServerIP string, ServerPort int) {
+func startClient(serverIP string, serverPort int) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	for {
-		if conn, err := net.Dial("tcp", ServerIP+":"+fmt.Sprint(ServerPort)); err != nil {
+		if conn, err := net.Dial("tcp", serverIP+":"+fmt.Sprint(serverPort)); err != nil {
 			dms3libs.LogInfo(err.Error())
 		} else {
 			dms3libs.LogInfo("OPEN connection from: " + conn.RemoteAddr().String())
@@ -71,19 +71,29 @@ func receiveMotionDetectorState(conn net.Conn) {
 
 	// receive motion detector application state
 
-	if n, err := conn.Read(buf); err != nil {
+	var n int
+	var err error
+
+	if n, err = conn.Read(buf); err != nil {
 		dms3libs.LogInfo(err.Error())
-	} else {
-		val, _ := strconv.Atoi(string(buf[:n]))
-		state := dms3libs.MotionDetectorState(val)
 
-		if dms3libs.MotionDetector.SetState(state) {
-			ProcessMotionDetectorState()
-			dms3libs.LogInfo("Received motion detector state as: " + strconv.Itoa(int(state)))
-		} else {
-			dms3libs.LogInfo("Received unanticipated motion detector state: ignored")
-		}
-
+		return
 	}
+
+	val, err := strconv.Atoi(string(buf[:n]))
+	if err != nil {
+		dms3libs.LogInfo("Error converting motion detector state to integer: " + err.Error())
+	}
+
+	state := dms3libs.MotionDetectorState(val)
+
+	if dms3libs.MotionDetector.SetState(state) {
+		ProcessMotionDetectorState()
+		dms3libs.LogInfo("Received motion detector state as: " + strconv.Itoa(int(state)))
+
+		return
+	}
+
+	dms3libs.LogInfo("Received unanticipated motion detector state: ignored")
 
 }

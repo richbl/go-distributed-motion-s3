@@ -17,13 +17,13 @@ import (
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
-func InitDashboardServer(configPath string, checkInterval int) {
+func InitDashboardServer(configPath string, checkInterval uint16) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
-	dms3libs.CheckFileLocation(configPath, "dms3dashboard", &dashboardConfig.Server.FileLocation, dashboardConfig.Server.Filename)
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, dms3libs.DMS3Dashboard, "dms3dashboard.toml"))
+	dms3libs.CheckFileLocation(configPath, dms3libs.DMS3Dashboard, &dashboardConfig.Server.FileLocation, dashboardConfig.Server.Filename)
 
 	dashboardData = &deviceData{
 		Title:   "",
@@ -69,10 +69,9 @@ func SendDashboardRequest(conn net.Conn) {
 
 // startDashboard initializes and starts an HTTP server, serving the client dash on the server
 func (dash *serverKeyValues) startDashboard(configPath string) {
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	// needed for HTML template functionality
+	// Template functions
 	funcs := template.FuncMap{
 		"ModVal":         dms3libs.ModVal,
 		"FormatDateTime": dms3libs.FormatDateTime,
@@ -82,16 +81,31 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 		"showEventCount": showEventCount,
 	}
 
+	// Parse template
 	tmpl := template.Must(template.New(dash.Filename).Funcs(funcs).ParseFiles(filepath.Join(dash.FileLocation, dash.Filename)))
-	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(configPath, "dms3dashboard", "assets")))))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+	// File server for static assets
+	fs := http.FileServer(http.Dir(filepath.Join(configPath, dms3libs.DMS3Dashboard, "assets")))
+	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+
+	// Dashboard handler
+	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		handleDashboardRequest(w, tmpl, dash.Title)
 	})
 
-	if err := http.ListenAndServe(":"+fmt.Sprint(dash.Port), nil); err != nil {
-		dms3libs.LogFatal(err.Error())
+	// Configure HTTP server with timeouts
+	server := &http.Server{
+		Addr:         ":" + fmt.Sprint(dash.Port),
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+		IdleTimeout:  60 * time.Second,
 	}
 
+	// Start server
+	dms3libs.LogInfo(fmt.Sprintf("Starting dashboard server on port %d", dash.Port))
+	if err := server.ListenAndServe(); err != nil {
+		dms3libs.LogFatal(err.Error())
+	}
 }
 
 // handleDashboardRequest processes requests for the dashboard
@@ -121,21 +135,15 @@ func (dd *deviceData) updateServerMetrics() {
 		if dd.Devices[i].Platform.Type == Server {
 			dd.Devices[i].Period.LastReport = time.Now()
 			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
-
-			// calls not needed,as these values do not change (unless server reboots)
-			//
-			// dd.Devices[i].Platform.OSName = dms3libs.GetDeviceOSName()
-			// dd.Devices[i].Platform.Environment = dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine)
-			// dd.Devices[i].Platform.Kernel = dms3libs.GetDeviceDetails(dms3libs.Release)
-
 		} else {
 			// check for and remove dead (non-reporting) client devices
 			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
-			missingDeviceLimit := uint32((dd.Devices[i].Period.CheckInterval * dashboardConfig.Server.DeviceStatus.Missing))
+			missingDeviceLimit := uint32(dd.Devices[i].Period.CheckInterval) * dashboardConfig.Server.DeviceStatus.Missing
 
 			if lastUpdate > missingDeviceLimit {
 				dms3libs.LogInfo("Non-reporting remote device timeout reached: removing " + dd.Devices[i].Platform.Hostname + " client")
 				dd.Devices = append(dd.Devices[:i], dd.Devices[i+1:]...)
+
 				break
 			}
 
@@ -199,6 +207,7 @@ func (udm *DeviceMetrics) updateDeviceMetrics() {
 				dashboardData.Devices[i].Platform.OSName = udm.Platform.OSName
 				dashboardData.Devices[i].Platform.Environment = udm.Platform.Environment
 				dashboardData.Devices[i].Platform.Kernel = udm.Platform.Kernel
+
 				return
 			}
 
@@ -241,7 +250,7 @@ func resortDashboardDevices() {
 			if dashboardData.Devices[i].Platform.Type == Server {
 				server := dashboardData.Devices[i]
 				dashboardData.Devices = append(dashboardData.Devices[:i], dashboardData.Devices[i+1:]...)
-				dashboardData.Devices = append([]DeviceMetrics{server}, dashboardData.Devices[:]...)
+				dashboardData.Devices = append([]DeviceMetrics{server}, dashboardData.Devices...)
 			}
 
 		}
@@ -259,9 +268,8 @@ func iconStatus(index int) string {
 
 	lastUpdate := dms3libs.SecondsSince(dashboardData.Devices[index].Period.LastReport)
 	checkInterval := dashboardData.Devices[index].Period.CheckInterval
-
-	warningLimit := uint32((checkInterval * dashboardConfig.Server.DeviceStatus.Caution))
-	dangerLimit := uint32((checkInterval * dashboardConfig.Server.DeviceStatus.Danger))
+	warningLimit := uint32(checkInterval) * dashboardConfig.Server.DeviceStatus.Caution
+	dangerLimit := uint32(checkInterval) * dashboardConfig.Server.DeviceStatus.Danger
 
 	switch {
 	case lastUpdate < warningLimit:

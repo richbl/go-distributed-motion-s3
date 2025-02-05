@@ -15,26 +15,26 @@ func main() {
 	// NOTE: this component is run on the remote client device (per dms3build.toml configuration)
 
 	// load libs config file from dms3_release folder on remote device
-	dms3libs.LoadLibConfig(filepath.Join("dms3_release", "config", "dms3libs", "dms3libs.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Libs, dms3libs.DMS3TOML))
 
 	binaryInstallDir := filepath.Join(string(filepath.Separator), "usr", "local", "bin")
 	configInstallDir := filepath.Join(string(filepath.Separator), "etc", "distributed-motion-s3")
 	logDir := filepath.Join(string(filepath.Separator), "var", "log", "dms3")
 
 	// move binary files into binaryInstallDir
-	dms3libs.CopyFile(filepath.Join("dms3_release", "cmd", "dms3client"), filepath.Join(binaryInstallDir, "dms3client"))
-	dms3libs.CopyFile(filepath.Join("dms3_release", "cmd", "dms3mail"), filepath.Join(binaryInstallDir, "dms3mail"))
+	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Release, "cmd", dms3libs.DMS3Client), filepath.Join(binaryInstallDir, dms3libs.DMS3Client))
+	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Release, "cmd", dms3libs.DMS3Mail), filepath.Join(binaryInstallDir, dms3libs.DMS3Mail))
 
 	// create log folder
 	dms3libs.MkDir(logDir)
 
 	// copy configuration files into configInstallDir
 	dms3libs.MkDir(configInstallDir)
-	dms3libs.CopyDir(filepath.Join("dms3_release", "config", "dms3client"), configInstallDir)
-	dms3libs.CopyDir(filepath.Join("dms3_release", "config", "dms3dashboard"), configInstallDir)
-	dms3libs.CopyDir(filepath.Join("dms3_release", "config", "dms3libs"), configInstallDir)
-	dms3libs.CopyDir(filepath.Join("dms3_release", "config", "dms3mail"), configInstallDir)
+	dms3libs.CopyDir(filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Client), configInstallDir)
+	dms3libs.CopyDir(filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Dashboard), configInstallDir)
+	dms3libs.CopyDir(filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Libs), configInstallDir)
+	dms3libs.CopyDir(filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Mail), configInstallDir)
 
-	dms3libs.RmDir("dms3_release")
+	dms3libs.RmDir(dms3libs.DMS3Release)
 
 }

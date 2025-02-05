@@ -22,14 +22,14 @@ import (
 // Init configs the library and configuration for dms3mail
 func Init(configPath string) {
 
-	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&mailConfig, filepath.Join(configPath, "dms3mail", "dms3mail.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(configPath, dms3libs.DMS3Libs, "dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&mailConfig, filepath.Join(configPath, dms3libs.DMS3Mail, "dms3mail.toml"))
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
 	dms3libs.LogInfo("dms3mail " + dms3libs.GetProjectVersion() + " started")
 
-	dms3libs.CheckFileLocation(configPath, "dms3mail", &mailConfig.FileLocation, mailConfig.Filename)
+	dms3libs.CheckFileLocation(configPath, dms3libs.DMS3Mail, &mailConfig.FileLocation, mailConfig.Filename)
 
 	GenerateEventEmail()
 
@@ -104,15 +104,26 @@ func getEventDetails(filename string) (eventDate string) {
 		dms3libs.LogFatal("unexpected Motion filenaming convention: incorrect string length")
 	}
 
-	year, _ := strconv.Atoi(res[index][0:4])
-	month, _ := strconv.Atoi(res[index][4:6])
-	day, _ := strconv.Atoi(res[index][6:8])
-	hour, _ := strconv.Atoi(res[index][8:10])
-	min, _ := strconv.Atoi(res[index][10:12])
-	sec, _ := strconv.Atoi(res[index][12:14])
+	year := atoi(res[index][0:4])
+	month := atoi(res[index][4:6])
+	day := atoi(res[index][6:8])
+	hour := atoi(res[index][8:10])
+	minute := atoi(res[index][10:12])
+	sec := atoi(res[index][12:14])
 
-	return time.Date(year, time.Month(month), day, hour, min, sec, 0, time.UTC).Format("15:04:05 on 2006-01-02")
+	return time.Date(year, time.Month(month), day, hour, minute, sec, 0, time.UTC).Format("15:04:05 on 2006-01-02")
 
+}
+
+// atoi converts a string to an integer
+func atoi(s string) int {
+
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		dms3libs.LogFatal("failed to convert string to integer: " + err.Error())
+	}
+
+	return i
 }
 
 // createEmailBody loads the email template (HTML) and parses elements

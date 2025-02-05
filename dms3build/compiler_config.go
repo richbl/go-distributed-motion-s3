@@ -1,6 +1,8 @@
 // Package dms3build compiler configuration structures and variables
 package dms3build
 
+import "github.com/richbl/go-distributed-motion-s3/dms3libs"
+
 // structComponent contains component details
 type structComponent struct {
 	srcName        string // component source filename
@@ -13,22 +15,22 @@ type structComponent struct {
 var components = []structComponent{
 	{
 		srcName:        "cmd/dms3client/dms3client.go",
-		exeName:        "dms3client",
-		dirName:        "dms3client",
-		configFilename: "dms3client.toml",
+		exeName:        dms3libs.DMS3Client,
+		dirName:        dms3libs.DMS3Client,
+		configFilename: dms3libs.DMS3TOML,
 		compile:        true,
 	},
 	{
 		srcName:        "cmd/dms3server/dms3server.go",
-		exeName:        "dms3server",
-		dirName:        "dms3server",
+		exeName:        dms3libs.DMS3Server,
+		dirName:        dms3libs.DMS3Server,
 		configFilename: "dms3server.toml",
 		compile:        true,
 	},
 	{
 		srcName:        "cmd/dms3mail/dms3mail.go",
-		exeName:        "dms3mail",
-		dirName:        "dms3mail",
+		exeName:        dms3libs.DMS3Mail,
+		dirName:        dms3libs.DMS3Mail,
 		configFilename: "dms3mail.toml",
 		compile:        true,
 	},
@@ -55,15 +57,15 @@ var components = []structComponent{
 	},
 	{
 		srcName:        "",
-		exeName:        "dms3libs",
-		dirName:        "dms3libs",
+		exeName:        dms3libs.DMS3Libs,
+		dirName:        dms3libs.DMS3Libs,
 		configFilename: "dms3libs.toml",
 		compile:        false,
 	},
 	{
 		srcName:        "",
-		exeName:        "dms3dashboard",
-		dirName:        "dms3dashboard",
+		exeName:        dms3libs.DMS3Dashboard,
+		dirName:        dms3libs.DMS3Dashboard,
 		configFilename: "dms3dashboard.toml",
 		compile:        false,
 	},

@@ -25,8 +25,8 @@ func GetDeviceHostname() string {
 
 	name, err := os.Hostname()
 	CheckErr(err)
-	return name
 
+	return name
 }
 
 // GetDeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
@@ -67,30 +67,30 @@ func GetDeviceOSName() string {
 // GetDeviceDetails returns device details of the local machine
 func GetDeviceDetails(element DeviceDetails) string {
 
-	utsName, error := uname()
-	CheckErr(error)
+	utsName, err := uname()
+	CheckErr(err)
 
-	var len int
+	var length int
 	var buf [65]byte
 
 	switch element {
 	case Sysname:
-		for ; utsName.Sysname[len] != 0; len++ {
-			buf[len] = uint8(utsName.Sysname[len])
+		for ; utsName.Sysname[length] != 0; length++ {
+			buf[length] = byte(utsName.Sysname[length])
 		}
 	case Machine:
-		for ; utsName.Machine[len] != 0; len++ {
-			buf[len] = uint8(utsName.Machine[len])
+		for ; utsName.Machine[length] != 0; length++ {
+			buf[length] = byte(utsName.Machine[length])
 		}
 	case Release:
-		for ; utsName.Release[len] != 0; len++ {
-			buf[len] = uint8(utsName.Release[len])
+		for ; utsName.Release[length] != 0; length++ {
+			buf[length] = byte(utsName.Release[length])
 		}
 	default:
 		LogFatal("invalid DeviceDetails element passed in")
 	}
 
-	return strings.ToLower(string(buf[:len]))
+	return strings.ToLower(string(buf[:length]))
 }
 
 // uname returns the Utsname struct used to query system settings

@@ -14,12 +14,12 @@ import (
 var dashboardClientMetrics *DeviceMetrics
 
 // InitDashboardClient loads configuration and assigns the dashboard client profile (sets static client metrics)
-func InitDashboardClient(configPath string, checkInterval int) {
+func InitDashboardClient(configPath string, checkInterval uint16) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, "dms3dashboard", "dms3dashboard.toml"))
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, dms3libs.DMS3Dashboard, "dms3dashboard.toml"))
 
 	dashboardClientMetrics = &DeviceMetrics{
 		Platform: DevicePlatform{
@@ -60,16 +60,18 @@ func receiveDashboardEnableState(conn net.Conn) bool {
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	buf := make([]byte, 16)
+	var n int
+	var err error
 
-	if n, err := conn.Read(buf); err != nil {
+	if n, err = conn.Read(buf); err != nil {
 		dms3libs.LogFatal(err.Error())
 		return false
-	} else {
-		val := string(buf[:n])
-		dms3libs.LogInfo("Received dashboard enable state as: " + val)
-		return (val == "1")
 	}
 
+	val := string(buf[:n])
+	dms3libs.LogInfo("Received dashboard enable state as: " + val)
+
+	return (val == "1")
 }
 
 // sendDashboardData sends dashboard info to server

@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	dms3libs.LoadLibConfig(filepath.Join("..", "..", "config", "dms3libs.toml"))
+	dms3libs.LoadLibConfig(filepath.Join("..", "..", dms3libs.DMS3Config, "dms3libs.toml"))
 }
 
 func TestRunCommand(t *testing.T) {

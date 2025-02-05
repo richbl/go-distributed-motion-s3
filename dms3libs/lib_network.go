@@ -7,9 +7,8 @@ import (
 	"sync"
 )
 
-// PingHosts uses native ping command to ping the address range passed in to freshen the local
-// arp cache
-func PingHosts(ipBase string, ipRange []int) {
+// PingHosts uses 'ping' to ping a range of IP addresses, returning an error if the command fails
+func PingHosts(ipBase string, ipRange []int) error {
 
 	var wg sync.WaitGroup
 	cmd := LibConfig.SysCommands["PING"] + " -q -W 1 -c 1 " + ipBase
@@ -20,12 +19,16 @@ func PingHosts(ipBase string, ipRange []int) {
 		// allow threaded system command calls to finish asynchronously
 		go func(i int, w *sync.WaitGroup) {
 			defer w.Done()
-			_, _ = RunCommand(cmd + strconv.Itoa(i))
+
+			if _, err := RunCommand(cmd + strconv.Itoa(i)); err != nil {
+				LogInfo("Failed to run command: " + err.Error())
+			}
+
 		}(i, &wg)
 	}
-
 	wg.Wait()
 
+	return nil
 }
 
 // FindMacs uses 'ip neigh' to find mac address(es) passed in, returning true if any mac passed in is found
@@ -43,21 +46,21 @@ func FindMacs(macsToFind []string) bool {
 
 	}
 
-	if _, err := RunCommand(LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"); err != nil {
+	cmd := LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"
+
+	if _, err := RunCommand(cmd); err != nil {
 
 		switch err.(type) {
 		case *exec.ExitError:
-			// no ip found
 			LogInfo(LibConfig.SysCommands["IP"] + " command: no device mac address found")
 		default:
-			// fatal command error
 			LogFatal("Failed to run '" + LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "': " + err.Error())
 		}
 
 		return false
-	} else {
-		LogInfo(LibConfig.SysCommands["IP"] + " command: device mac address found")
-		return true
 	}
 
+	LogInfo(LibConfig.SysCommands["IP"] + " command: device mac address found")
+
+	return true
 }
