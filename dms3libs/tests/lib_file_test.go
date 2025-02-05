@@ -58,9 +58,9 @@ func TestWalkDir(t *testing.T) {
 	for _, dirType := range dms3libs.WalkDir(newDir) {
 
 		if dirType == 0 {
-			dirCount += 1
+			dirCount++
 		} else {
-			fileCount += 1
+			fileCount++
 		}
 
 	}

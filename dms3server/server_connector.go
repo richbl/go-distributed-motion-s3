@@ -17,8 +17,8 @@ func Init(configPath string) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
-	dms3libs.LoadLibConfig(filepath.Join(configPath, "dms3libs", "dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&ServerConfig, filepath.Join(configPath, "dms3server", "dms3server.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(configPath, dms3libs.DMS3Libs, "dms3libs.toml"))
+	dms3libs.LoadComponentConfig(&ServerConfig, filepath.Join(configPath, dms3libs.DMS3Server, "dms3server.toml"))
 
 	dms3libs.SetLogFileLocation(ServerConfig.Logging)
 	dms3libs.CreateLogger(ServerConfig.Logging)
@@ -39,8 +39,8 @@ func Init(configPath string) {
 // startServer starts the TCP server
 func startServer(serverPort int) {
 
-	if listener, error := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); error != nil {
-		dms3libs.LogFatal(error.Error())
+	if listener, err := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); err != nil {
+		dms3libs.LogFatal(err.Error())
 	} else {
 		dms3libs.LogInfo("TCP server started")
 		defer listener.Close()
@@ -97,8 +97,8 @@ func sendMotionDetectorState(conn net.Conn) {
 func setMediaLocation(configPath string, config *structSettings) {
 
 	media := []mediaPath{
-		{&config.Audio.PlayMotionStart, filepath.Join("dms3server", "media", "motion_start.wav")},
-		{&config.Audio.PlayMotionStop, filepath.Join("dms3server", "media", "motion_stop.wav")},
+		{&config.Audio.PlayMotionStart, filepath.Join(dms3libs.DMS3Server, "media", "motion_start.wav")},
+		{&config.Audio.PlayMotionStop, filepath.Join(dms3libs.DMS3Server, "media", "motion_stop.wav")},
 	}
 
 	for _, mp := range media {

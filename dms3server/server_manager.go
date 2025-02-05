@@ -27,7 +27,6 @@ func DetermineMotionDetectorState() dms3libs.MotionDetectorState {
 	}
 
 	return dms3libs.MotionDetector.State()
-
 }
 
 // setMotionDetectorState sets the state read by device clients to starts/stop the motion detector
@@ -54,7 +53,6 @@ func setMotionDetectorState(state dms3libs.MotionDetectorState) dms3libs.MotionD
 	}
 
 	return state
-
 }
 
 // checkIntervalExpired determines if last check interval (in seconds) has expired
@@ -68,7 +66,6 @@ func checkIntervalExpired() bool {
 	}
 
 	return false
-
 }
 
 // timeInRange checks to see if the current time is within the bounds of the 'always on' range
@@ -82,7 +79,6 @@ func timeInRange() bool {
 	}
 
 	return false
-
 }
 
 // calcTimeRange checks to see if the configured time range crosses into the next day, and
@@ -101,7 +97,6 @@ func calcTimeRange() bool {
 	}
 
 	return (curTime >= startTime) && (curTime < endTime)
-
 }
 
 // deviceOnLAN checks to see if device MACs exist on LAN (first freshens local arp cache to
@@ -110,6 +105,6 @@ func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 	dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
-	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 
+	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 }

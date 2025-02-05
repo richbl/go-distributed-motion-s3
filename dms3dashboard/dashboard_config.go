@@ -32,9 +32,9 @@ type serverKeyValues struct {
 
 // serverDeviceStatus represents the device status cycle in the TOML file
 type serverDeviceStatus struct {
-	Caution int
-	Danger  int
-	Missing int
+	Caution uint32
+	Danger  uint32
+	Missing uint32
 }
 
 // deviceData represents dashboard elements from all devices
@@ -62,7 +62,7 @@ type DevicePlatform struct {
 
 // DeviceTime represents device time/duration metrics
 type DeviceTime struct {
-	CheckInterval int
+	CheckInterval uint16
 	StartTime     time.Time
 	Uptime        string
 	LastReport    time.Time

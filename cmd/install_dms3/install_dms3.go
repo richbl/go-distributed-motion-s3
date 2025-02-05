@@ -15,13 +15,13 @@ import (
 
 func main() {
 
-	releasePath := "dms3_release"
+	releasePath := dms3libs.DMS3Release
 
 	// confirm existence of dms3_release folder based on releasePath
 	dms3build.ConfirmReleaseFolder(releasePath)
 
 	// read configuration in from dms3build TOML
-	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, filepath.Join(releasePath, "config", "dms3build", "dms3build.toml"))
+	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, filepath.Join(releasePath, dms3libs.DMS3Config, "dms3build", "dms3build.toml"))
 
 	// install components onto device platforms
 	dms3build.InstallClientComponents(releasePath)

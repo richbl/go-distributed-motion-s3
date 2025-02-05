@@ -18,5 +18,5 @@ type structSettings struct {
 type structServer struct {
 	IP            string
 	Port          int
-	CheckInterval int
+	CheckInterval uint16
 }

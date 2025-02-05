@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	dms3libs.LoadLibConfig(filepath.Join("config", "dms3libs.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(dms3libs.DMS3Config, "dms3libs.toml"))
 
 	// create release folder
 	dms3build.BuildReleaseFolder()
@@ -30,10 +30,10 @@ func main() {
 	dms3build.CopyMediaFiles()
 
 	// copy dms3dashboard html file and assets into release folder
-	dms3build.CopyComponents("dms3dashboard")
+	dms3build.CopyComponents(dms3libs.DMS3Dashboard)
 
 	// copy dms3mail html file and assets into release folder
-	dms3build.CopyComponents("dms3mail")
+	dms3build.CopyComponents(dms3libs.DMS3Mail)
 
 	// copy TOML files into release folder
 	dms3build.CopyConfigFiles()

@@ -4,7 +4,7 @@ package dms3libs
 import (
 	"fmt"
 	"image"
-	_ "image/jpeg"
+	_ "image/jpeg" // Import JPEG decoder
 	"log"
 	"os"
 	"path"
@@ -21,21 +21,19 @@ func GetFunctionName() string {
 	// get program counter index (call stack)
 	runtime.Callers(2, pc)
 	fn := runtime.FuncForPC(pc[0])
-	return fn.Name()
 
+	return fn.Name()
 }
 
 // GetPackageDir returns the absolute path of the calling package
 func GetPackageDir() string {
 
 	_, filename, _, ok := runtime.Caller(1)
-
 	if !ok {
 		log.Fatal()
 	}
 
 	return path.Dir(filename)
-
 }
 
 // StripRet strips the rightmost byte from the byte array
@@ -46,7 +44,6 @@ func StripRet(value []byte) []byte {
 	}
 
 	return value[:len(value)-1]
-
 }
 
 // Uptime returns uptime for the application process

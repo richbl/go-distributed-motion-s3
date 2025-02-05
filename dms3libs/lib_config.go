@@ -2,12 +2,22 @@
 package dms3libs
 
 import (
-	"errors"
-	"io/fs"
 	"os"
 	"path"
 
 	"github.com/BurntSushi/toml"
+)
+
+// Configuration file names
+const (
+	DMS3Mail      = "dms3mail"
+	DMS3Client    = "dms3client"
+	DMS3Server    = "dms3server"
+	DMS3Libs      = "dms3libs"
+	DMS3Release   = "dms3_release"
+	DMS3Dashboard = "dms3dashboard"
+	DMS3Config    = "config"
+	DMS3TOML      = "dms3client.toml"
 )
 
 // LibConfig contains dms3Libs configuration settings read from TOML file
@@ -24,9 +34,11 @@ type mapSysCommands map[string]string
 func LoadLibConfig(configFile string) {
 
 	if IsFile(configFile) {
-		if _, error := toml.DecodeFile(configFile, &LibConfig); error != nil {
-			LogFatal(error.Error())
+
+		if _, err := toml.DecodeFile(configFile, &LibConfig); err != nil {
+			LogFatal(err.Error())
 		}
+
 	} else {
 		LogFatal(configFile + " file not found")
 	}
@@ -36,20 +48,13 @@ func LoadLibConfig(configFile string) {
 // LoadComponentConfig loads a TOML configuration file of client/server configs into parameter values
 func LoadComponentConfig(structConfig interface{}, configFile string) {
 
-	if _, error := os.Stat(configFile); error == nil {
+	// check if config file exists
+	if _, err := os.Stat(configFile); err != nil {
+		LogFatal(err.Error())
+	}
 
-		if _, error := toml.DecodeFile(configFile, structConfig); error != nil {
-			LogFatal(error.Error())
-		}
-
-	} else {
-
-		if errors.Is(error, fs.ErrNotExist) {
-			LogFatal(configFile + " file not found")
-		} else {
-			LogFatal(error.Error())
-		}
-
+	if _, err := toml.DecodeFile(configFile, structConfig); err != nil {
+		LogFatal(err.Error())
 	}
 
 }
@@ -60,11 +65,13 @@ func SetLogFileLocation(config *StructLogging) {
 	projectDir := path.Dir(GetPackageDir())
 
 	if !IsFile(config.LogLocation) {
+
 		if config.LogLocation == "" && IsFile(projectDir) { // if no config location set, set to development project folder
 			config.LogLocation = projectDir
 		} else {
 			LogFatal("unable to set log location... check TOML configuration file")
 		}
+
 	}
 
 }
