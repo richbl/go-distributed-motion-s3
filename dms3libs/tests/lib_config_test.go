@@ -9,7 +9,7 @@ import (
 
 func TestLoadLibConfig(t *testing.T) {
 
-	libsLocation := filepath.Join("..", "..", dms3libs.DMS3Config, "dms3libs.toml")
+	libsLocation := filepath.Join("..", "..", dms3libs.DMS3Config, dms3libs.DMS3libsTOML)
 
 	dms3libs.LoadLibConfig(libsLocation)
 	t.Log("libs configuration file loaded from", libsLocation, "successfully")
@@ -44,7 +44,7 @@ func TestLoadComponentConfig(t *testing.T) {
 
 	testSettings := new(structSettings)
 	configPath := dms3libs.GetPackageDir()
-	configLocation := filepath.Join("..", "..", dms3libs.DMS3Config, "dms3server.toml")
+	configLocation := filepath.Join("..", "..", dms3libs.DMS3Config, dms3libs.DMS3serverTOML)
 
 	dms3libs.LoadComponentConfig(&testSettings, filepath.Join(configPath, configLocation))
 	t.Log("component configuration file loaded from", configLocation, "successfully")

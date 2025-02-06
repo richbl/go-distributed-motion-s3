@@ -15,7 +15,7 @@ import (
 
 func main() {
 
-	dms3libs.LoadLibConfig(filepath.Join(dms3libs.DMS3Config, "dms3libs.toml"))
+	dms3libs.LoadLibConfig(filepath.Join(dms3libs.DMS3Config, dms3libs.DMS3libsTOML))
 
 	// create release folder
 	dms3build.BuildReleaseFolder()

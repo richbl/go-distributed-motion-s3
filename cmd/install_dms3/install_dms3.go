@@ -21,7 +21,7 @@ func main() {
 	dms3build.ConfirmReleaseFolder(releasePath)
 
 	// read configuration in from dms3build TOML
-	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, filepath.Join(releasePath, dms3libs.DMS3Config, "dms3build", "dms3build.toml"))
+	dms3libs.LoadComponentConfig(&dms3build.BuildConfig, filepath.Join(releasePath, dms3libs.DMS3Config, "dms3build", dms3libs.DMS3buildTOML))
 
 	// install components onto device platforms
 	dms3build.InstallClientComponents(releasePath)

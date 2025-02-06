@@ -15,15 +15,7 @@ import (
 // Init configs the library and configuration for dms3server
 func Init(configPath string) {
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	dms3libs.LoadLibConfig(filepath.Join(configPath, dms3libs.DMS3Libs, "dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&ServerConfig, filepath.Join(configPath, dms3libs.DMS3Server, "dms3server.toml"))
-
-	dms3libs.SetLogFileLocation(ServerConfig.Logging)
-	dms3libs.CreateLogger(ServerConfig.Logging)
-
-	dms3libs.LogInfo("dms3server " + dms3libs.GetProjectVersion() + " started")
+	dms3libs.InitComponent(configPath, dms3libs.DMS3Server, dms3libs.DMS3serverTOML, &ServerConfig, ServerConfig.Logging)
 
 	setMediaLocation(configPath, ServerConfig)
 	dms3dash.DashboardEnable = ServerConfig.Server.EnableDashboard
@@ -33,7 +25,6 @@ func Init(configPath string) {
 	}
 
 	startServer(ServerConfig.Server.Port)
-
 }
 
 // startServer starts the TCP server
@@ -63,7 +54,6 @@ func serverLoop(listener net.Listener) {
 		}
 
 	}
-
 }
 
 // processClient passes motion detector application state to all dms3client listeners
@@ -76,7 +66,6 @@ func processClient(conn net.Conn) {
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
 	conn.Close()
-
 }
 
 // sendMotionDetectorState sends detector state to clients
@@ -104,6 +93,7 @@ func setMediaLocation(configPath string, config *structSettings) {
 	for _, mp := range media {
 		checkMediaLocations(configPath, mp)
 	}
+
 }
 
 // checkMediaLocations identifies the possible location of media (audio) files (release or
@@ -119,10 +109,12 @@ func checkMediaLocations(configPath string, mp mediaPath) {
 
 	var possiblePaths = []string{relPath, devPath}
 	for _, path := range possiblePaths {
+
 		if dms3libs.IsFile(path) {
 			*mp.configLocation = path
 			return
 		}
+
 	}
 
 	dms3libs.LogFatal("unable to set media location... check TOML configuration file")
