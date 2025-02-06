@@ -7,6 +7,10 @@ import (
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
 )
 
+const (
+	logFile = "tmpFile"
+)
+
 func TestCreateLogger(t *testing.T) {
 
 	logger := dms3libs.StructLogging{
@@ -19,11 +23,11 @@ func TestCreateLogger(t *testing.T) {
 	dms3libs.CreateLogger(&logger)
 
 	if !dms3libs.IsFile(logger.LogFilename) {
-		t.Error("Log file", logger.LogFilename, "not created")
+		t.Error(logFile, logger.LogFilename, "not created")
 	} else {
-		t.Log("Log file", logger.LogFilename, "created")
+		t.Log(logFile, logger.LogFilename, "created")
 		os.Remove(logger.LogFilename)
-		t.Log("Log file", logger.LogFilename, "removed")
+		t.Log(logFile, logger.LogFilename, "removed")
 	}
 
 }

@@ -1,7 +1,11 @@
 // Package dms3dash dashboard configuration structures and variables
 package dms3dash
 
-import "time"
+import (
+	"time"
+
+	"github.com/richbl/go-distributed-motion-s3/dms3libs"
+)
 
 var DashboardEnable bool
 
@@ -54,8 +58,8 @@ type DeviceMetrics struct {
 // DevicePlatform represents the physical device platform environment
 type DevicePlatform struct {
 	Type        dashboardDeviceType
-	OSName      string
 	Hostname    string
+	OSName      string
 	Environment string
 	Kernel      string
 }
@@ -76,3 +80,24 @@ const (
 	Client dashboardDeviceType = iota
 	Server
 )
+
+// initializeDeviceMetrics is a helper function to initialize a DeviceMetrics struct.
+func initializeDeviceMetrics(deviceType dashboardDeviceType, checkInterval uint16) *DeviceMetrics {
+	return &DeviceMetrics{
+		Platform: DevicePlatform{
+			Type:        deviceType,
+			Hostname:    dms3libs.GetDeviceHostname(),
+			OSName:      dms3libs.GetDeviceOSName(),
+			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
+			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
+		},
+		Period: DeviceTime{
+			CheckInterval: checkInterval,
+			StartTime:     time.Now(),
+			Uptime:        "",
+			LastReport:    time.Now(),
+		},
+		ShowEventCount: false,
+		EventCount:     0,
+	}
+}

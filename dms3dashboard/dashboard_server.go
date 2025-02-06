@@ -22,7 +22,7 @@ func InitDashboardServer(configPath string, checkInterval uint16) {
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	dashboardConfig = new(tomlTables)
-	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, dms3libs.DMS3Dashboard, "dms3dashboard.toml"))
+	dms3libs.LoadComponentConfig(&dashboardConfig, filepath.Join(configPath, dms3libs.DMS3Dashboard, dms3libs.DMS3dashboardTOML))
 	dms3libs.CheckFileLocation(configPath, dms3libs.DMS3Dashboard, &dashboardConfig.Server.FileLocation, dashboardConfig.Server.Filename)
 
 	dashboardData = &deviceData{
@@ -31,23 +31,7 @@ func InitDashboardServer(configPath string, checkInterval uint16) {
 	}
 
 	// create initial server device entry in set of all dashboard devices
-	serverData := &DeviceMetrics{
-		Platform: DevicePlatform{
-			Type:        Server,
-			OSName:      dms3libs.GetDeviceOSName(),
-			Hostname:    dms3libs.GetDeviceHostname(),
-			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
-			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
-		},
-		Period: DeviceTime{
-			CheckInterval: checkInterval,
-			StartTime:     time.Now(),
-			Uptime:        "",
-			LastReport:    time.Now(),
-		},
-		ShowEventCount: false,
-		EventCount:     0,
-	}
+	serverData := initializeDeviceMetrics(Server, checkInterval)
 
 	dashboardData.Devices = append(dashboardData.Devices, *serverData)
 	go dashboardConfig.Server.startDashboard(configPath)
@@ -148,7 +132,6 @@ func (dd *deviceData) updateServerMetrics() {
 			}
 
 		}
-
 	}
 
 }

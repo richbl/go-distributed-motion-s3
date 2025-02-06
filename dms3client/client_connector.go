@@ -15,19 +15,10 @@ import (
 // Init configs the library, configuration, and dashboard for dms3client
 func Init(configPath string) {
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	dms3libs.LoadLibConfig(filepath.Join(configPath, dms3libs.DMS3Libs, "dms3libs.toml"))
-	dms3libs.LoadComponentConfig(&clientConfig, filepath.Join(configPath, dms3libs.DMS3Client, dms3libs.DMS3TOML))
-
-	dms3libs.SetLogFileLocation(clientConfig.Logging)
-	dms3libs.CreateLogger(clientConfig.Logging)
-
-	dms3libs.LogInfo("dms3client " + dms3libs.GetProjectVersion() + " started")
+	dms3libs.InitComponent(configPath, dms3libs.DMS3Client, dms3libs.DMS3clientTOML, &clientConfig, clientConfig.Logging)
 
 	dms3dash.InitDashboardClient(configPath, clientConfig.Server.CheckInterval)
 	startClient(clientConfig.Server.IP, clientConfig.Server.Port)
-
 }
 
 // startClient periodically attempts to connect to the server (based on CheckInterval)
@@ -36,6 +27,7 @@ func startClient(serverIP string, serverPort int) {
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
 	for {
+
 		if conn, err := net.Dial("tcp", serverIP+":"+fmt.Sprint(serverPort)); err != nil {
 			dms3libs.LogInfo(err.Error())
 		} else {
@@ -59,7 +51,6 @@ func processClientRequest(conn net.Conn) {
 
 	dms3libs.LogInfo("CLOSE connection from: " + conn.RemoteAddr().String())
 	conn.Close()
-
 }
 
 // receiveMotionDetectorState receives motion detector state from the server
@@ -70,13 +61,11 @@ func receiveMotionDetectorState(conn net.Conn) {
 	buf := make([]byte, 8)
 
 	// receive motion detector application state
-
 	var n int
 	var err error
 
 	if n, err = conn.Read(buf); err != nil {
 		dms3libs.LogInfo(err.Error())
-
 		return
 	}
 
@@ -95,5 +84,4 @@ func receiveMotionDetectorState(conn net.Conn) {
 	}
 
 	dms3libs.LogInfo("Received unanticipated motion detector state: ignored")
-
 }
