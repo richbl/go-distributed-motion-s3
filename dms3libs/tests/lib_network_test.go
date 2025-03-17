@@ -1,9 +1,7 @@
 package dms3libs_test
 
 import (
-	"bytes"
 	"errors"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -56,18 +54,16 @@ func TestFindMacs(t *testing.T) {
 func getMACAddress() (string, error) {
 
 	// Execute the `ip neigh` command
-	cmd := exec.Command("ip", "neigh")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-
-	err := cmd.Run()
+	var out []byte
+	var err error
+	out, err = dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["IP"] + " neigh")
 	if err != nil {
 		return "", err
 	}
 
 	// Define a regex pattern to match MAC addresses
 	macRegex := regexp.MustCompile(`([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})`)
-	matches := macRegex.FindAllString(out.String(), -1)
+	matches := macRegex.FindAllString(string(out), -1)
 
 	// Check if any MAC addresses were found
 	if len(matches) == 0 {
