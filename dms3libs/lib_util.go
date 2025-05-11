@@ -88,7 +88,7 @@ func CheckErr(err error) {
 
 // GetProjectVersion returns the current project version string to the caller
 func GetProjectVersion() string {
-	return "1.4.2"
+	return "1.4.4"
 }
 
 // GetImageDimensions returns the (width, height) of an image passed in

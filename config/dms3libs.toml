@@ -1,5 +1,5 @@
 # Distributed-Motion-S3 DMS3Libs Component Configuration File
-# 1.4.2
+# 1.4.4
 
 [SysCommands]
 
@@ -16,31 +16,38 @@
   PING = "/usr/bin/ping"
   PKILL = "/usr/bin/pkill"
 
-  # the Motion application is currently used for motion detection and is configured differently
-  # based on the version of Motion (or MotionPlus) installed on the client, and the client OS in
-  # use
+  # the Motion application--currently used as the default for DMS3 motion detection--is configured 
+  # differently based on the version of Motion installed on the client and the client OS in use
   #
-  # When in doubt, consult the Motion documentation: https://motion-project.github.io/
+  # When in doubt, consult the Motion project documentation: https://motion-project.github.io/
   #
-  # As an example, Motion 4.7.x running on a Raspberry Pi with the Bookworm (or later) OS requires
-  # special configuration and the command to start Motion is "libcamerify motion"
+  # -----------------
+  #
+  # For Motion 4.7.x running on a Raspberry Pi with the Bookworm (or later) OS release, the
+  # following command assignment should be used:
   #
   # MOTION = "/usr/bin/libcamerify motion"
-  # 
-  # In the configuration below, the MotionPlus application is used, and in a recent release
-  # (0.2.2), the command to include its configuration file is required when running the dms3client
-  # as a system service
   #
-  # MOTION = "/usr/local/bin/motionplus -c /usr/local/etc/motionplus/motionplus.conf"
+  # -----------------
   #
-  # Alternatively, in the above case when running a system service, the dms3client.service file
-  # can instead be edited to specify the MotionPlus configuration folder:
+  # For future versions of Motion (5.x.x is the next planned release), the following
+  # command assignment should be used (the location of the motion binary with the -c switch used
+  # to specify the configuration file location):
   #
-  # ...
-  # WorkingDirectory=/usr/local/etc/motionplus
-  # ...
+  # MOTION = "/usr/local/bin/motion -c /usr/local/etc/motion/motion.conf"
   #
-  # In this latter case, the following command is used (no need to specify the configuration
-  # folder):
+  # -----------------
   #
-  MOTION = "/usr/local/bin/motionplus"
+  # Alternatively, when choosing to run DMS3 client(s) as a systemd service, the dms3client.service
+  # file (included in this project) can be edited to specify the location of the motion.conf 
+  # configuration file:
+  #
+  #   ...
+  #   [Service]
+  #   WorkingDirectory=/usr/local/etc/motion
+  #   ...
+  #
+  # In this case--when running DMS3 client(s) as a systemd service--there's no need to specify the
+  # configuration file location, so the following command assignment is used:
+  #
+  MOTION = "/usr/local/bin/motion"
