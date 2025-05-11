@@ -25,7 +25,7 @@ func TestRunCommand(t *testing.T) {
 
 func TestStartStopApplication(t *testing.T) {
 
-	// NOTE: assumes Motion/MotionPlus application (https://motion-project.github.io/) is installed
+	// NOTE: assumes Motion application (https://motion-project.github.io/) is installed
 	// and properly configured
 	testApplication := dms3libs.LibConfig.SysCommands["MOTION"]
 

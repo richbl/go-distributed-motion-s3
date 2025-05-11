@@ -1,5 +1,5 @@
 # Distributed-Motion-S3 DMS3Client Component Systemd Service Unit
-# 1.4.2
+# 1.4.4
 
 [Unit]
 Description=Distributed Motion Sense Surveillance Service (DMS3) Client
@@ -10,10 +10,10 @@ Type=simple
 Restart=on-failure
 ExecStart=/usr/local/bin/dms3client
 
-# Set this value when running MotionPlus and enabling this service
+# Set this value when running the Motion application
 # (see dms3libs.toml for additional details)
 #
-# WorkingDirectory=/usr/local/etc/motionplus
+WorkingDirectory=/usr/local/etc/motion
 
 [Install]
 WantedBy=multi-user.target
