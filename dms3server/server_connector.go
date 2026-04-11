@@ -2,7 +2,6 @@
 package dms3server
 
 import (
-	"fmt"
 	"net"
 	"path"
 	"path/filepath"
@@ -15,7 +14,13 @@ import (
 // Init configs the library and configuration for dms3server
 func Init(configPath string) {
 
-	dms3libs.InitComponent(configPath, dms3libs.DMS3Server, dms3libs.DMS3serverTOML, &ServerConfig, ServerConfig.Logging)
+	dms3libs.InitComponent(
+		configPath,
+		dms3libs.DMS3Server,
+		dms3libs.DMS3serverTOML,
+		&ServerConfig,
+		func() *dms3libs.StructLogging { return ServerConfig.Logging },
+	)
 
 	setMediaLocation(configPath, ServerConfig)
 	dms3dash.DashboardEnable = ServerConfig.Server.EnableDashboard
@@ -30,7 +35,7 @@ func Init(configPath string) {
 // startServer starts the TCP server
 func startServer(serverPort int) {
 
-	if listener, err := net.Listen("tcp", ":"+fmt.Sprint(serverPort)); err != nil {
+	if listener, err := net.Listen("tcp", ":"+strconv.Itoa(serverPort)); err != nil {
 		dms3libs.LogFatal(err.Error())
 	} else {
 		dms3libs.LogInfo("TCP server started")
@@ -112,6 +117,7 @@ func checkMediaLocations(configPath string, mp mediaPath) {
 
 		if dms3libs.IsFile(path) {
 			*mp.configLocation = path
+
 			return
 		}
 

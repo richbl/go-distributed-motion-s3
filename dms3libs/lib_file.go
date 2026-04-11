@@ -13,6 +13,7 @@ import (
 func IsFile(filename string) bool {
 
 	_, err := os.Stat(filename)
+
 	return (!errors.Is(err, fs.ErrNotExist))
 
 }
@@ -132,7 +133,6 @@ func CountFilesInDir(srcDir string) int {
 	}
 
 	return fileCount
-
 }
 
 // CheckFileLocation checks/sets the location of file and pathname passed in as defined in various

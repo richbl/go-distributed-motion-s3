@@ -21,6 +21,7 @@ func isRunning(application string) bool {
 
 	if _, err = RunCommand(cmd); err == nil {
 		LogInfo("Already running: " + application)
+
 		return true
 	}
 
@@ -32,11 +33,10 @@ func isRunning(application string) bool {
 // handleCommandErrors handles errors encountered while running commands
 func handleCommandErrors(err error, cmd string) {
 
-	switch err.(type) {
-	case *exec.ExitError:
+	if _, ok := errors.AsType[*exec.ExitError](err); ok {
 		LogInfo("Process not found when running " + cmd)
-	default:
-		LogFatal("Failed to run " + cmd + ": " + err.Error())
+	} else {
+		LogFatal("Failed to run '" + cmd + "': " + err.Error())
 	}
 
 }
@@ -55,6 +55,7 @@ func startApplication(application string) bool {
 
 	if _, err = RunCommand(application); err == nil {
 		LogInfo("Successfully started: " + application)
+
 		return true
 	}
 
@@ -78,6 +79,7 @@ func stopApplication(application string) bool {
 
 	if _, err = RunCommand(cmd); err == nil {
 		LogInfo("Successfully stopped: " + application)
+
 		return true
 	}
 
@@ -89,7 +91,7 @@ func stopApplication(application string) bool {
 // RunCommand is a simple wrapper for the exec.Command() call
 //
 // NOTE: this call is blocking (non-threaded)
-func RunCommand(cmd string) (res []byte, err error) {
+func RunCommand(cmd string) ([]byte, error) {
 
 	LogInfo("Command to be run: " + LibConfig.SysCommands["BASH"] + " -c " + cmd)
 
@@ -107,6 +109,7 @@ func StartStopApplication(state MotionDetectorState, application string) bool {
 		return stopApplication(application)
 	default:
 		LogInfo("Unanticipated application state: ignored")
+
 		return false
 	}
 

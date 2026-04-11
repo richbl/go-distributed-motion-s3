@@ -12,7 +12,6 @@ const (
 	successfulPlayback = "successful playback"
 	errNotFound        = "not found"
 	audioFile          = "audio file"
-	testFile           = "Test file"
 )
 
 func init() {

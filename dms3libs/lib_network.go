@@ -2,8 +2,10 @@
 package dms3libs
 
 import (
+	"errors"
 	"os/exec"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -21,7 +23,7 @@ func PingHosts(ipBase string, ipRange []int) error {
 			defer w.Done()
 
 			if _, err := RunCommand(cmd + strconv.Itoa(i)); err != nil {
-				LogInfo("Failed to run command: " + err.Error())
+				LogDebug("Host " + ipBase + strconv.Itoa(i) + " not found")
 			}
 
 		}(i, &wg)
@@ -31,36 +33,28 @@ func PingHosts(ipBase string, ipRange []int) error {
 	return nil
 }
 
-// FindMacs uses 'ip neigh' to find mac address(es) passed in, returning true if any mac passed in is found
-// (e.g., mac1|mac2|mac3)
+// FindMacs uses 'ip neigh' to find mac address(es) passed in, returning true if any mac passed in
+// is found (e.g., mac1|mac2|mac3)
 func FindMacs(macsToFind []string) bool {
 
-	macListRegex := ""
-
-	for i := 0; i < len(macsToFind); i++ {
-		macListRegex += macsToFind[i]
-
-		if i < len(macsToFind)-1 {
-			macListRegex += "|"
-		}
-
-	}
+	macListRegex := strings.Join(macsToFind, "|")
 
 	cmd := LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "'"
 
 	if _, err := RunCommand(cmd); err != nil {
 
-		switch err.(type) {
-		case *exec.ExitError:
-			LogInfo(LibConfig.SysCommands["IP"] + " command: no device mac address found")
-		default:
+		var exitErr *exec.ExitError
+
+		if errors.As(err, &exitErr) {
+			LogDebug(LibConfig.SysCommands["IP"] + " command: no device mac address found")
+		} else {
 			LogFatal("Failed to run '" + LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "': " + err.Error())
 		}
 
 		return false
 	}
 
-	LogInfo(LibConfig.SysCommands["IP"] + " command: device mac address found")
+	LogDebug(LibConfig.SysCommands["IP"] + " command: device mac address found")
 
 	return true
 }

@@ -2,6 +2,7 @@ package dms3libs_test
 
 import (
 	"errors"
+	"fmt"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -58,7 +59,7 @@ func getMACAddress() (string, error) {
 	var err error
 	out, err = dms3libs.RunCommand(dms3libs.LibConfig.SysCommands["IP"] + " neigh")
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("RunCommand failed: %w", err)
 	}
 
 	// Define a regex pattern to match MAC addresses

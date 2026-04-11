@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -17,7 +18,7 @@ import (
 )
 
 // InitDashboardServer configs the library and server configuration for the dashboard
-func InitDashboardServer(configPath string, checkInterval uint16) {
+func InitDashboardServer(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
@@ -35,6 +36,7 @@ func InitDashboardServer(configPath string, checkInterval uint16) {
 
 	dashboardData.Devices = append(dashboardData.Devices, *serverData)
 	go dashboardConfig.Server.startDashboard(configPath)
+
 }
 
 // SendDashboardRequest manages dashboard requests and receipt of client device data
@@ -53,6 +55,7 @@ func SendDashboardRequest(conn net.Conn) {
 
 // startDashboard initializes and starts an HTTP server, serving the client dash on the server
 func (dash *serverKeyValues) startDashboard(configPath string) {
+
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
 	// Template functions
@@ -79,7 +82,7 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 
 	// Configure HTTP server with timeouts
 	server := &http.Server{
-		Addr:         ":" + fmt.Sprint(dash.Port),
+		Addr:         ":" + strconv.Itoa(dash.Port),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -90,16 +93,13 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 	if err := server.ListenAndServe(); err != nil {
 		dms3libs.LogFatal(err.Error())
 	}
+
 }
 
 // handleDashboardRequest processes requests for the dashboard
 func handleDashboardRequest(w http.ResponseWriter, tmpl *template.Template, title string) {
 
-	dashboardData := &deviceData{
-		Title:   title,
-		Devices: dashboardData.Devices,
-	}
-
+	dashboardData.Title = title
 	dashboardData.updateServerMetrics()
 
 	if err := tmpl.Execute(w, dashboardData); err != nil {
@@ -122,7 +122,7 @@ func (dd *deviceData) updateServerMetrics() {
 		} else {
 			// check for and remove dead (non-reporting) client devices
 			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
-			missingDeviceLimit := uint32(dd.Devices[i].Period.CheckInterval) * dashboardConfig.Server.DeviceStatus.Missing
+			missingDeviceLimit := dashboardData.Devices[i].Period.CheckInterval * dashboardConfig.Server.DeviceStatus.Missing
 
 			if lastUpdate > missingDeviceLimit {
 				dms3libs.LogInfo("Non-reporting remote device timeout reached: removing " + dd.Devices[i].Platform.Hostname + " client")
@@ -245,14 +245,12 @@ func resortDashboardDevices() {
 // iconStatus is an HTML template function that returns the CSS string representing icon color,
 // depending on the last time the client reported status to the server, relative to the client's
 // CheckInterval
-func iconStatus(index int) string {
-
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+func iconStatus(index int) template.HTMLAttr {
 
 	lastUpdate := dms3libs.SecondsSince(dashboardData.Devices[index].Period.LastReport)
 	checkInterval := dashboardData.Devices[index].Period.CheckInterval
-	warningLimit := uint32(checkInterval) * dashboardConfig.Server.DeviceStatus.Caution
-	dangerLimit := uint32(checkInterval) * dashboardConfig.Server.DeviceStatus.Danger
+	warningLimit := checkInterval * dashboardConfig.Server.DeviceStatus.Caution
+	dangerLimit := checkInterval * dashboardConfig.Server.DeviceStatus.Danger
 
 	switch {
 	case lastUpdate < warningLimit:
@@ -268,7 +266,7 @@ func iconStatus(index int) string {
 }
 
 // iconType is an HTML template function that returns an icon based on device type
-func iconType(index int) string {
+func iconType(index int) template.HTMLAttr {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
@@ -282,22 +280,6 @@ func iconType(index int) string {
 	}
 
 }
-
-// deviceType is an HTML template function that returns a string based on device type
-// func deviceType(index int) string {
-
-// 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-// 	switch dashboardData.Devices[index].Platform.Type {
-// 	case Client:
-// 		return "client"
-// 	case Server:
-// 		return "server"
-// 	default:
-// 		return ""
-// 	}
-
-// }
 
 // clientCount is an HTML template function that returns the current count of dms3clients
 // reporting to the server

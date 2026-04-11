@@ -62,6 +62,7 @@ func checkIntervalExpired() bool {
 
 	if time.Since(checkIntervalTimestamp).Seconds() >= float64(ServerConfig.Server.CheckInterval) {
 		checkIntervalTimestamp = time.Now()
+
 		return true
 	}
 
@@ -104,7 +105,7 @@ func calcTimeRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
-	dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
+	_ = dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
 
 	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 }
