@@ -32,6 +32,7 @@ func (s *motionDetectorStruct) SetState(state MotionDetectorState) bool {
 	case Start, Stop:
 		{
 			s.state = state
+
 			return true
 		}
 	default:

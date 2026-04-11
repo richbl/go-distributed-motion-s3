@@ -52,8 +52,8 @@ func Uptime(startTime time.Time) string {
 }
 
 // SecondsSince returns seconds passed since value passed
-func SecondsSince(value time.Time) uint32 {
-	return uint32(time.Since(value).Seconds())
+func SecondsSince(value time.Time) int {
+	return int(time.Since(value).Seconds())
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
@@ -80,7 +80,7 @@ func ModVal(number int, val int) int {
 func CheckErr(err error) {
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
@@ -88,7 +88,7 @@ func CheckErr(err error) {
 
 // GetProjectVersion returns the current project version string to the caller
 func GetProjectVersion() string {
-	return "1.4.5"
+	return "1.4.6"
 }
 
 // GetImageDimensions returns the (width, height) of an image passed in
@@ -109,7 +109,6 @@ func GetImageDimensions(imagePath string) (int, int) {
 	}
 
 	return img.Width, img.Height
-
 }
 
 // rightPadToLen pads a string to pLen places with padStr

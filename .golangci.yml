@@ -1,0 +1,109 @@
+version: "2"
+linters:
+  enable:
+  - containedctx
+  - contextcheck
+  - copyloopvar
+  - cyclop
+  - decorder
+  - dupl
+  - dupword
+  - err113
+  - errcheck
+  - errname
+  - errorlint
+  - exptostd
+  - fatcontext
+  - forbidigo
+  - forcetypeassert
+  - funcorder
+  - funlen
+  - gocheckcompilerdirectives
+  - gocognit
+  - goconst
+  - gocritic
+  - godox
+  - gosec
+  - govet
+  - iface
+  - inamedparam
+  - ineffassign
+  - intrange
+  - ireturn
+  - loggercheck
+  - maintidx
+  - modernize
+  - musttag
+  - nestif
+  - nilerr
+  - nilnil
+  - nlreturn
+  - nonamedreturns
+  - perfsprint
+  - revive
+  - staticcheck
+  - testifylint
+  - thelper
+  - unconvert
+  - unparam
+  - unused
+  - usestdlibvars
+  - wastedassign
+  - wrapcheck
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - goconst
+        path: (.+)_test\.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+
+linters-settings:
+  errcheck:
+    check-blank: true
+    check-type-assertions: true
+    disable-default-exclusions: true
+    exclude-functions:
+      - io/ioutil.ReadFile
+      - io.Copy(*bytes.Buffer)
+      - io.Copy(os.Stdout)
+  gocognit:
+    min-complexity: 15
+  govet:
+    disable:
+      - fieldalignment
+    enable-all: true
+  ineffassign:
+    check-escaping-errors: true
+  ireturn:
+    allow:
+      - error
+      - generic
+      - stdlib
+  nilnil:
+    detect-opposite: true
+  testifylint:
+    enable-all: true
+  unconvert:
+    # Remove conversions that force intermediate rounding.
+    # Default: false
+    fast-math: true
+    # Be more conservative (experimental)
+    # Default: false
+    safe: true
+
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

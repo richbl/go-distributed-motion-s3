@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 48 47.999999"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="dms3_just_logo.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="/home/richbl/Downloads/ico.png"
+   inkscape:export-xdpi="2181.74"
+   inkscape:export-ydpi="2181.74"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs8" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="10.583385"
+     inkscape:cx="18.330619"
+     inkscape:cy="22.015641"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <g
+     id="g93534-3"
+     inkscape:export-filename="/home/richbl/Downloads/dms3_logo_short.png"
+     inkscape:export-xdpi="2181.74"
+     inkscape:export-ydpi="2181.74"
+     transform="matrix(1.9393275,0,0,2,0.72765673,0)">
+    <path
+       style="fill:#746c00;fill-opacity:1"
+       d="M 11,13.673 1,8.262 V 18.638 L 11,24 Z"
+       id="path1490-3" />
+    <path
+       style="fill:#a60631;fill-opacity:1"
+       d="M 13,13.673 V 24 L 23,18.638 V 8.312 Z"
+       id="path1488-8" />
+    <path
+       style="fill:#0665a6;fill-opacity:1;stroke-width:1.00033"
+       d="M 0.9998372,5.998 12.003215,0 23.000589,6.06 12.008219,11.92 Z"
+       id="path2-3" />
+  </g>
+</svg>

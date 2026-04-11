@@ -26,4 +26,5 @@ func main() {
 
 	// Call the shared installer function
 	dms3libs.DeviceInstaller(binFiles, configDirs)
+
 }
