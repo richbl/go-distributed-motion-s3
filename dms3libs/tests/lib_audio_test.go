@@ -33,7 +33,7 @@ func TestPlayAudio(t *testing.T) {
 
 func TestAudioConfig(t *testing.T) {
 
-	configPath := dms3libs.GetPackageDir()
+	configPath := dms3libs.PackageDir()
 
 	dms3libs.LoadComponentConfig(&dms3server.ServerConfig, filepath.Join(configPath, "..", "..", dms3libs.DMS3Config, dms3libs.DMS3serverTOML))
 

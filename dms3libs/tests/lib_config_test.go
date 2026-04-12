@@ -43,7 +43,7 @@ func TestLoadComponentConfig(t *testing.T) {
 	}
 
 	testSettings := new(structSettings)
-	configPath := dms3libs.GetPackageDir()
+	configPath := dms3libs.PackageDir()
 	configLocation := filepath.Join("..", "..", dms3libs.DMS3Config, dms3libs.DMS3serverTOML)
 
 	dms3libs.LoadComponentConfig(&testSettings, filepath.Join(configPath, configLocation))

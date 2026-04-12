@@ -26,7 +26,7 @@ func TestIsFile(t *testing.T) {
 
 func TestMkDir(t *testing.T) {
 
-	newDir := filepath.Join(dms3libs.GetPackageDir(), tmpDir)
+	newDir := filepath.Join(dms3libs.PackageDir(), tmpDir)
 	dms3libs.MkDir(newDir)
 
 	if dms3libs.IsFile(newDir) {
@@ -39,7 +39,7 @@ func TestMkDir(t *testing.T) {
 
 func TestRmDir(t *testing.T) {
 
-	newDir := filepath.Join(dms3libs.GetPackageDir(), tmpDir)
+	newDir := filepath.Join(dms3libs.PackageDir(), tmpDir)
 
 	dms3libs.MkDir(newDir)
 	dms3libs.RmDir(newDir)
@@ -55,11 +55,11 @@ func TestWalkDir(t *testing.T) {
 	dirCount := 0
 	fileCount := 0
 
-	newDir := filepath.Join(dms3libs.GetPackageDir(), tmpDir)
+	newDir := filepath.Join(dms3libs.PackageDir(), tmpDir)
 	newFile := tmpFile
 
 	dms3libs.MkDir(newDir)
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), wavFile), filepath.Join(newDir, newFile))
+	dms3libs.CopyFile(filepath.Join(dms3libs.PackageDir(), wavFile), filepath.Join(newDir, newFile))
 
 	for _, dirType := range dms3libs.WalkDir(newDir) {
 
@@ -87,7 +87,7 @@ func TestWalkDir(t *testing.T) {
 
 func TestCopyFile(t *testing.T) {
 
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), wavFile), tmpFile)
+	dms3libs.CopyFile(filepath.Join(dms3libs.PackageDir(), wavFile), tmpFile)
 
 	if dms3libs.IsFile(tmpFile) {
 		os.Remove(tmpFile)
@@ -99,10 +99,10 @@ func TestCopyFile(t *testing.T) {
 
 func TestCopyDir(t *testing.T) {
 
-	dms3libs.CopyDir(dms3libs.GetPackageDir(), tmpDir)
+	dms3libs.CopyDir(dms3libs.PackageDir(), tmpDir)
 
 	if dms3libs.IsFile(tmpDir) {
-		dms3libs.RmDir(filepath.Join(dms3libs.GetPackageDir(), tmpDir))
+		dms3libs.RmDir(filepath.Join(dms3libs.PackageDir(), tmpDir))
 	} else {
 		t.Error("directory not found, but should have been")
 	}
@@ -111,9 +111,9 @@ func TestCopyDir(t *testing.T) {
 
 func TestCountFilesInDir(t *testing.T) {
 
-	dms3libs.MkDir(filepath.Join(dms3libs.GetPackageDir(), tmpDir))
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), wavFile), filepath.Join(dms3libs.GetPackageDir(), tmpDir, tmpFile))
-	currentDir := filepath.Join(dms3libs.GetPackageDir(), tmpDir)
+	dms3libs.MkDir(filepath.Join(dms3libs.PackageDir(), tmpDir))
+	dms3libs.CopyFile(filepath.Join(dms3libs.PackageDir(), wavFile), filepath.Join(dms3libs.PackageDir(), tmpDir, tmpFile))
+	currentDir := filepath.Join(dms3libs.PackageDir(), tmpDir)
 
 	if dms3libs.CountFilesInDir(currentDir) != 1 {
 		t.Error("incorrect file count")
@@ -125,11 +125,11 @@ func TestCountFilesInDir(t *testing.T) {
 
 func TestCheckFileLocation(t *testing.T) {
 
-	dms3libs.MkDir(filepath.Join(dms3libs.GetPackageDir(), tmpDir))
-	dms3libs.CopyFile(filepath.Join(dms3libs.GetPackageDir(), wavFile), filepath.Join(dms3libs.GetPackageDir(), tmpDir, tmpFile))
-	currentDir := filepath.Join(dms3libs.GetPackageDir(), tmpDir)
+	dms3libs.MkDir(filepath.Join(dms3libs.PackageDir(), tmpDir))
+	dms3libs.CopyFile(filepath.Join(dms3libs.PackageDir(), wavFile), filepath.Join(dms3libs.PackageDir(), tmpDir, tmpFile))
+	currentDir := filepath.Join(dms3libs.PackageDir(), tmpDir)
 
-	configPath := dms3libs.GetPackageDir()
+	configPath := dms3libs.PackageDir()
 	fileDir := tmpDir
 	fileLocation := ""
 	filename := tmpFile

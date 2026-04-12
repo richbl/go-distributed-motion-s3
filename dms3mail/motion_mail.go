@@ -26,7 +26,7 @@ func Init(configPath string) {
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
-	dms3libs.LogInfo("dms3mail " + dms3libs.GetProjectVersion() + " started")
+	dms3libs.LogInfo("dms3mail " + dms3libs.ProjectVersion() + " started")
 
 	dms3libs.CheckFileLocation(configPath, dms3libs.DMS3Mail, &mailConfig.FileLocation, mailConfig.Filename)
 
@@ -66,15 +66,15 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 	eventDetails.eventMedia = *filename
 
 	// get image dimensions and calculate percent of image change
-	width, height := dms3libs.GetImageDimensions(eventDetails.eventMedia)
+	width, height := dms3libs.ImageDimensions(eventDetails.eventMedia)
 	eventDetails.eventChange = strconv.Itoa(int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
 
-	eventDetails.eventDate = getEventDetails(eventDetails.eventMedia)
-	eventDetails.clientName = cases.Title(language.English, cases.NoLower).String(dms3libs.GetDeviceHostname())
+	eventDetails.eventDate = eventInfo(eventDetails.eventMedia)
+	eventDetails.clientName = cases.Title(language.English, cases.NoLower).String(dms3libs.DeviceHostname())
 
 }
 
-// getEventDetails creates the following event details based on filename:
+// eventInfo creates the following event details based on filename:
 //
 //	eventNumber - Motion-generated event number
 //	eventDate - Motion-generated event datetime
@@ -85,7 +85,7 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 //	[%v] - event number (as of Motion 4.3.2, no longer included in filename by default)
 //	%Y%m%d%H%M%S - ISO 8601 date, with hours, minutes, seconds notion
 //	%q - frame number (value ignored)
-func getEventDetails(filename string) string {
+func eventInfo(filename string) string {
 
 	var index int
 	file := path.Base(filename)
