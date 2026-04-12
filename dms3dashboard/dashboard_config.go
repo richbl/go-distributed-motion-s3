@@ -36,9 +36,9 @@ type serverKeyValues struct {
 
 // serverDeviceStatus represents the device status cycle in the TOML file
 type serverDeviceStatus struct {
-	Caution uint32
-	Danger  uint32
-	Missing uint32
+	Caution int
+	Danger  int
+	Missing int
 }
 
 // deviceData represents dashboard elements from all devices
@@ -66,7 +66,7 @@ type DevicePlatform struct {
 
 // DeviceTime represents device time/duration metrics
 type DeviceTime struct {
-	CheckInterval uint16
+	CheckInterval int
 	StartTime     time.Time
 	Uptime        string
 	LastReport    time.Time
@@ -82,14 +82,14 @@ const (
 )
 
 // initializeDeviceMetrics is a helper function to initialize a DeviceMetrics struct.
-func initializeDeviceMetrics(deviceType dashboardDeviceType, checkInterval uint16) *DeviceMetrics {
+func initializeDeviceMetrics(deviceType dashboardDeviceType, checkInterval int) *DeviceMetrics {
 	return &DeviceMetrics{
 		Platform: DevicePlatform{
 			Type:        deviceType,
-			Hostname:    dms3libs.GetDeviceHostname(),
-			OSName:      dms3libs.GetDeviceOSName(),
-			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
-			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
+			Hostname:    dms3libs.DeviceHostname(),
+			OSName:      dms3libs.DeviceOSName(),
+			Environment: dms3libs.DeviceDetails(dms3libs.Sysname) + " " + dms3libs.DeviceDetails(dms3libs.Machine),
+			Kernel:      dms3libs.DeviceDetails(dms3libs.Release),
 		},
 		Period: DeviceTime{
 			CheckInterval: checkInterval,

@@ -3,7 +3,7 @@ package dms3build
 
 import (
 	"errors"
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -27,12 +27,12 @@ func BuildReleaseFolder() {
 	dms3libs.RmDir(dms3libs.DMS3Release)
 
 	for platformType := range BuildEnv {
-		fmt.Println("Creating release folder for " + BuildEnv[platformType].dirName + " platform...")
+		log.Println("Creating release folder for " + BuildEnv[platformType].dirName + " platform...")
 		dms3libs.MkDir(filepath.Join(dms3libs.DMS3Release, command, BuildEnv[platformType].dirName))
 	}
 
 	for itr := range components {
-		fmt.Println("Creating release folder for " + components[itr].exeName + " component...")
+		log.Println("Creating release folder for " + components[itr].exeName + " component...")
 		dirName := components[itr].dirName
 
 		if components[itr].dirName == dms3libs.DMS3Server {
@@ -48,7 +48,7 @@ func BuildReleaseFolder() {
 func BuildComponents() {
 
 	for platformType, env := range BuildEnv {
-		fmt.Println("Building dms3 components for " + env.dirName + " platform...")
+		log.Println("Building dms3 components for " + env.dirName + " platform...")
 
 		for _, component := range components {
 			if component.compile {
@@ -73,12 +73,13 @@ func buildComponent(env structPlatform, platformType platformType, component str
 	command := dms3libs.LibConfig.SysCommands["ENV"] + " " + env.compileTags + " go build -o " + outputDir + " " + component.srcName
 	_, err := dms3libs.RunCommand(command)
 	dms3libs.CheckErr(err)
+
 }
 
 // CopyServiceDaemons copies daemons into release folder
 func CopyServiceDaemons() {
 
-	fmt.Println("Copying dms3 service daemons into dms3_release folder...")
+	log.Println("Copying dms3 service daemons into dms3_release folder...")
 
 	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Client, "daemons", "systemd", "dms3client.service"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Client, "dms3client.service"))
 	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Server, "daemons", "systemd", "dms3server.service"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Server, "dms3server.service"))
@@ -88,7 +89,7 @@ func CopyServiceDaemons() {
 // CopyMediaFiles copies dms3server media files into release folder
 func CopyMediaFiles() {
 
-	fmt.Println("Copying dms3server media files (WAV) into dms3_release folder...")
+	log.Println("Copying dms3server media files (WAV) into dms3_release folder...")
 
 	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Server, media, "motion_start.wav"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Server, media, "motion_start.wav"))
 	dms3libs.CopyFile(filepath.Join(dms3libs.DMS3Server, media, "motion_stop.wav"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, dms3libs.DMS3Server, media, "motion_stop.wav"))
@@ -98,10 +99,10 @@ func CopyMediaFiles() {
 // CopyComponents copies component html files and assets into the release folder
 func CopyComponents(component string) {
 
-	fmt.Println("Copying " + component + " file (HTML) into dms3_release folder...")
+	log.Println("Copying " + component + " file (HTML) into dms3_release folder...")
 	dms3libs.CopyFile(filepath.Join(component, component+".html"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, component, component+".html"))
 
-	fmt.Println("Copying " + component + " assets into dms3_release folder...")
+	log.Println("Copying " + component + " assets into dms3_release folder...")
 	dms3libs.CopyDir(filepath.Join(component, "assets"), filepath.Join(dms3libs.DMS3Release, dms3libs.DMS3Config, component))
 
 }
@@ -109,7 +110,7 @@ func CopyComponents(component string) {
 // CopyConfigFiles copies config files into release folder
 func CopyConfigFiles() {
 
-	fmt.Println("Copying dms3 component config files (TOML) into dms3_release folder...")
+	log.Println("Copying dms3 component config files (TOML) into dms3_release folder...")
 
 	for itr := range components {
 
@@ -136,7 +137,7 @@ func InstallClientComponents(releasePath string) {
 
 	var ssh *easyssh.MakeConfig
 
-	fmt.Println("Installing dms3client components onto remote device(s) identified in dms3build.toml...")
+	log.Println("Installing dms3client components onto remote device(s) identified in dms3build.toml...")
 
 	for _, client := range BuildConfig.Clients {
 
@@ -174,7 +175,7 @@ func InstallServerComponents(releasePath string) {
 
 	var ssh *easyssh.MakeConfig
 
-	fmt.Println("Installing dms3server components onto remote device(s) identified in dms3build.toml...")
+	log.Println("Installing dms3server components onto remote device(s) identified in dms3build.toml...")
 
 	for _, server := range BuildConfig.Servers {
 
@@ -210,7 +211,7 @@ func remoteMkDir(ssh *easyssh.MakeConfig, newPath string) {
 // remoteCopyDir copies a directory over SSH from srcDir to destDir
 func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 
-	fmt.Println("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "...")
+	log.Println("Copying folder " + srcDir + " to " + ssh.User + "@" + ssh.Server + ":" + destDir + "...")
 
 	dirTree := dms3libs.WalkDir(srcDir)
 
@@ -237,7 +238,7 @@ func remoteCopyDir(ssh *easyssh.MakeConfig, srcDir string, destDir string) {
 // remoteRunCommand runs a command via the SSH protocol
 func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 
-	fmt.Println("Running remote command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "...")
+	log.Println("Running remote command " + "'" + command + "' on " + ssh.User + "@" + ssh.Server + "...")
 
 	_, _, _, err := ssh.Run(command, 5) // nolint (dogsled): ssh.Run() wants what it wants...
 	dms3libs.CheckErr(err)
@@ -247,7 +248,7 @@ func remoteRunCommand(ssh *easyssh.MakeConfig, command string) {
 // remoteCopyFile copies a file from src to a remote dest file using SCP
 func remoteCopyFile(ssh *easyssh.MakeConfig, srcFile string, destFile string) {
 
-	fmt.Println("Copying file " + srcFile + " to " + ssh.User + "@" + ssh.Server + ":" + destFile + "...")
+	log.Println("Copying file " + srcFile + " to " + ssh.User + "@" + ssh.Server + ":" + destFile + "...")
 
 	srcAttrib, err := os.Stat(srcFile)
 	dms3libs.CheckErr(err)

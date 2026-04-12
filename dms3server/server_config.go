@@ -20,7 +20,7 @@ type structSettings struct {
 // server details
 type structServer struct {
 	Port            int
-	CheckInterval   uint16
+	CheckInterval   int
 	EnableDashboard bool
 }
 

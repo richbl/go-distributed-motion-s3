@@ -4,7 +4,6 @@ package dms3mail
 import (
 	"bytes"
 	"flag"
-	"fmt"
 	"html/template"
 	"math"
 	"path"
@@ -27,7 +26,7 @@ func Init(configPath string) {
 
 	dms3libs.SetLogFileLocation(mailConfig.Logging)
 	dms3libs.CreateLogger(mailConfig.Logging)
-	dms3libs.LogInfo("dms3mail " + dms3libs.GetProjectVersion() + " started")
+	dms3libs.LogInfo("dms3mail " + dms3libs.ProjectVersion() + " started")
 
 	dms3libs.CheckFileLocation(configPath, dms3libs.DMS3Mail, &mailConfig.FileLocation, mailConfig.Filename)
 
@@ -54,7 +53,7 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 
 	// parse command line arguments passed from Motion command
 	pixels := flag.Int("pixels", 0, "count of pixels detected in the event")
-	filename := flag.String("filename", "", "fullpath filename of the event media file")
+	filename := flag.String("filename", "", "full path filename of the event media file")
 
 	flag.Parse()
 
@@ -67,15 +66,15 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 	eventDetails.eventMedia = *filename
 
 	// get image dimensions and calculate percent of image change
-	width, height := dms3libs.GetImageDimensions(eventDetails.eventMedia)
-	eventDetails.eventChange = fmt.Sprintf("%d", int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
+	width, height := dms3libs.ImageDimensions(eventDetails.eventMedia)
+	eventDetails.eventChange = strconv.Itoa(int(math.Ceil((float64(*pixels) / float64(width*height) * 100))))
 
-	eventDetails.eventDate = getEventDetails(eventDetails.eventMedia)
-	eventDetails.clientName = cases.Title(language.English, cases.NoLower).String(dms3libs.GetDeviceHostname())
+	eventDetails.eventDate = eventInfo(eventDetails.eventMedia)
+	eventDetails.clientName = cases.Title(language.English, cases.NoLower).String(dms3libs.DeviceHostname())
 
 }
 
-// getEventDetails creates the following event details based on filename:
+// eventInfo creates the following event details based on filename:
 //
 //	eventNumber - Motion-generated event number
 //	eventDate - Motion-generated event datetime
@@ -86,7 +85,7 @@ func (eventDetails *structEventDetails) parseEventArgs() {
 //	[%v] - event number (as of Motion 4.3.2, no longer included in filename by default)
 //	%Y%m%d%H%M%S - ISO 8601 date, with hours, minutes, seconds notion
 //	%q - frame number (value ignored)
-func getEventDetails(filename string) (eventDate string) {
+func eventInfo(filename string) string {
 
 	var index int
 	file := path.Base(filename)
@@ -95,13 +94,13 @@ func getEventDetails(filename string) (eventDate string) {
 	if sepCount > 0 && sepCount < 3 {
 		index = sepCount - 1
 	} else {
-		dms3libs.LogFatal("unexpected Motion filenaming convention: missing separators")
+		dms3libs.LogFatal("unexpected Motion file naming convention: missing separators")
 	}
 
 	res := strings.Split(file, "-")
 
 	if len(res[index]) != 14 {
-		dms3libs.LogFatal("unexpected Motion filenaming convention: incorrect string length")
+		dms3libs.LogFatal("unexpected Motion file naming convention: incorrect string length")
 	}
 
 	year := atoi(res[index][0:4])

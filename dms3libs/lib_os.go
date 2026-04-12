@@ -3,25 +3,28 @@ package dms3libs
 
 import (
 	"bufio"
+	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"syscall"
+	"unsafe"
 )
 
-// DeviceDetails defines the set of available device details available in GetDeviceDetails
-type DeviceDetails int
+// DeviceDetails defines the set of available device details available in DeviceDetails
+type deviceDetails int
 
 // types of DMS3 devices
 const (
-	Sysname DeviceDetails = iota
+	Sysname deviceDetails = iota
 	Machine
 	Release
 )
 
-// GetDeviceHostname returns the name of the local machine
-func GetDeviceHostname() string {
+// DeviceHostname returns the name of the local machine
+func DeviceHostname() string {
 
 	name, err := os.Hostname()
 	CheckErr(err)
@@ -29,9 +32,9 @@ func GetDeviceHostname() string {
 	return name
 }
 
-// GetDeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
+// DeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
 // the /etc/os-release file found in most Linux-based distributions
-func GetDeviceOSName() string {
+func DeviceOSName() string {
 
 	result := "OS unknown"
 
@@ -64,33 +67,47 @@ func GetDeviceOSName() string {
 	return result
 }
 
-// GetDeviceDetails returns device details of the local machine
-func GetDeviceDetails(element DeviceDetails) string {
+// DeviceDetails returns device details of the local machine
+func DeviceDetails(element deviceDetails) string {
 
 	utsName, err := uname()
 	CheckErr(err)
 
-	var length int
-	var buf [65]byte
+	var rawString string
 
+	// Slice the arrays ([:]) to pass them into the generic extraction helper
 	switch element {
 	case Sysname:
-		for ; utsName.Sysname[length] != 0; length++ {
-			buf[length] = byte(utsName.Sysname[length])
-		}
+		rawString = extractString(utsName.Sysname[:])
 	case Machine:
-		for ; utsName.Machine[length] != 0; length++ {
-			buf[length] = byte(utsName.Machine[length])
-		}
+		rawString = extractString(utsName.Machine[:])
 	case Release:
-		for ; utsName.Release[length] != 0; length++ {
-			buf[length] = byte(utsName.Release[length])
-		}
+		rawString = extractString(utsName.Release[:])
 	default:
 		LogFatal("invalid DeviceDetails element passed in")
 	}
 
-	return strings.ToLower(string(buf[:length]))
+	return strings.ToLower(rawString)
+}
+
+// extractString converts a null-terminated integer array (int8 or uint8) into a string
+func extractString[T ~int8 | ~uint8](arr []T) string {
+
+	if len(arr) == 0 {
+		return ""
+	}
+
+	// Reinterpret the underlying memory directly as a byte slice, avoiding explicit numeric
+	// type casts
+	byteSlice := unsafe.Slice((*byte)(unsafe.Pointer(&arr[0])), len(arr))
+
+	// Find the null terminator
+	length := bytes.IndexByte(byteSlice, 0)
+	if length == -1 {
+		length = len(byteSlice) // Safe fallback if no null-terminator is present
+	}
+
+	return string(byteSlice[:length])
 }
 
 // uname returns the Utsname struct used to query system settings
@@ -99,9 +116,8 @@ func uname() (*syscall.Utsname, error) {
 	uts := &syscall.Utsname{}
 
 	if err := syscall.Uname(uts); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("uname call failed: %w", err)
 	}
 
 	return uts, nil
-
 }

@@ -13,8 +13,8 @@ import (
 
 var dashboardClientMetrics *DeviceMetrics
 
-// InitDashboardClient loads configuration and assigns the dashboard client profile (sets static client metrics)
-func InitDashboardClient(configPath string, checkInterval uint16) {
+// InitDashboardClient loads configuration and assigns the dashboard client profile
+func InitDashboardClient(configPath string, checkInterval int) {
 
 	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
 
@@ -23,6 +23,7 @@ func InitDashboardClient(configPath string, checkInterval uint16) {
 
 	dashboardClientMetrics = initializeDeviceMetrics(Client, checkInterval)
 	dashboardClientMetrics.checkImagesFolder()
+
 }
 
 // ReceiveDashboardRequest receives server requests and returns data
@@ -48,6 +49,7 @@ func receiveDashboardEnableState(conn net.Conn) bool {
 
 	if n, err = conn.Read(buf); err != nil {
 		dms3libs.LogFatal(err.Error())
+
 		return false
 	}
 

@@ -31,7 +31,7 @@ const (
 var LibConfig *structConfig
 
 type structConfig struct {
-	SysCommands mapSysCommands
+	SysCommands mapSysCommands `toml:"SysCommands"`
 }
 
 // mapSysCommands provides a location mapping of required system commands
@@ -53,7 +53,7 @@ func LoadLibConfig(configFile string) {
 }
 
 // LoadComponentConfig loads a TOML configuration file of client/server configs into parameter values
-func LoadComponentConfig(structConfig interface{}, configFile string) {
+func LoadComponentConfig(structConfig any, configFile string) {
 
 	// check if config file exists
 	if _, err := os.Stat(configFile); err != nil {
@@ -69,7 +69,7 @@ func LoadComponentConfig(structConfig interface{}, configFile string) {
 // SetLogFileLocation sets the location of the log file based on TOML configuration
 func SetLogFileLocation(config *StructLogging) {
 
-	projectDir := path.Dir(GetPackageDir())
+	projectDir := path.Dir(PackageDir())
 
 	if !IsFile(config.LogLocation) {
 
@@ -87,7 +87,8 @@ func SetLogFileLocation(config *StructLogging) {
 func DeviceInstaller(binFiles, configDirs []string) {
 
 	// Load libs config file from dms3_release folder on remote device
-	configPath := filepath.Join(DMS3Release, DMS3Config, DMS3Libs, DMS3clientTOML)
+	configPath := filepath.Join(DMS3Release, DMS3Config, DMS3Libs, DMS3libsTOML)
+
 	LoadLibConfig(configPath)
 
 	binaryInstallDir := filepath.Join(string(filepath.Separator), "usr", "local", "bin")
@@ -113,18 +114,22 @@ func DeviceInstaller(binFiles, configDirs []string) {
 
 	// Remove the release directory
 	RmDir(DMS3Release)
+
 }
 
-// InitComponent initializes the common configuration and logging for a dms3 component.
-func InitComponent(configPath, componentName, componentTOML string, config interface{}, logging *StructLogging) {
+// InitComponent initializes the common configuration and logging for a dms3 component
+func InitComponent(configPath, componentName, componentTOML string, config any, loggingFn func() *StructLogging) {
 
 	LogDebug(filepath.Base(GetFunctionName()))
 
 	LoadLibConfig(filepath.Join(configPath, DMS3Libs, DMS3libsTOML))
 	LoadComponentConfig(config, filepath.Join(configPath, componentName, componentTOML))
 
+	// Evaluate logging after config has been loaded and populated
+	logging := loggingFn()
 	SetLogFileLocation(logging)
 	CreateLogger(logging)
 
-	LogInfo(componentName + " " + GetProjectVersion() + " started")
+	LogInfo(componentName + " " + ProjectVersion() + " started")
+
 }

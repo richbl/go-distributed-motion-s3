@@ -8,7 +8,7 @@ import (
 
 func TestDeviceHostname(t *testing.T) {
 
-	val := dms3libs.GetDeviceHostname()
+	val := dms3libs.DeviceHostname()
 
 	if val != "" {
 		t.Log("Success, devicehost is", val)
@@ -20,7 +20,7 @@ func TestDeviceHostname(t *testing.T) {
 
 func TestDeviceOSName(t *testing.T) {
 
-	val := dms3libs.GetDeviceOSName()
+	val := dms3libs.DeviceOSName()
 
 	if val != "" {
 		t.Log("Success, device OS name is", val)
@@ -32,7 +32,7 @@ func TestDeviceOSName(t *testing.T) {
 
 func TestGetDeviceDetails(t *testing.T) {
 
-	val := dms3libs.GetDeviceDetails(dms3libs.Sysname)
+	val := dms3libs.DeviceDetails(dms3libs.Sysname)
 
 	if val != "" {
 		t.Log("Success, device platform is", val)

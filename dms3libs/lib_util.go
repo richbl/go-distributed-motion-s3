@@ -25,8 +25,8 @@ func GetFunctionName() string {
 	return fn.Name()
 }
 
-// GetPackageDir returns the absolute path of the calling package
-func GetPackageDir() string {
+// PackageDir returns the absolute path of the calling package
+func PackageDir() string {
 
 	_, filename, _, ok := runtime.Caller(1)
 	if !ok {
@@ -52,8 +52,8 @@ func Uptime(startTime time.Time) string {
 }
 
 // SecondsSince returns seconds passed since value passed
-func SecondsSince(value time.Time) uint32 {
-	return uint32(time.Since(value).Seconds())
+func SecondsSince(value time.Time) int {
+	return int(time.Since(value).Seconds())
 }
 
 // To24H converts 12-hour time to 24-hour time, returning a string (e.g., "231305")
@@ -72,7 +72,7 @@ func FormatDateTime(value time.Time) string {
 }
 
 // ModVal returns the remainder of number/val passed in
-func ModVal(number int, val int) int {
+func ModVal(number, val int) int {
 	return number % val
 }
 
@@ -80,19 +80,19 @@ func ModVal(number int, val int) int {
 func CheckErr(err error) {
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println(err.Error())
 		os.Exit(1)
 	}
 
 }
 
-// GetProjectVersion returns the current project version string to the caller
-func GetProjectVersion() string {
-	return "1.4.5"
+// ProjectVersion returns the current project version string to the caller
+func ProjectVersion() string {
+	return "1.4.6"
 }
 
-// GetImageDimensions returns the (width, height) of an image passed in
-func GetImageDimensions(imagePath string) (int, int) {
+// ImageDimensions returns the (width, height) of an image passed in
+func ImageDimensions(imagePath string) (int, int) {
 
 	var file *os.File
 	var err error
@@ -109,7 +109,6 @@ func GetImageDimensions(imagePath string) (int, int) {
 	}
 
 	return img.Width, img.Height
-
 }
 
 // rightPadToLen pads a string to pLen places with padStr

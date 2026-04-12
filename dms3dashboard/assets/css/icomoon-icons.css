@@ -1,7 +1,7 @@
 @font-face {
-  font-family: 'icomoon', sans-serif;
-  src:  url('../fonts/icomoon.eot?trtp26');
-  src:  url('../fonts/icomoon.eot?trtp26#iefix') format('embedded-opentype'),
+  font-family: 'icomoon';
+  src: url('../fonts/icomoon.eot?trtp26');
+  src: url('../fonts/icomoon.eot?trtp26#iefix') format('embedded-opentype'),
     url('../fonts/icomoon.ttf?trtp26') format('truetype'),
     url('../fonts/icomoon.woff?trtp26') format('woff'),
     url('../fonts/icomoon.svg?trtp26#icomoon') format('svg');
@@ -9,7 +9,8 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   font-style: normal;
@@ -26,27 +27,35 @@
 .icon-television:before {
   content: "\e903";
 }
+
 .icon-server2:before {
   content: "\e902";
 }
+
 .icon-server:before {
   content: "\e901";
 }
+
 .icon-raspberry-pi:before {
   content: "\e900";
 }
+
 .icon-stopwatch:before {
   content: "\e952";
 }
+
 .icon-display:before {
   content: "\e956";
 }
+
 .icon-hour-glass:before {
   content: "\e979";
 }
+
 .icon-eye:before {
   content: "\e9ce";
 }
+
 .icon-loop2:before {
   content: "\ea2e";
 }
