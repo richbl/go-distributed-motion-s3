@@ -63,7 +63,7 @@ func WalkDir(dirname string) map[string]int {
 }
 
 // CopyFile copies a file from src to dest
-func CopyFile(src string, dest string) {
+func CopyFile(src, dest string) {
 
 	srcFile, err := os.Open(src)
 	CheckErr(err)
@@ -88,7 +88,7 @@ func CopyFile(src string, dest string) {
 }
 
 // CopyDir copies a directory from srcDir to destDir
-func CopyDir(srcDir string, destDir string) {
+func CopyDir(srcDir, destDir string) {
 
 	pathRoot := filepath.Dir(srcDir)
 

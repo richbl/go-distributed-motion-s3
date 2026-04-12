@@ -17,7 +17,7 @@ func TestCreateLogger(t *testing.T) {
 		LogLevel:    2,
 		LogDevice:   1,
 		LogFilename: "lib_log_test.log",
-		LogLocation: dms3libs.GetPackageDir(),
+		LogLocation: dms3libs.PackageDir(),
 	}
 
 	dms3libs.CreateLogger(&logger)

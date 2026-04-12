@@ -16,7 +16,7 @@ func TestRunCommand(t *testing.T) {
 	testCommand := dms3libs.LibConfig.SysCommands["ENV"]
 
 	if res, err := dms3libs.RunCommand(testCommand); err != nil {
-		t.Error("Command " + testCommand + " failed")
+		t.Error("Command " + testCommand + " failed: " + err.Error())
 	} else if len(res) == 0 {
 		t.Error("Output from command " + testCommand + " failed")
 	}

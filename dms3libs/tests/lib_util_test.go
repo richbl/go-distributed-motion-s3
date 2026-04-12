@@ -22,7 +22,7 @@ func TestGetFunctionName(t *testing.T) {
 
 func TestGetPackageDir(t *testing.T) {
 
-	val := dms3libs.GetPackageDir()
+	val := dms3libs.PackageDir()
 
 	if val != "" {
 		t.Log("Success, package dir is", val)
@@ -113,8 +113,8 @@ func TestModVal(t *testing.T) {
 
 func TestGetImageDimensions(t *testing.T) {
 
-	imageFile := filepath.Join(dms3libs.GetPackageDir(), "lib_util_test.jpg")
-	w, h := dms3libs.GetImageDimensions(imageFile)
+	imageFile := filepath.Join(dms3libs.PackageDir(), "lib_util_test.jpg")
+	w, h := dms3libs.ImageDimensions(imageFile)
 
 	if w != 100 && h != 100 {
 		t.Error("Failure. Dimensions do not match image")

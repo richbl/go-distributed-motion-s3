@@ -69,7 +69,7 @@ func LoadComponentConfig(structConfig any, configFile string) {
 // SetLogFileLocation sets the location of the log file based on TOML configuration
 func SetLogFileLocation(config *StructLogging) {
 
-	projectDir := path.Dir(GetPackageDir())
+	projectDir := path.Dir(PackageDir())
 
 	if !IsFile(config.LogLocation) {
 
@@ -130,6 +130,6 @@ func InitComponent(configPath, componentName, componentTOML string, config any, 
 	SetLogFileLocation(logging)
 	CreateLogger(logging)
 
-	LogInfo(componentName + " " + GetProjectVersion() + " started")
+	LogInfo(componentName + " " + ProjectVersion() + " started")
 
 }

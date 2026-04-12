@@ -38,8 +38,8 @@ func TestFindMacs(t *testing.T) {
 	var localMAC []string
 
 	// Get a local MAC address for testing
-	if res, err := getMACAddress(); err != nil {
-		t.Error("Unable to determine local MAC address for testing")
+	if res, err := macAddress(); err != nil {
+		t.Error("Unable to determine local MAC address for testing: ", err)
 	} else {
 		localMAC = append(localMAC, res)
 	}
@@ -51,8 +51,8 @@ func TestFindMacs(t *testing.T) {
 
 }
 
-// getMACAddress returns the MAC address of the first device found on the network
-func getMACAddress() (string, error) {
+// macAddress returns the MAC address of the first device found on the network
+func macAddress() (string, error) {
 
 	// Execute the `ip neigh` command
 	var out []byte

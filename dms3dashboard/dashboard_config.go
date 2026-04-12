@@ -86,10 +86,10 @@ func initializeDeviceMetrics(deviceType dashboardDeviceType, checkInterval int) 
 	return &DeviceMetrics{
 		Platform: DevicePlatform{
 			Type:        deviceType,
-			Hostname:    dms3libs.GetDeviceHostname(),
-			OSName:      dms3libs.GetDeviceOSName(),
-			Environment: dms3libs.GetDeviceDetails(dms3libs.Sysname) + " " + dms3libs.GetDeviceDetails(dms3libs.Machine),
-			Kernel:      dms3libs.GetDeviceDetails(dms3libs.Release),
+			Hostname:    dms3libs.DeviceHostname(),
+			OSName:      dms3libs.DeviceOSName(),
+			Environment: dms3libs.DeviceDetails(dms3libs.Sysname) + " " + dms3libs.DeviceDetails(dms3libs.Machine),
+			Kernel:      dms3libs.DeviceDetails(dms3libs.Release),
 		},
 		Period: DeviceTime{
 			CheckInterval: checkInterval,

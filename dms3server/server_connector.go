@@ -106,7 +106,7 @@ func setMediaLocation(configPath string, config *structSettings) {
 func checkMediaLocations(configPath string, mp mediaPath) {
 
 	relPath := filepath.Join(configPath, mp.mediaLocation)
-	devPath := filepath.Join(path.Dir(dms3libs.GetPackageDir()), mp.mediaLocation)
+	devPath := filepath.Join(path.Dir(dms3libs.PackageDir()), mp.mediaLocation)
 
 	if mp.configLocation != nil && *mp.configLocation != "" {
 		return // already set

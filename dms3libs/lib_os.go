@@ -13,18 +13,18 @@ import (
 	"unsafe"
 )
 
-// DeviceDetails defines the set of available device details available in GetDeviceDetails
-type DeviceDetails int
+// DeviceDetails defines the set of available device details available in DeviceDetails
+type deviceDetails int
 
 // types of DMS3 devices
 const (
-	Sysname DeviceDetails = iota
+	Sysname deviceDetails = iota
 	Machine
 	Release
 )
 
-// GetDeviceHostname returns the name of the local machine
-func GetDeviceHostname() string {
+// DeviceHostname returns the name of the local machine
+func DeviceHostname() string {
 
 	name, err := os.Hostname()
 	CheckErr(err)
@@ -32,9 +32,9 @@ func GetDeviceHostname() string {
 	return name
 }
 
-// GetDeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
+// DeviceOSName returns the OS release name (NAME) and version ID (VERSION_ID) from a parse of
 // the /etc/os-release file found in most Linux-based distributions
-func GetDeviceOSName() string {
+func DeviceOSName() string {
 
 	result := "OS unknown"
 
@@ -67,8 +67,8 @@ func GetDeviceOSName() string {
 	return result
 }
 
-// GetDeviceDetails returns device details of the local machine
-func GetDeviceDetails(element DeviceDetails) string {
+// DeviceDetails returns device details of the local machine
+func DeviceDetails(element deviceDetails) string {
 
 	utsName, err := uname()
 	CheckErr(err)

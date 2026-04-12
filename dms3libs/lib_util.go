@@ -25,8 +25,8 @@ func GetFunctionName() string {
 	return fn.Name()
 }
 
-// GetPackageDir returns the absolute path of the calling package
-func GetPackageDir() string {
+// PackageDir returns the absolute path of the calling package
+func PackageDir() string {
 
 	_, filename, _, ok := runtime.Caller(1)
 	if !ok {
@@ -72,7 +72,7 @@ func FormatDateTime(value time.Time) string {
 }
 
 // ModVal returns the remainder of number/val passed in
-func ModVal(number int, val int) int {
+func ModVal(number, val int) int {
 	return number % val
 }
 
@@ -86,13 +86,13 @@ func CheckErr(err error) {
 
 }
 
-// GetProjectVersion returns the current project version string to the caller
-func GetProjectVersion() string {
+// ProjectVersion returns the current project version string to the caller
+func ProjectVersion() string {
 	return "1.4.6"
 }
 
-// GetImageDimensions returns the (width, height) of an image passed in
-func GetImageDimensions(imagePath string) (int, int) {
+// ImageDimensions returns the (width, height) of an image passed in
+func ImageDimensions(imagePath string) (int, int) {
 
 	var file *os.File
 	var err error
