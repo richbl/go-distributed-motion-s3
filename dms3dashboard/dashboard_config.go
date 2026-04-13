@@ -2,6 +2,7 @@
 package dms3dash
 
 import (
+	"sync"
 	"time"
 
 	"github.com/richbl/go-distributed-motion-s3/dms3libs"
@@ -43,6 +44,7 @@ type serverDeviceStatus struct {
 
 // deviceData represents dashboard elements from all devices
 type deviceData struct {
+	mu      sync.RWMutex
 	Title   string
 	Devices []DeviceMetrics
 }
