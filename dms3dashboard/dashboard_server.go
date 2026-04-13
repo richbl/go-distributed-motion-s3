@@ -62,10 +62,6 @@ func (dash *serverKeyValues) startDashboard(configPath string) {
 	funcs := template.FuncMap{
 		"ModVal":         dms3libs.ModVal,
 		"FormatDateTime": dms3libs.FormatDateTime,
-		"iconStatus":     iconStatus,
-		"iconType":       iconType,
-		"clientCount":    clientCount,
-		"showEventCount": showEventCount,
 	}
 
 	// Parse template
@@ -103,7 +99,8 @@ func handleDashboardRequest(w http.ResponseWriter, tmpl *template.Template, titl
 	dashboardData.updateServerMetrics()
 
 	if err := tmpl.Execute(w, dashboardData); err != nil {
-		dms3libs.LogFatal(err.Error())
+		dms3libs.LogDebug("Template execution failed: " + err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 
 }
@@ -112,27 +109,32 @@ func handleDashboardRequest(w http.ResponseWriter, tmpl *template.Template, titl
 // initially on dashboard start and subsequent webpage refreshes
 func (dd *deviceData) updateServerMetrics() {
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
+	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
 
-	for i := range dd.Devices {
+	dd.mu.Lock()         // Lock for updating device metrics
+	defer dd.mu.Unlock() // Ensure it unlocks when function ends
 
-		if dd.Devices[i].Platform.Type == Server {
-			dd.Devices[i].Period.LastReport = time.Now()
-			dd.Devices[i].Period.Uptime = dms3libs.Uptime(dd.Devices[i].Period.StartTime)
-		} else {
-			// check for and remove dead (non-reporting) client devices
-			lastUpdate := dms3libs.SecondsSince(dd.Devices[i].Period.LastReport)
-			missingDeviceLimit := dashboardData.Devices[i].Period.CheckInterval * dashboardConfig.Server.DeviceStatus.Missing
+	var active []DeviceMetrics
+	for _, dev := range dd.Devices {
+		if dev.Platform.Type == Server {
+			dev.Period.LastReport = time.Now()
+			dev.Period.Uptime = dms3libs.Uptime(dev.Period.StartTime)
+			active = append(active, dev)
 
-			if lastUpdate > missingDeviceLimit {
-				dms3libs.LogInfo("Non-reporting remote device timeout reached: removing " + dd.Devices[i].Platform.Hostname + " client")
-				dd.Devices = append(dd.Devices[:i], dd.Devices[i+1:]...)
-
-				break
-			}
-
+			continue
 		}
+
+		lastUpdate := dms3libs.SecondsSince(dev.Period.LastReport)
+		missingLimit := dev.Period.CheckInterval * dashboardConfig.Server.DeviceStatus.Missing
+
+		if lastUpdate > missingLimit {
+			dms3libs.LogInfo("Non-reporting remote device timeout: removing " + dev.Platform.Hostname)
+
+			continue
+		}
+		active = append(active, dev)
 	}
+	dd.Devices = active
 
 }
 
@@ -245,32 +247,28 @@ func resortDashboardDevices() {
 // iconStatus is an HTML template function that returns the CSS string representing icon color,
 // depending on the last time the client reported status to the server, relative to the client's
 // CheckInterval
-func iconStatus(index int) template.HTMLAttr {
+func (udm *DeviceMetrics) IconStatus() string {
 
-	lastUpdate := dms3libs.SecondsSince(dashboardData.Devices[index].Period.LastReport)
-	checkInterval := dashboardData.Devices[index].Period.CheckInterval
+	lastUpdate := dms3libs.SecondsSince(udm.Period.LastReport)
+	checkInterval := udm.Period.CheckInterval
+
 	warningLimit := checkInterval * dashboardConfig.Server.DeviceStatus.Caution
 	dangerLimit := checkInterval * dashboardConfig.Server.DeviceStatus.Danger
 
 	switch {
 	case lastUpdate < warningLimit:
 		return "icon-success"
-	case (lastUpdate >= warningLimit) && (lastUpdate < dangerLimit):
+	case lastUpdate < dangerLimit:
 		return "icon-warning"
-	case lastUpdate >= dangerLimit:
-		return "icon-danger"
 	default:
-		return ""
+		return "icon-danger"
 	}
-
 }
 
 // iconType is an HTML template function that returns an icon based on device type
-func iconType(index int) template.HTMLAttr {
+func (udm *DeviceMetrics) IconType() string {
 
-	dms3libs.LogDebug(filepath.Base((dms3libs.GetFunctionName())))
-
-	switch dashboardData.Devices[index].Platform.Type {
+	switch udm.Platform.Type {
 	case Client:
 		return "icon-raspberry-pi"
 	case Server:
@@ -283,11 +281,6 @@ func iconType(index int) template.HTMLAttr {
 
 // clientCount is an HTML template function that returns the current count of dms3clients
 // reporting to the server
-func clientCount() int {
-	return len(dashboardData.Devices) - 1
-}
-
-// showEventCount is an HTML template function that returns whether to display client event count
-func showEventCount(index int) bool {
-	return dashboardData.Devices[index].ShowEventCount
+func (dd *deviceData) ClientCount() int {
+	return len(dd.Devices) - 1 // -1 assuming the server itself is always present
 }
