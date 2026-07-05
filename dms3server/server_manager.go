@@ -105,7 +105,9 @@ func calcTimeRange() bool {
 func deviceOnLAN() bool {
 
 	dms3libs.LogDebug(filepath.Base(dms3libs.GetFunctionName()))
-	_ = dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange)
+	if err := dms3libs.PingHosts(ServerConfig.UserProxy.IPBase, ServerConfig.UserProxy.IPRange); err != nil {
+		dms3libs.LogDebug("PingHosts error: " + err.Error())
+	}
 
 	return dms3libs.FindMacs(ServerConfig.UserProxy.MacsToFind)
 }

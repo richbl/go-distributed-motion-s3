@@ -33,7 +33,7 @@ func isRunning(application string) bool {
 // handleCommandErrors handles errors encountered while running commands
 func handleCommandErrors(err error, cmd string) {
 
-	if _, ok := errors.AsType[*exec.ExitError](err); ok {
+	if err, ok := errors.AsType[*exec.ExitError](err); ok {
 		LogInfo("Process not found when running " + cmd)
 	} else {
 		LogFatal("Failed to run '" + cmd + "': " + err.Error())
