@@ -2,7 +2,6 @@
 
 <!-- markdownlint-disable MD033 -->
 <a href="https://github.com/richbl/go-distributed-motion-s3/releases"><img alt="Link to Releases" src="https://badgen.net/github/tag/richbl/go-distributed-motion-s3?icon=github&label=release"></a>
-<a href="https://goreportcard.com/report/github.com/richbl/go-distributed-motion-s3"><img alt="Link to Go Report Card" src="https://goreportcard.com/badge/github.com/richbl/go-distributed-motion-s3"></a>
 <a href="https://app.codacy.com/gh/richbl/go-distributed-motion-s3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade"><img alt="Link to Codacy Report" src="https://app.codacy.com/project/badge/Grade/d81b7869ac134229b78105544e783667"></a>
 <a href="https://sonarcloud.io/summary/new_code?id=richbl_go-distributed-motion-s3"><img alt="Link to SonarCloud Report" src="https://sonarcloud.io/api/project_badges/measure?project=richbl_go-distributed-motion-s3&metric=alert_status"></a>
 <!-- markdownlint-enable MD033 -->
