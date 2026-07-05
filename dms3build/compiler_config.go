@@ -3,6 +3,8 @@ package dms3build
 
 import "github.com/richbl/go-distributed-motion-s3/dms3libs"
 
+const buildName = "dms3build"
+
 // structComponent contains component details
 type structComponent struct {
 	srcName        string // component source filename
@@ -20,6 +22,7 @@ var components = []structComponent{
 		configFilename: dms3libs.DMS3clientTOML,
 		compile:        true,
 	},
+
 	{
 		srcName:        "cmd/dms3server/dms3server.go",
 		exeName:        dms3libs.DMS3Server,
@@ -27,6 +30,7 @@ var components = []structComponent{
 		configFilename: dms3libs.DMS3serverTOML,
 		compile:        true,
 	},
+
 	{
 		srcName:        "cmd/dms3mail/dms3mail.go",
 		exeName:        dms3libs.DMS3Mail,
@@ -34,27 +38,31 @@ var components = []structComponent{
 		configFilename: dms3libs.DMS3mailTOML,
 		compile:        true,
 	},
+
 	{
 		srcName:        "cmd/install_dms3/install_dms3.go",
 		exeName:        "install_dms3",
-		dirName:        "dms3build",
+		dirName:        buildName,
 		configFilename: dms3libs.DMS3buildTOML,
 		compile:        true,
 	},
+
 	{
 		srcName:        "cmd/dms3client_remote_installer/dms3client_remote_installer.go",
 		exeName:        "dms3client_remote_installer",
-		dirName:        "dms3build",
+		dirName:        buildName,
 		configFilename: "",
 		compile:        true,
 	},
+
 	{
 		srcName:        "cmd/dms3server_remote_installer/dms3server_remote_installer.go",
 		exeName:        "dms3server_remote_installer",
-		dirName:        "dms3build",
+		dirName:        buildName,
 		configFilename: "",
 		compile:        true,
 	},
+
 	{
 		srcName:        "",
 		exeName:        dms3libs.DMS3Libs,
@@ -62,6 +70,7 @@ var components = []structComponent{
 		configFilename: dms3libs.DMS3libsTOML,
 		compile:        false,
 	},
+
 	{
 		srcName:        "",
 		exeName:        dms3libs.DMS3Dashboard,
