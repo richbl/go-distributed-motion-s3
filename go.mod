@@ -5,7 +5,7 @@ go 1.26.8
 require (
 	github.com/BurntSushi/toml v1.6.0
 	github.com/mrgleam/easyssh v0.0.0-20170611150909-933e069a250a
-	golang.org/x/text v0.42.0
+	golang.org/x/text v0.43.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
