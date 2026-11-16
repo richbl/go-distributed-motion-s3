@@ -58,6 +58,10 @@ func DeviceOSName() string {
 
 		}
 
+		if err := scanner.Err(); err != nil {
+			CheckErr(err)
+		}
+
 		if osName != "" && osVersion != "" {
 			result = strings.ToLower(osName + " " + osVersion)
 		}

@@ -43,9 +43,7 @@ func FindMacs(macsToFind []string) bool {
 
 	if _, err := RunCommand(cmd); err != nil {
 
-		var exitErr *exec.ExitError
-
-		if errors.As(err, &exitErr) {
+		if errors.As(err, new(*exec.ExitError)) {
 			LogDebug(LibConfig.SysCommands["IP"] + " command: no device mac address found")
 		} else {
 			LogFatal("Failed to run '" + LibConfig.SysCommands["IP"] + " neigh | " + LibConfig.SysCommands["GREP"] + " -iE '" + macListRegex + "': " + err.Error())
